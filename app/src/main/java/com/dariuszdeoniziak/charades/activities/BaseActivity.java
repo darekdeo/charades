@@ -32,7 +32,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(layoutResId);
         ButterKnife.bind(this);
 
-        ((App) getApplication()).getDbComponent().inject(this);
+        ((App) getApplication()).getAppComponent().inject(this);
     }
 
     protected void getAnnotations() {

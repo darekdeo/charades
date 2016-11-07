@@ -10,6 +10,6 @@ import dagger.Component;
 
 @Singleton
 @Component(modules = {AppModule.class, DbModule.class})
-public interface DbComponent {
+public interface AppComponent {
     void inject(BaseActivity activity);
 }

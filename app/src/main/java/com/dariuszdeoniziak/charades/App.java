@@ -2,14 +2,14 @@ package com.dariuszdeoniziak.charades;
 
 import android.app.Application;
 
-import com.dariuszdeoniziak.charades.components.DaggerDbComponent;
-import com.dariuszdeoniziak.charades.components.DbComponent;
+import com.dariuszdeoniziak.charades.components.AppComponent;
+import com.dariuszdeoniziak.charades.components.DaggerAppComponent;
 import com.dariuszdeoniziak.charades.modules.AppModule;
 import com.dariuszdeoniziak.charades.modules.DbModule;
 
 public class App extends Application {
 
-    protected DbComponent mDbComponent;
+    protected AppComponent mAppComponent;
 
     @Override
     public void onCreate() {
@@ -19,13 +19,13 @@ public class App extends Application {
     }
 
     void initComponents() {
-        mDbComponent = DaggerDbComponent.builder()
+        mAppComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
                 .dbModule(new DbModule())
                 .build();
     }
 
-    public DbComponent getDbComponent() {
-        return mDbComponent;
+    public AppComponent getAppComponent() {
+        return mAppComponent;
     }
 }
