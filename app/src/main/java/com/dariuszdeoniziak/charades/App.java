@@ -6,6 +6,7 @@ import com.dariuszdeoniziak.charades.components.AppComponent;
 import com.dariuszdeoniziak.charades.components.DaggerAppComponent;
 import com.dariuszdeoniziak.charades.modules.AppModule;
 import com.dariuszdeoniziak.charades.modules.DbModule;
+import com.orm.SugarContext;
 
 public class App extends Application {
 
@@ -14,6 +15,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        SugarContext.init(this);
 
         initComponents();
     }
@@ -27,5 +30,12 @@ public class App extends Application {
 
     public AppComponent getAppComponent() {
         return mAppComponent;
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+
+        SugarContext.terminate();
     }
 }

@@ -9,6 +9,9 @@ import com.dariuszdeoniziak.charades.R;
 @BaseActivity.Layout(R.layout.activity_categories)
 public class CharadeListActivity extends BaseActivity {
 
+    private String testString = "";
+    private static final String KEY_TEST_STRING = "key_test_string";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
