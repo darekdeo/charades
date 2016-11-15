@@ -10,14 +10,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.util.List;
 
-import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)

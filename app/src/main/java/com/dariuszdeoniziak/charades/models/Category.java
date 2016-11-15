@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class Category extends SugarRecord {
 
     String name;
+    String description;
 
     List<Charade> getCharades() {
         return Charade.find(Charade.class, "category = ?", String.valueOf(getId()));
