@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Charade extends SugarRecord {
 
+    Long category;
     String name;
 }
