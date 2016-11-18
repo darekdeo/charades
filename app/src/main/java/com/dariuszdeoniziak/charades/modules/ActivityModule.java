@@ -21,4 +21,10 @@ public class ActivityModule {
     public SharedPreferences provideSharedPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(activity);
     }
+
+    @Provides
+    @Singleton
+    public Activity provideActivity() {
+        return activity;
+    }
 }

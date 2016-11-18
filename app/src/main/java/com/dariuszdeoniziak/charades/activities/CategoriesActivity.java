@@ -3,12 +3,14 @@ package com.dariuszdeoniziak.charades.activities;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.activities.fragments.BaseFragment;
 import com.dariuszdeoniziak.charades.activities.fragments.CategoriesFragment;
+import com.dariuszdeoniziak.charades.models.TestClass;
 
 import javax.inject.Inject;
 
@@ -19,6 +21,7 @@ public class CategoriesActivity extends BaseActivity {
     BaseFragment fragment;
 
     @Inject SharedPreferences sharedPreferences;
+    @Inject TestClass testClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,8 @@ public class CategoriesActivity extends BaseActivity {
             fragment = new CategoriesFragment();
             replaceFragment(null, fragment, R.id.fragment_container, fragment.TAG);
         }
+
+        Log.i(TAG, "onCreate: " + testClass.say());
     }
 
     @Override
