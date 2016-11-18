@@ -10,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
 import com.dariuszdeoniziak.charades.activities.fragments.BaseFragment;
+import com.dariuszdeoniziak.charades.modules.ActivityModule;
+
+import org.codejargon.feather.Feather;
 
 import butterknife.ButterKnife;
 
@@ -17,8 +20,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public String TAG = null;
 
-    @LayoutRes
-    protected int layoutResId;
+    @LayoutRes protected int layoutResId;
+
+    Feather feather;
 
     public BaseActivity() {
         TAG = this.getClass().getSimpleName();
@@ -27,6 +31,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        feather = Feather.with(new ActivityModule(this));
+        feather.injectFields(this);
 
         getAnnotations();
         setContentView(layoutResId);
@@ -77,5 +84,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         if ((layout = getClass().getAnnotation(Layout.class)) != null) {
             layoutResId = layout.value();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        feather = null;
+        super.onDestroy();
     }
 }

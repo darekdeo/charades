@@ -1,9 +1,12 @@
 package com.dariuszdeoniziak.charades.activities.fragments;
 
 import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +14,18 @@ import android.view.ViewGroup;
 import com.dariuszdeoniziak.charades.activities.Layout;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public abstract class BaseFragment extends Fragment {
 
-    public final String tag;
+    public final String TAG;
 
-    @LayoutRes
-    protected int layoutResId;
+    @LayoutRes protected int layoutResId;
+
+    private Unbinder unbinder;
 
     public BaseFragment() {
-        tag = this.getClass().getSimpleName();
+        TAG = this.getClass().getSimpleName();
     }
 
     @Nullable
@@ -29,7 +34,7 @@ public abstract class BaseFragment extends Fragment {
         getAnnotations();
 
         View view = inflater.inflate(layoutResId, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         return view;
     }
@@ -39,5 +44,10 @@ public abstract class BaseFragment extends Fragment {
         if ((layout = getClass().getAnnotation(Layout.class)) != null) {
             layoutResId = layout.value();
         }
+    }
+
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

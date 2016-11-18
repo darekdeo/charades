@@ -22,7 +22,7 @@ android {
 
 def supportLibVersion = '23.4.0'
 def butterKnifeLibVersion = '8.4.0'
-def rxLibVersion = "2.0.0"
+def rxLibVersion = '2.0.0'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -38,6 +38,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:$supportLibVersion"
     compile "com.android.support:design:$supportLibVersion"
 
+    compile 'org.codejargon.feather:feather:1.0'
     compile "com.jakewharton:butterknife:$butterKnifeLibVersion"
     compile 'com.github.satyan:sugar:1.4'
     compile "org.projectlombok:lombok:1.16.10"
