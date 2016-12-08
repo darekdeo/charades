@@ -1,6 +1,7 @@
 package com.dariuszdeoniziak.charades.activities.presenters;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 
 import com.dariuszdeoniziak.charades.activities.views.CategoriesActivityView;
 
@@ -9,10 +10,12 @@ import javax.inject.Inject;
 public class ActivityCategoriesPresenter extends BasePresenter {
 
     private CategoriesActivityView view;
+    private SharedPreferences preferences;
 
     @Inject
-    public ActivityCategoriesPresenter(Activity activity) {
+    public ActivityCategoriesPresenter(Activity activity, SharedPreferences preferences) {
         this.view = (CategoriesActivityView) activity;
+        this.preferences = preferences;
     }
 
     @Override
