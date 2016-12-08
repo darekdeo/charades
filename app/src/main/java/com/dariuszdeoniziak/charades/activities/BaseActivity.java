@@ -40,6 +40,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
+    protected void getAnnotations() {
+        Layout layout;
+        if ((layout = getClass().getAnnotation(Layout.class)) != null) {
+            layoutResId = layout.value();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        feather = null;
+        super.onDestroy();
+    }
+
     public void replaceFragment(@Nullable Bundle args, Fragment fragment, int containerResId, String tag) {
         Fragment currentFragment = getCurrentFragment(containerResId);
 
@@ -77,18 +90,5 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void saveFragment(BaseFragment fragment, Bundle bundle, String key) {
         if (fragment != null && bundle != null && !TextUtils.isEmpty(key))
             getFragmentManager().putFragment(bundle, key, fragment);
-    }
-
-    protected void getAnnotations() {
-        Layout layout;
-        if ((layout = getClass().getAnnotation(Layout.class)) != null) {
-            layoutResId = layout.value();
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        feather = null;
-        super.onDestroy();
     }
 }
