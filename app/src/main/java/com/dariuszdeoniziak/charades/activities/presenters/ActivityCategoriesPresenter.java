@@ -20,13 +20,14 @@ public class ActivityCategoriesPresenter extends BasePresenter {
 
     @Override
     public void onSave() {
-
+        preferences.edit().putBoolean("ALIVE_TEST", true).apply();
     }
 
     @Override
     public void onTakeView() {
         // Prove  this unbeliever programmer that it is alive.
-        view.showToast("View is alive!");
+        if (preferences.getBoolean("ALIVE_TEST", false))
+            view.showToast("View is alive!");
     }
 
     @Override
