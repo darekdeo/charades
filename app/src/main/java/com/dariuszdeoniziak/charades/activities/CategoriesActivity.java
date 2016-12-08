@@ -4,8 +4,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.activities.fragments.BaseFragment;
@@ -36,23 +34,6 @@ public class CategoriesActivity extends BaseActivity {
         }
 
         Log.i(TAG, "onCreate: " + testClass.say());
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_categories, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
