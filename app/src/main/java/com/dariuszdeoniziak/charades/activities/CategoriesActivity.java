@@ -41,16 +41,16 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.onTakeView();
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         presenter.onSave();
         saveFragment(fragment, outState, KEY_FRAGMENT);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        presenter.onTakeView();
     }
 
     @Override
