@@ -10,7 +10,7 @@ import javax.inject.Singleton;
 
 public class ActivityModule {
 
-    Activity activity;
+    private Activity activity;
 
     public ActivityModule(Activity activity) {
         this.activity = activity;
