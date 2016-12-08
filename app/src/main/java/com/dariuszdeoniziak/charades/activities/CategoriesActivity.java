@@ -9,19 +9,19 @@ import android.widget.Toast;
 import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.activities.fragments.BaseFragment;
 import com.dariuszdeoniziak.charades.activities.fragments.CategoriesFragment;
-import com.dariuszdeoniziak.charades.activities.presenters.ActivityCategoriesPresenter;
-import com.dariuszdeoniziak.charades.activities.views.CategoriesActivityView;
+import com.dariuszdeoniziak.charades.activities.presenters.CategoriesPresenter;
+import com.dariuszdeoniziak.charades.activities.views.CategoriesView;
 import com.dariuszdeoniziak.charades.models.TestClass;
 
 import javax.inject.Inject;
 
 @Layout(R.layout.activity_categories)
-public class CategoriesActivity extends BaseActivity implements CategoriesActivityView {
+public class CategoriesActivity extends BaseActivity implements CategoriesView {
 
     private static final String KEY_FRAGMENT = "key_fragment";
     BaseFragment fragment;
 
-    @Inject ActivityCategoriesPresenter presenter;
+    @Inject CategoriesPresenter presenter;
     @Inject SharedPreferences sharedPreferences;
     @Inject TestClass testClass;
 

@@ -3,18 +3,18 @@ package com.dariuszdeoniziak.charades.activities.presenters;
 import android.app.Activity;
 import android.content.SharedPreferences;
 
-import com.dariuszdeoniziak.charades.activities.views.CategoriesActivityView;
+import com.dariuszdeoniziak.charades.activities.views.CategoriesView;
 
 import javax.inject.Inject;
 
-public class ActivityCategoriesPresenter extends BasePresenter {
+public class CategoriesPresenter extends BasePresenter {
 
-    private CategoriesActivityView view;
+    private CategoriesView view;
     private SharedPreferences preferences;
 
     @Inject
-    public ActivityCategoriesPresenter(Activity activity, SharedPreferences preferences) {
-        this.view = (CategoriesActivityView) activity;
+    public CategoriesPresenter(Activity activity, SharedPreferences preferences) {
+        this.view = (CategoriesView) activity;
         this.preferences = preferences;
     }
 
