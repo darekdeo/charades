@@ -6,10 +6,6 @@ import com.dariuszdeoniziak.charades.activities.views.CategoriesActivityView;
 
 import javax.inject.Inject;
 
-/**
- * Created by darek on 08.12.16.
- */
-
 public class ActivityCategoriesPresenter extends BasePresenter {
 
     private CategoriesActivityView view;
