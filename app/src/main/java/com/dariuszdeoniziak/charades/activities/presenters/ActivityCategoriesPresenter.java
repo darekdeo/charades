@@ -1,5 +1,7 @@
 package com.dariuszdeoniziak.charades.activities.presenters;
 
+import android.app.Activity;
+
 import com.dariuszdeoniziak.charades.activities.views.CategoriesActivityView;
 
 import javax.inject.Inject;
@@ -13,8 +15,8 @@ public class ActivityCategoriesPresenter extends BasePresenter {
     private CategoriesActivityView view;
 
     @Inject
-    public ActivityCategoriesPresenter(CategoriesActivityView view) {
-        this.view = view;
+    public ActivityCategoriesPresenter(Activity activity) {
+        this.view = (CategoriesActivityView) activity;
     }
 
     @Override
