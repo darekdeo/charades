@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    public String TAG = null;
+    public final String TAG;
 
     @LayoutRes protected int layoutResId;
 
