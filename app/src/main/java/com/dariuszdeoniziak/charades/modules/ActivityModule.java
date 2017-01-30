@@ -1,8 +1,12 @@
 package com.dariuszdeoniziak.charades.modules;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
+import com.dariuszdeoniziak.charades.models.interactors.ModelInteractor;
+import com.dariuszdeoniziak.charades.models.interactors.SugarOrmInteractor;
 
 import org.codejargon.feather.Provides;
 
@@ -18,13 +22,24 @@ public class ActivityModule {
 
     @Provides
     @Singleton
-    public SharedPreferences provideSharedPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(activity);
+    public Activity provideActivity() {
+        return activity;
     }
 
     @Provides
     @Singleton
-    public Activity provideActivity() {
+    public Context provideContext() {
         return activity;
+    }
+
+    @Provides
+    public ModelInteractor provideModelInteractor() {
+        return new SugarOrmInteractor();
+    }
+
+    @Provides
+    @Singleton
+    public SharedPreferences provideSharedPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(activity);
     }
 }
