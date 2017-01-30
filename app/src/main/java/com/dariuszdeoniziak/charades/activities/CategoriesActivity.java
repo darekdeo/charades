@@ -9,7 +9,7 @@ import android.widget.Toast;
 import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.activities.fragments.BaseFragment;
 import com.dariuszdeoniziak.charades.activities.fragments.CategoriesFragment;
-import com.dariuszdeoniziak.charades.activities.presenters.CategoriesPresenter;
+import com.dariuszdeoniziak.charades.presenters.CategoriesPresenter;
 import com.dariuszdeoniziak.charades.activities.views.CategoriesView;
 import com.dariuszdeoniziak.charades.models.TestClass;
 
@@ -22,7 +22,6 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     BaseFragment fragment;
 
     @Inject CategoriesPresenter presenter;
-    @Inject SharedPreferences sharedPreferences;
     @Inject TestClass testClass;
 
     @Override
@@ -41,8 +40,8 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
         presenter.onTakeView();
     }
 
@@ -54,13 +53,17 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
         presenter.onDropView();
     }
 
     @Override
     public void showToast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    public void setPresenter(CategoriesPresenter presenter) {
+        this.presenter = presenter;
     }
 }

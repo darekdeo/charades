@@ -1,4 +1,4 @@
-package com.dariuszdeoniziak.charades.activities.presenters;
+package com.dariuszdeoniziak.charades.presenters;
 
 public abstract class BasePresenter {
     public abstract void onSave(); // called during on saveInstanceState

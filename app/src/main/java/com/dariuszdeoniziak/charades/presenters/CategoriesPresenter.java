@@ -1,4 +1,4 @@
-package com.dariuszdeoniziak.charades.activities.presenters;
+package com.dariuszdeoniziak.charades.presenters;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
