@@ -44,6 +44,7 @@ dependencies {
     compile "org.projectlombok:lombok:1.16.10"
     compile "io.reactivex.rxjava2:rxjava:$rxLibVersion"
     compile "io.reactivex.rxjava2:rxandroid:$rxLibVersion"
+    compile 'org.greenrobot:eventbus:3.0.0'
 
     provided 'org.glassfish:javax.annotation:10.0-b28'
 }
