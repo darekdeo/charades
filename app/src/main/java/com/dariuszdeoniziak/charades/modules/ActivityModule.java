@@ -6,7 +6,11 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.dariuszdeoniziak.charades.models.interactors.ModelInteractor;
+import com.dariuszdeoniziak.charades.models.interactors.PreferencesInteractor;
+import com.dariuszdeoniziak.charades.models.interactors.SharedPreferencesInteractor;
 import com.dariuszdeoniziak.charades.models.interactors.SugarOrmInteractor;
+import com.dariuszdeoniziak.charades.presenters.CategoriesActivityPresenter;
+import com.dariuszdeoniziak.charades.views.activities.CategoriesActivity;
 
 import org.codejargon.feather.Provides;
 
@@ -33,13 +37,22 @@ public class ActivityModule {
     }
 
     @Provides
-    public ModelInteractor provideModelInteractor() {
-        return new SugarOrmInteractor();
+    @Singleton
+    public CategoriesActivityPresenter provideCategoriesPresenter() {
+        return new CategoriesActivityPresenter(
+                (CategoriesActivity) activity,
+                providePreferencesInteractor());
     }
 
     @Provides
     @Singleton
-    public SharedPreferences provideSharedPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(activity);
+    public ModelInteractor provideModelInteractor() {
+        return new SugarOrmInteractor(activity);
+    }
+
+    @Provides
+    @Singleton
+    public PreferencesInteractor providePreferencesInteractor() {
+        return new SharedPreferencesInteractor(activity);
     }
 }

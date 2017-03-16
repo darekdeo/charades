@@ -1,11 +1,11 @@
-package com.dariuszdeoniziak.charades.models;
+package com.dariuszdeoniziak.charades.models.interactors;
 
 import android.content.Context;
 
 import com.dariuszdeoniziak.charades.App;
 import com.dariuszdeoniziak.charades.BuildConfig;
-import com.dariuszdeoniziak.charades.models.interactors.ModelInteractor;
-import com.dariuszdeoniziak.charades.models.interactors.SugarOrmInteractor;
+import com.dariuszdeoniziak.charades.models.Category;
+import com.dariuszdeoniziak.charades.models.Charade;
 
 import org.junit.After;
 import org.junit.Before;
@@ -20,7 +20,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 18, assetDir = "assets", application = App.class)
+@Config(constants = BuildConfig.class, sdk = 18, application = App.class)
 public class SugarOrmInteractorTest {
 
     ModelInteractor interactor;
@@ -28,8 +28,7 @@ public class SugarOrmInteractorTest {
     @Before
     public void setUp() throws Exception {
         Context context = RuntimeEnvironment.application;
-        interactor = new SugarOrmInteractor();
-        interactor.init(context);
+        interactor = new SugarOrmInteractor(context);
     }
 
     @After
@@ -44,7 +43,7 @@ public class SugarOrmInteractorTest {
                 .build();
 
         // create
-        assertTrue(category.name.equals("test_category_name"));
+        assertTrue(category.getName().equals("test_category_name"));
         long id = interactor.saveCategory(category);
         assertTrue(id > 0);
 
@@ -54,14 +53,14 @@ public class SugarOrmInteractorTest {
         assertFalse(categories.isEmpty());
 
         category = interactor.getCategory(id);
-        assertTrue(category.name.equals("test_category_name"));
+        assertTrue(category.getName().equals("test_category_name"));
 
         // update
-        category.name = "new_test_category_name";
+        category.setName("new_test_category_name");
         interactor.saveCategory(category);
 
         category = interactor.getCategory(id);
-        assertTrue(category.name.equals("new_test_category_name"));
+        assertTrue(category.getName().equals("new_test_category_name"));
 
         // delete
         boolean deleted = interactor.deleteCategory(category);
@@ -77,7 +76,7 @@ public class SugarOrmInteractorTest {
                 .build();
 
         // create
-        assertTrue(charade.name.equals("test_charade_name"));
+        assertTrue(charade.getName().equals("test_charade_name"));
         long id = interactor.saveCharade(charade);
         assertTrue(id > 0);
 
@@ -87,14 +86,14 @@ public class SugarOrmInteractorTest {
         assertFalse(charades.isEmpty());
 
         charade = interactor.getCharade(id);
-        assertTrue(charade.name.equals("test_charade_name"));
+        assertTrue(charade.getName().equals("test_charade_name"));
 
         // update
-        charade.name = "new_test_charade_name";
+        charade.setName("new_test_charade_name");
         interactor.saveCharade(charade);
 
         charade = interactor.getCharade(id);
-        assertTrue(charade.name.equals("new_test_charade_name"));
+        assertTrue(charade.getName().equals("new_test_charade_name"));
 
         // delete
         boolean deleted = interactor.deleteCharade(charade);
@@ -119,7 +118,7 @@ public class SugarOrmInteractorTest {
         List<Charade> charades = interactor.getCharades(category);
         assertNotNull(charades);
         assertFalse(charades.isEmpty());
-        assertEquals(charade.name, charades.get(0).name);
+        assertEquals(charade.getName(), charades.get(0).getName());
 
         boolean deleted = interactor.deleteCategory(category);
         assertTrue(deleted);

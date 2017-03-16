@@ -16,9 +16,9 @@
         <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.dariuszdeoniziak" />
 
         <activity
-            android:name="com.dariuszdeoniziak.charades.activities.CategoriesActivity"
+            android:name="com.dariuszdeoniziak.charades.views.activities.CategoriesActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -8,7 +8,6 @@ import com.dariuszdeoniziak.charades.models.Charade;
 import java.util.List;
 
 public interface ModelInteractor {
-    void init(Context context);
     void finish();
 
     long saveCategory(Category category);

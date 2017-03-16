@@ -5,6 +5,7 @@ import android.content.Context;
 import com.dariuszdeoniziak.charades.models.Category;
 import com.dariuszdeoniziak.charades.models.Charade;
 import com.orm.SugarContext;
+import com.orm.SugarRecord;
 
 import java.util.List;
 
@@ -13,8 +14,7 @@ import javax.inject.Inject;
 public class SugarOrmInteractor implements ModelInteractor {
 
     @Inject
-    @Override
-    public void init(Context context) {
+    public SugarOrmInteractor(Context context) {
         SugarContext.init(context);
     }
 
@@ -25,37 +25,37 @@ public class SugarOrmInteractor implements ModelInteractor {
 
     @Override
     public long saveCategory(Category category) {
-        return category.save();
+        return SugarRecord.save(category);
     }
 
     @Override
     public Category getCategory(long id) {
-        return Category.findById(Category.class, id);
+        return SugarRecord.findById(Category.class, id);
     }
 
     @Override
     public List<Category> getCategories() {
-        return Category.listAll(Category.class);
+        return SugarRecord.listAll(Category.class);
     }
 
     @Override
     public boolean deleteCategory(Category category) {
-        return Category.delete(category);
+        return SugarRecord.delete(category);
     }
 
     @Override
     public long saveCharade(Charade charade) {
-        return charade.save();
+        return SugarRecord.save(charade);
     }
 
     @Override
     public Charade getCharade(long id) {
-        return Charade.findById(Charade.class, id);
+        return SugarRecord.findById(Charade.class, id);
     }
 
     @Override
     public List<Charade> getCharades() {
-        return Charade.listAll(Charade.class);
+        return SugarRecord.listAll(Charade.class);
     }
 
     @Override
@@ -65,6 +65,6 @@ public class SugarOrmInteractor implements ModelInteractor {
 
     @Override
     public boolean deleteCharade(Charade charade) {
-        return charade.delete();
+        return SugarRecord.delete(charade);
     }
 }

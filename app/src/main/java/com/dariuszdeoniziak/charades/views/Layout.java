@@ -1,4 +1,4 @@
-package com.dariuszdeoniziak.charades.activities;
+package com.dariuszdeoniziak.charades.views;
 
 import android.support.annotation.LayoutRes;
 

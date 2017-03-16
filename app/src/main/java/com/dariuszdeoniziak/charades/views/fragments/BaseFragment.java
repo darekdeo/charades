@@ -1,17 +1,17 @@
-package com.dariuszdeoniziak.charades.activities.fragments;
+package com.dariuszdeoniziak.charades.views.fragments;
 
 import android.app.Fragment;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.dariuszdeoniziak.charades.activities.Layout;
+import com.dariuszdeoniziak.charades.modules.FragmentModule;
+import com.dariuszdeoniziak.charades.views.Layout;
+
+import org.codejargon.feather.Feather;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -22,10 +22,18 @@ public abstract class BaseFragment extends Fragment {
 
     @LayoutRes protected int layoutResId;
 
-    private Unbinder unbinder;
+    Feather feather;
+    Unbinder unbinder;
 
     public BaseFragment() {
         TAG = this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        feather = Feather.with(new FragmentModule(this));
+        feather.injectFields(this);
     }
 
     @Nullable
@@ -46,7 +54,8 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-    @Override public void onDestroyView() {
+    @Override
+    public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }

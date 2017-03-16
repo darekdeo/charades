@@ -1,17 +1,17 @@
-package com.dariuszdeoniziak.charades.activities;
+package com.dariuszdeoniziak.charades.views.activities;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.dariuszdeoniziak.charades.R;
-import com.dariuszdeoniziak.charades.activities.fragments.BaseFragment;
-import com.dariuszdeoniziak.charades.activities.fragments.CategoriesFragment;
-import com.dariuszdeoniziak.charades.presenters.CategoriesPresenter;
-import com.dariuszdeoniziak.charades.activities.views.CategoriesView;
+import com.dariuszdeoniziak.charades.views.Layout;
+import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
+import com.dariuszdeoniziak.charades.views.fragments.CategoriesFragment;
+import com.dariuszdeoniziak.charades.presenters.CategoriesActivityPresenter;
+import com.dariuszdeoniziak.charades.views.CategoriesView;
 import com.dariuszdeoniziak.charades.models.TestClass;
+import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
 
 import javax.inject.Inject;
 
@@ -21,14 +21,17 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     private static final String KEY_FRAGMENT = "key_fragment";
     BaseFragment fragment;
 
-    @Inject CategoriesPresenter presenter;
     @Inject TestClass testClass;
+    @Inject CategoriesActivityPresenter presenter;
+
+    void replace(CategoriesActivityPresenter presenter, AndroidStaticsWrapper androidWrapper) {
+        this.presenter = presenter;
+        this.androidWrapper = androidWrapper;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         fragment = getSavedFragment(savedInstanceState, KEY_FRAGMENT);
         if (fragment == null) {
@@ -40,8 +43,8 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     }
 
     @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
+    protected void onResume() {
+        super.onResume();
         presenter.onTakeView();
     }
 
@@ -53,17 +56,13 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     }
 
     @Override
-    public void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
+    protected void onDestroy() {
+        super.onDestroy();
         presenter.onDropView();
     }
 
     @Override
-    public void showToast(String text) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-    }
-
-    public void setPresenter(CategoriesPresenter presenter) {
-        this.presenter = presenter;
+    public void displayTextInfo(String text) {
+        androidWrapper.showToast(this, text, Toast.LENGTH_SHORT);
     }
 }

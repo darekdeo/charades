@@ -1,4 +1,4 @@
-package com.dariuszdeoniziak.charades.activities;
+package com.dariuszdeoniziak.charades.views.activities;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -9,10 +9,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
-import com.dariuszdeoniziak.charades.activities.fragments.BaseFragment;
+import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
+import com.dariuszdeoniziak.charades.views.Layout;
+import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 import com.dariuszdeoniziak.charades.modules.ActivityModule;
 
 import org.codejargon.feather.Feather;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
@@ -23,6 +27,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @LayoutRes protected int layoutResId;
 
     Feather feather;
+    @Inject AndroidStaticsWrapper androidWrapper;
 
     public BaseActivity() {
         TAG = this.getClass().getSimpleName();
@@ -40,7 +45,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
-    protected void getAnnotations() {
+    private void getAnnotations() {
         Layout layout;
         if ((layout = getClass().getAnnotation(Layout.class)) != null) {
             layoutResId = layout.value();
@@ -68,17 +73,22 @@ public abstract class BaseActivity extends AppCompatActivity {
     public Fragment getCurrentFragment(int containerResId) {
         FragmentManager manager = getFragmentManager();
 
-        Fragment fragment = null;
-        int count = manager.getBackStackEntryCount();
-        if (count > 0) {
-            FragmentManager.BackStackEntry entry = manager.getBackStackEntryAt(count - 1);
-            fragment = manager.findFragmentByTag(entry.getName());
-        }
+        Fragment fragment;
+        fragment = getFragmentFromBackStack(manager);
 
         if (fragment != null)
             return fragment;
 
         return manager.findFragmentById(containerResId);
+    }
+
+    private Fragment getFragmentFromBackStack(FragmentManager manager) {
+        int count = manager.getBackStackEntryCount();
+        if (count > 0) {
+            FragmentManager.BackStackEntry entry = manager.getBackStackEntryAt(count - 1);
+            return manager.findFragmentByTag(entry.getName());
+        }
+        return null;
     }
 
     public BaseFragment getSavedFragment(Bundle bundle, String key) {
