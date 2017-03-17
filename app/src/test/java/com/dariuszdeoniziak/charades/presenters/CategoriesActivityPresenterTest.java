@@ -28,8 +28,14 @@ public class CategoriesActivityPresenterTest {
 
     @Test
     public void showWelcomeBackMessage() {
-        when(presenter.preferences.isFirstRun()).thenReturn(false);
+        when(presenter.preferences.isFirstRun()).
+                thenReturn(false);
         presenter.onTakeView();
         verify(view).displayTextInfo("Hello again!");
+
+        when(presenter.preferences.isFirstRun()).
+                thenReturn(true);
+        presenter.onTakeView();
+        verifyZeroInteractions(view);
     }
 }
