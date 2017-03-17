@@ -50,7 +50,7 @@ public class CategoryListPresenter implements Presenter<CategoryListView> {
     public void loadCategories() {
         view.showProgressIndicator();
         categoriesSingle
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<Category>>() {
                     @Override

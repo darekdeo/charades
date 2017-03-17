@@ -8,7 +8,6 @@ import java.util.concurrent.Callable;
 import io.reactivex.Scheduler;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.functions.Function;
-import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
 public class RxJavaTestRunner extends BlockJUnit4ClassRunner {
@@ -18,14 +17,6 @@ public class RxJavaTestRunner extends BlockJUnit4ClassRunner {
 
         RxAndroidPlugins.reset();
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(new Function<Callable<Scheduler>, Scheduler>() {
-            @Override
-            public Scheduler apply(Callable<Scheduler> schedulerCallable) throws Exception {
-                return Schedulers.trampoline();
-            }
-        });
-
-        RxJavaPlugins.reset();
-        RxJavaPlugins.setInitNewThreadSchedulerHandler(new Function<Callable<Scheduler>, Scheduler>() {
             @Override
             public Scheduler apply(Callable<Scheduler> schedulerCallable) throws Exception {
                 return Schedulers.trampoline();

@@ -15,6 +15,11 @@ import org.mockito.MockitoAnnotations;
 import java.util.Collections;
 import java.util.List;
 
+import io.reactivex.Scheduler;
+import io.reactivex.functions.Function;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
+
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -28,6 +33,13 @@ public class CategoryListPresenterTest {
 
     @Before
     public void setUp() throws Exception {
+        RxJavaPlugins.setIoSchedulerHandler(new Function<Scheduler, Scheduler>() {
+            @Override
+            public Scheduler apply(Scheduler scheduler) throws Exception {
+                return Schedulers.trampoline();
+            }
+        });
+
         MockitoAnnotations.initMocks(this);
         presenter = new CategoryListPresenter(modelInteractor);
         presenter.onTakeView(view);
@@ -35,6 +47,7 @@ public class CategoryListPresenterTest {
 
     @After
     public void tearDown() throws Exception {
+        RxJavaPlugins.reset();
     }
 
     @Test
