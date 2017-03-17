@@ -8,7 +8,6 @@ import com.dariuszdeoniziak.charades.models.interactors.PreferencesInteractor;
 import com.dariuszdeoniziak.charades.models.interactors.SharedPreferencesInteractor;
 import com.dariuszdeoniziak.charades.models.interactors.SugarOrmInteractor;
 import com.dariuszdeoniziak.charades.presenters.CategoriesActivityPresenter;
-import com.dariuszdeoniziak.charades.views.activities.CategoriesActivity;
 
 import org.codejargon.feather.Provides;
 
@@ -37,9 +36,7 @@ public class ActivityModule {
     @Provides
     @Singleton
     public CategoriesActivityPresenter provideCategoriesPresenter() {
-        return new CategoriesActivityPresenter(
-                (CategoriesActivity) activity,
-                providePreferencesInteractor());
+        return new CategoriesActivityPresenter(providePreferencesInteractor());
     }
 
     @Provides

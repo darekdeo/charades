@@ -6,14 +6,13 @@ import com.dariuszdeoniziak.charades.views.activities.CategoriesActivity;
 
 import javax.inject.Inject;
 
-public class CategoriesActivityPresenter implements Presenter {
+public class CategoriesActivityPresenter implements Presenter<CategoriesView> {
 
     CategoriesView view;
     PreferencesInteractor preferences;
 
     @Inject
-    public CategoriesActivityPresenter(CategoriesView view, PreferencesInteractor preferences) {
-        this.view = view;
+    public CategoriesActivityPresenter(PreferencesInteractor preferences) {
         this.preferences = preferences;
     }
 
@@ -23,7 +22,8 @@ public class CategoriesActivityPresenter implements Presenter {
     }
 
     @Override
-    public void onTakeView() {
+    public void onTakeView(CategoriesView view) {
+        this.view = view;
         if (!preferences.isFirstRun())
             view.displayTextInfo("Hello again!");
     }

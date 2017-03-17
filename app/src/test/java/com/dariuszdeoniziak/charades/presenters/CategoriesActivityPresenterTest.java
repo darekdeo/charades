@@ -19,7 +19,7 @@ public class CategoriesActivityPresenterTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new CategoriesActivityPresenter(view, preferencesInteractor);
+        presenter = new CategoriesActivityPresenter(preferencesInteractor);
     }
 
     @After
@@ -30,12 +30,12 @@ public class CategoriesActivityPresenterTest {
     public void showWelcomeBackMessage() {
         when(presenter.preferences.isFirstRun()).
                 thenReturn(false);
-        presenter.onTakeView();
+        presenter.onTakeView(view);
         verify(view).displayTextInfo("Hello again!");
 
         when(presenter.preferences.isFirstRun()).
                 thenReturn(true);
-        presenter.onTakeView();
+        presenter.onTakeView(view);
         verifyZeroInteractions(view);
     }
 }

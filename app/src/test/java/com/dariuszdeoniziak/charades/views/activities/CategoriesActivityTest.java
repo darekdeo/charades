@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.dariuszdeoniziak.charades.App;
 import com.dariuszdeoniziak.charades.BuildConfig;
 import com.dariuszdeoniziak.charades.R;
+import com.dariuszdeoniziak.charades.views.CategoriesView;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 import com.dariuszdeoniziak.charades.presenters.CategoriesActivityPresenter;
 import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
@@ -60,7 +61,7 @@ public class CategoriesActivityTest {
     @Test
     public void testReturnToView() throws Exception {
         activity.onResume();
-        verify(presenter).onTakeView();
+        verify(presenter).onTakeView(activity);
     }
 
     @Test

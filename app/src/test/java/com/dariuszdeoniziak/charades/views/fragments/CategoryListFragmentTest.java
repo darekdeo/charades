@@ -2,7 +2,8 @@ package com.dariuszdeoniziak.charades.views.fragments;
 
 import com.dariuszdeoniziak.charades.App;
 import com.dariuszdeoniziak.charades.BuildConfig;
-import com.dariuszdeoniziak.charades.presenters.CategoryListFragmentPresenter;
+import com.dariuszdeoniziak.charades.presenters.CategoryListPresenter;
+import com.dariuszdeoniziak.charades.views.CategoryListView;
 
 import org.junit.After;
 import org.junit.Before;
@@ -25,7 +26,7 @@ public class CategoryListFragmentTest {
     CategoryListFragment fragment;
     FragmentController<CategoryListFragment> controller;
 
-    @Mock CategoryListFragmentPresenter presenter;
+    @Mock CategoryListPresenter presenter;
 
     @Before
     public void setUp() {
@@ -45,7 +46,7 @@ public class CategoryListFragmentTest {
     @Test
     public void onResume() throws Exception {
         fragment.onResume();
-        verify(presenter).onTakeView();
+        verify(presenter).onTakeView(fragment);
     }
 
     @Test

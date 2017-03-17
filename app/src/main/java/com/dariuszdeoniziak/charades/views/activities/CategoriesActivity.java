@@ -45,7 +45,7 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.onTakeView();
+        presenter.onTakeView(this);
     }
 
     @Override
