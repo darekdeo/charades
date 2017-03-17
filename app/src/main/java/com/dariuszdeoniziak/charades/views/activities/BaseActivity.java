@@ -18,7 +18,7 @@ import org.codejargon.feather.Feather;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
+import trikita.knork.Knork;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -42,7 +42,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         getAnnotations();
         setContentView(layoutResId);
-        ButterKnife.bind(this);
+        Knork.inject(getWindow().getDecorView(), this);
     }
 
     private void getAnnotations() {
@@ -55,6 +55,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         feather = null;
+        Knork.reset(this);
         super.onDestroy();
     }
 

@@ -9,13 +9,13 @@ import com.dariuszdeoniziak.charades.views.Layout;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
+import trikita.knork.Knork;
 
 @Layout(R.layout.fragment_categories)
 public class CategoriesFragment extends BaseFragment {
 
-    @BindView(R.id.categories_title) TextView categoriesTitleView;
-    @BindView(R.id.categories_recycler) RecyclerView categoriesRecyclerView;
+    @Knork.Id(R.id.categories_title) TextView categoriesTitleView;
+    @Knork.Id(R.id.categories_recycler) RecyclerView categoriesRecyclerView;
 
     @Inject CategoriesFragmentPresenter presenter;
 

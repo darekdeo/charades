@@ -2,8 +2,6 @@ package com.dariuszdeoniziak.charades.modules;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import com.dariuszdeoniziak.charades.models.interactors.ModelInteractor;
 import com.dariuszdeoniziak.charades.models.interactors.PreferencesInteractor;

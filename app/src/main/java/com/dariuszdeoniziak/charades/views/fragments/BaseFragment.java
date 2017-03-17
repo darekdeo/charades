@@ -13,8 +13,7 @@ import com.dariuszdeoniziak.charades.views.Layout;
 
 import org.codejargon.feather.Feather;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+import trikita.knork.Knork;
 
 public abstract class BaseFragment extends Fragment {
 
@@ -23,7 +22,6 @@ public abstract class BaseFragment extends Fragment {
     @LayoutRes protected int layoutResId;
 
     Feather feather;
-    Unbinder unbinder;
 
     public BaseFragment() {
         TAG = this.getClass().getSimpleName();
@@ -42,7 +40,7 @@ public abstract class BaseFragment extends Fragment {
         getAnnotations();
 
         View view = inflater.inflate(layoutResId, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        Knork.inject(view, this);
 
         return view;
     }
@@ -56,7 +54,7 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        Knork.reset(this);
         super.onDestroyView();
-        unbinder.unbind();
     }
 }
