@@ -2,19 +2,23 @@ package com.dariuszdeoniziak.charades.presenters;
 
 import com.dariuszdeoniziak.charades.models.Category;
 import com.dariuszdeoniziak.charades.models.interactors.ModelInteractor;
+import com.dariuszdeoniziak.charades.utils.RxJavaTestRunner;
 import com.dariuszdeoniziak.charades.views.CategoryListView;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Collections;
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+@RunWith(RxJavaTestRunner.class)
 public class CategoryListPresenterTest {
 
     @Mock List<Category> categories;
@@ -44,7 +48,7 @@ public class CategoryListPresenterTest {
     }
 
     @Test
-    public void loadCategoriesCallsShowEmptyList() {
+    public void loadCategoriesCallsShowEmptyList() throws InterruptedException {
         when(presenter.modelInteractor.getCategories())
                 .thenReturn(Collections.<Category>emptyList());
         presenter.loadCategories();

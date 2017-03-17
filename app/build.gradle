@@ -21,7 +21,7 @@ android {
 }
 
 def supportLibVersion = '23.4.0'
-def rxLibVersion = '2.0.0'
+def rxLibVersion = '2.0.1'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -35,12 +35,15 @@ dependencies {
     compile "com.android.support:appcompat-v7:$supportLibVersion"
     compile "com.android.support:design:$supportLibVersion"
 
+    compile "io.reactivex.rxjava2:rxandroid:$rxLibVersion"
+    // Because RxAndroid releases are few and far between, it is recommended you also
+    // explicitly depend on RxJava's latest version for bug fixes and new features.
+    compile "io.reactivex.rxjava2:rxjava:$rxLibVersion"
+
     compile 'co.trikita:knork:1.2.0'
     compile 'org.codejargon.feather:feather:1.0'
     compile 'com.github.satyan:sugar:1.4'
     compile "org.projectlombok:lombok:1.16.10"
-    compile "io.reactivex.rxjava2:rxjava:$rxLibVersion"
-    compile "io.reactivex.rxjava2:rxandroid:$rxLibVersion"
     compile 'org.greenrobot:eventbus:3.0.0'
 
     provided 'org.glassfish:javax.annotation:10.0-b28'
