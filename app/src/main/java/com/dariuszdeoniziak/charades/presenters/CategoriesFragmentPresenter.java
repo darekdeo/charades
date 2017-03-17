@@ -5,7 +5,7 @@ import com.dariuszdeoniziak.charades.views.fragments.CategoriesFragment;
 
 import javax.inject.Inject;
 
-public class CategoriesFragmentPresenter extends BasePresenter {
+public class CategoriesFragmentPresenter implements Presenter {
 
     private CategoriesFragment view;
 

@@ -2,10 +2,11 @@ package com.dariuszdeoniziak.charades.presenters;
 
 import com.dariuszdeoniziak.charades.models.interactors.PreferencesInteractor;
 import com.dariuszdeoniziak.charades.views.CategoriesView;
+import com.dariuszdeoniziak.charades.views.activities.CategoriesActivity;
 
 import javax.inject.Inject;
 
-public class CategoriesActivityPresenter extends BasePresenter {
+public class CategoriesActivityPresenter implements Presenter {
 
     private CategoriesView view;
     private PreferencesInteractor preferences;
@@ -23,7 +24,7 @@ public class CategoriesActivityPresenter extends BasePresenter {
 
     @Override
     public void onTakeView() {
-        if (preferences.isFirstRun())
+        if (!preferences.isFirstRun())
             view.displayTextInfo("Hello again!");
     }
 
