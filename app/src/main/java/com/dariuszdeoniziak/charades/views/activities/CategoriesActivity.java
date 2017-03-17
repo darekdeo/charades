@@ -7,7 +7,7 @@ import android.widget.Toast;
 import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.views.Layout;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
-import com.dariuszdeoniziak.charades.views.fragments.CategoriesFragment;
+import com.dariuszdeoniziak.charades.views.fragments.CategoryListFragment;
 import com.dariuszdeoniziak.charades.presenters.CategoriesActivityPresenter;
 import com.dariuszdeoniziak.charades.views.CategoriesView;
 import com.dariuszdeoniziak.charades.models.TestClass;
@@ -35,7 +35,7 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
 
         fragment = getSavedFragment(savedInstanceState, KEY_FRAGMENT);
         if (fragment == null) {
-            fragment = new CategoriesFragment();
+            fragment = new CategoryListFragment();
             replaceFragment(null, fragment, R.id.fragment_container, fragment.TAG);
         }
 

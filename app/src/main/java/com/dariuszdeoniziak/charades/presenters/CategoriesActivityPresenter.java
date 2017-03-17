@@ -8,12 +8,12 @@ import javax.inject.Inject;
 
 public class CategoriesActivityPresenter implements Presenter {
 
-    private CategoriesView view;
-    private PreferencesInteractor preferences;
+    CategoriesView view;
+    PreferencesInteractor preferences;
 
     @Inject
-    public CategoriesActivityPresenter(CategoriesView activity, PreferencesInteractor preferences) {
-        this.view = activity;
+    public CategoriesActivityPresenter(CategoriesView view, PreferencesInteractor preferences) {
+        this.view = view;
         this.preferences = preferences;
     }
 

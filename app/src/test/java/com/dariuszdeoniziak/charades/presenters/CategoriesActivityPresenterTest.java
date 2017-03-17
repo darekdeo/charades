@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import static org.mockito.Mockito.*;
 
 public class CategoriesActivityPresenterTest {
 
@@ -27,7 +28,8 @@ public class CategoriesActivityPresenterTest {
 
     @Test
     public void showWelcomeBackMessage() {
+        when(presenter.preferences.isFirstRun()).thenReturn(false);
         presenter.onTakeView();
-        // todo test mock
+        verify(view).displayTextInfo("Hello again!");
     }
 }
