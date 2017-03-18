@@ -7,14 +7,16 @@ import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 
 import org.codejargon.feather.Provides;
 
+import java.lang.ref.WeakReference;
+
 import javax.inject.Singleton;
 
 public class FragmentModule {
 
-    private BaseFragment fragment;
+    private WeakReference<BaseFragment> fragment;
 
     public FragmentModule(BaseFragment fragment) {
-        this.fragment = fragment;
+        this.fragment = new WeakReference<>(fragment);
     }
 
     @Provides
@@ -26,6 +28,6 @@ public class FragmentModule {
     @Provides
     @Singleton
     public ModelInteractor provideModelInteractor() {
-        return new SugarOrmInteractor(fragment.getActivity());
+        return new SugarOrmInteractor(fragment.get().getActivity());
     }
 }

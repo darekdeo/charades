@@ -7,19 +7,21 @@ import com.dariuszdeoniziak.charades.App;
 
 import org.codejargon.feather.Provides;
 
+import java.lang.ref.WeakReference;
+
 import javax.inject.Singleton;
 
 public class AppModule {
 
-    App app;
+    private WeakReference<App> app;
 
     public AppModule(App app) {
-        this.app = app;
+        this.app = new WeakReference<>(app);
     }
 
     @Provides
     @Singleton
     public SharedPreferences provideSharedPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(app);
+        return PreferenceManager.getDefaultSharedPreferences(app.get());
     }
 }
