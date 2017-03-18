@@ -13,15 +13,15 @@ import javax.inject.Singleton;
 
 public class AppModule {
 
-    private WeakReference<App> app;
+    private WeakReference<App> appRef;
 
     public AppModule(App app) {
-        this.app = new WeakReference<>(app);
+        this.appRef = new WeakReference<>(app);
     }
 
     @Provides
     @Singleton
     public SharedPreferences provideSharedPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(app.get());
+        return PreferenceManager.getDefaultSharedPreferences(appRef.get());
     }
 }

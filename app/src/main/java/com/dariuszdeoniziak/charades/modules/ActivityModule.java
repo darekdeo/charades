@@ -17,22 +17,22 @@ import javax.inject.Singleton;
 
 public class ActivityModule {
 
-    private WeakReference<Activity> activity;
+    private WeakReference<Activity> activityRef;
 
     public ActivityModule(Activity activity) {
-        this.activity = new WeakReference<>(activity);
+        this.activityRef = new WeakReference<>(activity);
     }
 
     @Provides
     @Singleton
     public Activity provideActivity() {
-        return activity.get();
+        return activityRef.get();
     }
 
     @Provides
     @Singleton
     public Context provideContext() {
-        return activity.get();
+        return activityRef.get();
     }
 
     @Provides
@@ -44,12 +44,12 @@ public class ActivityModule {
     @Provides
     @Singleton
     public ModelInteractor provideModelInteractor() {
-        return new SugarOrmInteractor(activity.get());
+        return new SugarOrmInteractor(activityRef.get());
     }
 
     @Provides
     @Singleton
     public PreferencesInteractor providePreferencesInteractor() {
-        return new SharedPreferencesInteractor(activity.get());
+        return new SharedPreferencesInteractor(activityRef.get());
     }
 }

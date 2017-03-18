@@ -13,10 +13,10 @@ import javax.inject.Singleton;
 
 public class FragmentModule {
 
-    private WeakReference<BaseFragment> fragment;
+    private WeakReference<BaseFragment> fragmentRef;
 
     public FragmentModule(BaseFragment fragment) {
-        this.fragment = new WeakReference<>(fragment);
+        this.fragmentRef = new WeakReference<>(fragment);
     }
 
     @Provides
@@ -28,6 +28,6 @@ public class FragmentModule {
     @Provides
     @Singleton
     public ModelInteractor provideModelInteractor() {
-        return new SugarOrmInteractor(fragment.get().getActivity());
+        return new SugarOrmInteractor(fragmentRef.get().getActivity());
     }
 }
