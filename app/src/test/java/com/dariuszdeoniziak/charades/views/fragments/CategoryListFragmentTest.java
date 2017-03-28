@@ -44,13 +44,13 @@ public class CategoryListFragmentTest {
     }
 
     @Test
-    public void onResume() throws Exception {
+    public void onTakeView() throws Exception {
         fragment.onResume();
         verify(presenter).onTakeView(fragment);
     }
 
     @Test
-    public void onDestroyView() throws Exception {
+    public void onDropView() throws Exception {
         fragment.onDestroyView();
         verify(presenter).onDropView();
     }

@@ -20,6 +20,7 @@ import io.reactivex.functions.Function;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -48,6 +49,7 @@ public class CategoryListPresenterTest {
     @After
     public void tearDown() throws Exception {
         RxJavaPlugins.reset();
+        reset(categories, view, modelInteractor);
     }
 
     @Test

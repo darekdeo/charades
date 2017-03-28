@@ -49,7 +49,7 @@ public class CategoriesActivityTest {
 
     @After
     public void tearDown() throws Exception {
-        reset(presenter);
+        reset(presenter, bundle, fragment, androidWrapper);
     }
 
     @Test

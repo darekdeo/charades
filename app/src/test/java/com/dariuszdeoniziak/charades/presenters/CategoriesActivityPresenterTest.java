@@ -24,6 +24,7 @@ public class CategoriesActivityPresenterTest {
 
     @After
     public void tearDown() throws Exception {
+        reset(view, preferencesInteractor);
     }
 
     @Test
