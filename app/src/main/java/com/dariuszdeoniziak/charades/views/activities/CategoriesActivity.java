@@ -1,21 +1,22 @@
 package com.dariuszdeoniziak.charades.views.activities;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dariuszdeoniziak.charades.R;
+import com.dariuszdeoniziak.charades.models.TestClass;
+import com.dariuszdeoniziak.charades.presenters.CategoriesActivityPresenter;
+import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
+import com.dariuszdeoniziak.charades.views.CategoriesView;
 import com.dariuszdeoniziak.charades.views.Font;
 import com.dariuszdeoniziak.charades.views.Layout;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 import com.dariuszdeoniziak.charades.views.fragments.CategoriesFormFragment;
 import com.dariuszdeoniziak.charades.views.fragments.CategoriesListFragment;
-import com.dariuszdeoniziak.charades.presenters.CategoriesActivityPresenter;
-import com.dariuszdeoniziak.charades.views.CategoriesView;
-import com.dariuszdeoniziak.charades.models.TestClass;
-import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
 
 import javax.inject.Inject;
 
@@ -80,12 +81,20 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     View.OnClickListener buttonPlusClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (getCurrentFragment(R.id.fragment_container).getClass() == CategoriesListFragment.class) {
-                fragment = new CategoriesFormFragment();
-                replaceFragment(null, fragment, R.id.fragment_container, fragment.TAG);
-            } else {
-                popFragmentBackStack();
-            }
+            toggleViewMode(null);
         }
     };
+
+    /**
+     * Toggle between edit mode and list mode.
+     * @param args an args to open certain category to edit.
+     */
+    public void toggleViewMode(@Nullable Bundle args) {
+        if (getCurrentFragment(R.id.fragment_container).getClass() == CategoriesListFragment.class) {
+            fragment = new CategoriesFormFragment();
+            replaceFragment(args, fragment, R.id.fragment_container, fragment.TAG);
+        } else {
+            popFragmentBackStack();
+        }
+    }
 }

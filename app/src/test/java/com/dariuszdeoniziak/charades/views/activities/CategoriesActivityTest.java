@@ -7,10 +7,9 @@ import android.widget.Toast;
 import com.dariuszdeoniziak.charades.App;
 import com.dariuszdeoniziak.charades.BuildConfig;
 import com.dariuszdeoniziak.charades.R;
-import com.dariuszdeoniziak.charades.views.CategoriesView;
-import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 import com.dariuszdeoniziak.charades.presenters.CategoriesActivityPresenter;
 import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
+import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 
 import org.junit.After;
 import org.junit.Before;
@@ -23,8 +22,10 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 18, application = App.class)
