@@ -4,7 +4,7 @@ import com.dariuszdeoniziak.charades.models.Category;
 
 import java.util.List;
 
-public interface CategoryListView {
+public interface CategoriesListView {
 
     void showProgressIndicator();
     void showCategories(List<Category> categories);

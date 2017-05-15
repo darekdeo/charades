@@ -2,7 +2,7 @@ package com.dariuszdeoniziak.charades.presenters;
 
 import com.dariuszdeoniziak.charades.models.Category;
 import com.dariuszdeoniziak.charades.models.interactors.ModelInteractor;
-import com.dariuszdeoniziak.charades.views.CategoryListView;
+import com.dariuszdeoniziak.charades.views.CategoriesListView;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -15,9 +15,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class CategoryListPresenter implements Presenter<CategoryListView> {
+public class CategoriesListPresenter implements Presenter<CategoriesListView> {
 
-    CategoryListView view;
+    CategoriesListView view;
     ModelInteractor modelInteractor;
     Single<List<Category>> categoriesSingle = Single.fromCallable(new Callable<List<Category>>() {
 
@@ -28,7 +28,7 @@ public class CategoryListPresenter implements Presenter<CategoryListView> {
     });
 
     @Inject
-    public CategoryListPresenter(ModelInteractor modelInteractor) {
+    public CategoriesListPresenter(ModelInteractor modelInteractor) {
         this.modelInteractor = modelInteractor;
     }
 
@@ -38,7 +38,7 @@ public class CategoryListPresenter implements Presenter<CategoryListView> {
     }
 
     @Override
-    public void onTakeView(CategoryListView view) {
+    public void onTakeView(CategoriesListView view) {
         this.view = view;
     }
 

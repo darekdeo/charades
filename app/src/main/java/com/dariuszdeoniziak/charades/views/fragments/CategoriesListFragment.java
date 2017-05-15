@@ -5,8 +5,8 @@ import android.widget.TextView;
 
 import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.models.Category;
-import com.dariuszdeoniziak.charades.presenters.CategoryListPresenter;
-import com.dariuszdeoniziak.charades.views.CategoryListView;
+import com.dariuszdeoniziak.charades.presenters.CategoriesListPresenter;
+import com.dariuszdeoniziak.charades.views.CategoriesListView;
 import com.dariuszdeoniziak.charades.views.Layout;
 
 import java.util.List;
@@ -15,15 +15,15 @@ import javax.inject.Inject;
 
 import trikita.knork.Knork;
 
-@Layout(R.layout.fragment_categories)
-public class CategoryListFragment extends BaseFragment implements CategoryListView {
+@Layout(R.layout.fragment_categories_list)
+public class CategoriesListFragment extends BaseFragment implements CategoriesListView {
 
     @Knork.Id(R.id.categories_title) TextView categoriesTitleView;
     @Knork.Id(R.id.categories_recycler) RecyclerView categoriesRecyclerView;
 
-    @Inject CategoryListPresenter presenter;
+    @Inject CategoriesListPresenter presenter;
 
-    void replace(CategoryListPresenter presenter) {
+    void replace(CategoriesListPresenter presenter) {
         this.presenter = presenter;
     }
 

@@ -7,11 +7,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dariuszdeoniziak.charades.R;
-import com.dariuszdeoniziak.charades.utils.FontInjector;
 import com.dariuszdeoniziak.charades.views.Font;
 import com.dariuszdeoniziak.charades.views.Layout;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
-import com.dariuszdeoniziak.charades.views.fragments.CategoryListFragment;
+import com.dariuszdeoniziak.charades.views.fragments.CategoriesListFragment;
 import com.dariuszdeoniziak.charades.presenters.CategoriesActivityPresenter;
 import com.dariuszdeoniziak.charades.views.CategoriesView;
 import com.dariuszdeoniziak.charades.models.TestClass;
@@ -44,7 +43,7 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
 
         fragment = getSavedFragment(savedInstanceState, KEY_FRAGMENT);
         if (fragment == null) {
-            fragment = new CategoryListFragment();
+            fragment = new CategoriesListFragment();
             replaceFragment(null, fragment, R.id.fragment_container, fragment.TAG);
         }
 
@@ -56,14 +55,7 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
         super.onResume();
         presenter.onTakeView(this);
 
-        buttonPlus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        FontInjector.inject(this);
+        buttonPlus.setOnClickListener(buttonPlusClickListener);
     }
 
     @Override
@@ -83,4 +75,11 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     public void displayTextInfo(String text) {
         androidWrapper.showToast(this, text, Toast.LENGTH_SHORT);
     }
+
+    View.OnClickListener buttonPlusClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // todo open form categories fragment
+        }
+    };
 }

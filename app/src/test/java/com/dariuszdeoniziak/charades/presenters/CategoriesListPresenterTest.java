@@ -3,7 +3,7 @@ package com.dariuszdeoniziak.charades.presenters;
 import com.dariuszdeoniziak.charades.models.Category;
 import com.dariuszdeoniziak.charades.models.interactors.ModelInteractor;
 import com.dariuszdeoniziak.charades.utils.RxJavaTestRunner;
-import com.dariuszdeoniziak.charades.views.CategoryListView;
+import com.dariuszdeoniziak.charades.views.CategoriesListView;
 
 import org.junit.After;
 import org.junit.Before;
@@ -25,12 +25,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RxJavaTestRunner.class)
-public class CategoryListPresenterTest {
+public class CategoriesListPresenterTest {
 
     @Mock List<Category> categories;
-    @Mock CategoryListView view;
+    @Mock CategoriesListView view;
     @Mock ModelInteractor modelInteractor;
-    CategoryListPresenter presenter;
+    CategoriesListPresenter presenter;
 
     @Before
     public void setUp() throws Exception {
@@ -42,7 +42,7 @@ public class CategoryListPresenterTest {
         });
 
         MockitoAnnotations.initMocks(this);
-        presenter = new CategoryListPresenter(modelInteractor);
+        presenter = new CategoriesListPresenter(modelInteractor);
         presenter.onTakeView(view);
     }
 

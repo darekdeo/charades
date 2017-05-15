@@ -2,8 +2,7 @@ package com.dariuszdeoniziak.charades.views.fragments;
 
 import com.dariuszdeoniziak.charades.App;
 import com.dariuszdeoniziak.charades.BuildConfig;
-import com.dariuszdeoniziak.charades.presenters.CategoryListPresenter;
-import com.dariuszdeoniziak.charades.views.CategoryListView;
+import com.dariuszdeoniziak.charades.presenters.CategoriesFormPresenter;
 
 import org.junit.After;
 import org.junit.Before;
@@ -21,21 +20,21 @@ import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 18, application = App.class)
-public class CategoryListFragmentTest {
+public class CategoriesFormFragmentTest {
 
-    CategoryListFragment fragment;
-    FragmentController<CategoryListFragment> controller;
+    CategoriesFormFragment fragment;
+    FragmentController<CategoriesFormFragment> controller;
 
-    @Mock CategoryListPresenter presenter;
+    @Mock CategoriesFormPresenter presenter;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        fragment = Robolectric.buildFragment(CategoryListFragment.class).create().get();
+        fragment = Robolectric.buildFragment(CategoriesFormFragment.class).create().get();
         assertNotNull(fragment);
         fragment.replace(presenter); // replace injected presenter with mock
 
-        controller = Robolectric.buildFragment(CategoryListFragment.class);
+        controller = Robolectric.buildFragment(CategoriesFormFragment.class);
     }
 
     @After
@@ -54,5 +53,4 @@ public class CategoryListFragmentTest {
         fragment.onDestroyView();
         verify(presenter).onDropView();
     }
-
 }

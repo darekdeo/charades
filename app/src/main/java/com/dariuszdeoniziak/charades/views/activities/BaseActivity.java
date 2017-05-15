@@ -44,6 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         getAnnotations();
         setContentView(layoutResId);
         Knork.inject(getWindow().getDecorView(), this);
+        FontInjector.inject(this);
     }
 
     private void getAnnotations() {
