@@ -2,9 +2,13 @@ package com.dariuszdeoniziak.charades.views.activities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dariuszdeoniziak.charades.R;
+import com.dariuszdeoniziak.charades.utils.FontInjector;
+import com.dariuszdeoniziak.charades.views.Font;
 import com.dariuszdeoniziak.charades.views.Layout;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 import com.dariuszdeoniziak.charades.views.fragments.CategoryListFragment;
@@ -15,6 +19,8 @@ import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
 
 import javax.inject.Inject;
 
+import trikita.knork.Knork;
+
 @Layout(R.layout.activity_categories)
 public class CategoriesActivity extends BaseActivity implements CategoriesView {
 
@@ -23,6 +29,9 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
 
     @Inject TestClass testClass;
     @Inject CategoriesActivityPresenter presenter;
+
+    @Font(path = "fontawesome-webfont.ttf")
+    @Knork.Id(R.id.button_plus) TextView buttonPlus;
 
     void replace(CategoriesActivityPresenter presenter, AndroidStaticsWrapper androidWrapper) {
         this.presenter = presenter;
@@ -46,6 +55,15 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     protected void onResume() {
         super.onResume();
         presenter.onTakeView(this);
+
+        buttonPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        FontInjector.inject(this);
     }
 
     @Override

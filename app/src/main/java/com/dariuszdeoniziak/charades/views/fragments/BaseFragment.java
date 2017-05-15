@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dariuszdeoniziak.charades.modules.FragmentModule;
+import com.dariuszdeoniziak.charades.utils.FontInjector;
 import com.dariuszdeoniziak.charades.views.Layout;
 
 import org.codejargon.feather.Feather;
@@ -41,6 +42,7 @@ public abstract class BaseFragment extends Fragment {
 
         View view = inflater.inflate(layoutResId, container, false);
         Knork.inject(view, this);
+        FontInjector.inject(this);
 
         return view;
     }
