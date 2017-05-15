@@ -10,6 +10,7 @@ import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.views.Font;
 import com.dariuszdeoniziak.charades.views.Layout;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
+import com.dariuszdeoniziak.charades.views.fragments.CategoriesFormFragment;
 import com.dariuszdeoniziak.charades.views.fragments.CategoriesListFragment;
 import com.dariuszdeoniziak.charades.presenters.CategoriesActivityPresenter;
 import com.dariuszdeoniziak.charades.views.CategoriesView;
@@ -79,7 +80,12 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     View.OnClickListener buttonPlusClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // todo open form categories fragment
+            if (getCurrentFragment(R.id.fragment_container).getClass() == CategoriesListFragment.class) {
+                fragment = new CategoriesFormFragment();
+                replaceFragment(null, fragment, R.id.fragment_container, fragment.TAG);
+            } else {
+                popFragmentBackStack();
+            }
         }
     };
 }

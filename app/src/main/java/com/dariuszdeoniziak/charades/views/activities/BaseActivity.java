@@ -69,8 +69,14 @@ public abstract class BaseActivity extends AppCompatActivity {
             if (args != null)
                 fragment.setArguments(args);
             transaction.replace(containerResId, fragment, tag);
+            transaction.addToBackStack(tag);
             transaction.commit();
         }
+    }
+
+    public void popFragmentBackStack() {
+        FragmentManager manager = getFragmentManager();
+        manager.popBackStack();
     }
 
     public Fragment getCurrentFragment(int containerResId) {

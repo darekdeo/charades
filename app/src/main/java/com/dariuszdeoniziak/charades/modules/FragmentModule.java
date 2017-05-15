@@ -2,6 +2,7 @@ package com.dariuszdeoniziak.charades.modules;
 
 import com.dariuszdeoniziak.charades.models.interactors.ModelInteractor;
 import com.dariuszdeoniziak.charades.models.interactors.SugarOrmInteractor;
+import com.dariuszdeoniziak.charades.presenters.CategoriesFormPresenter;
 import com.dariuszdeoniziak.charades.presenters.CategoriesListPresenter;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 
@@ -21,8 +22,14 @@ public class FragmentModule {
 
     @Provides
     @Singleton
-    public CategoriesListPresenter provideCategoryListPresenter() {
+    public CategoriesListPresenter provideCategoriesListPresenter() {
         return new CategoriesListPresenter(provideModelInteractor());
+    }
+
+    @Provides
+    @Singleton
+    public CategoriesFormPresenter provideCategoriesFormPresenter() {
+        return new CategoriesFormPresenter((provideModelInteractor()));
     }
 
     @Provides
