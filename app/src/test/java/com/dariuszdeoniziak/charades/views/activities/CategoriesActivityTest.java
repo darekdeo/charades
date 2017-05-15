@@ -10,6 +10,7 @@ import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.presenters.CategoriesActivityPresenter;
 import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
+import com.dariuszdeoniziak.charades.views.fragments.CategoriesFormFragment;
 
 import org.junit.After;
 import org.junit.Before;
@@ -24,7 +25,10 @@ import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
@@ -86,5 +90,17 @@ public class CategoriesActivityTest {
     public void testDisplayTextInfo() throws Exception {
         activity.displayTextInfo("test");
         verify(androidWrapper).showToast(activity, "test", Toast.LENGTH_SHORT);
+    }
+
+    @Test
+    public void testToggleEditMode() throws Exception {
+        CategoriesActivity spy = spy(activity);
+        spy.toggleViewMode(null);
+
+        CategoriesFormFragment fragment = CategoriesFormFragment.newInstance();
+        verify(spy).replaceFragment(any(Bundle.class), any(CategoriesFormFragment.class), eq(R.id.fragment_container), eq(fragment.TAG));
+
+        spy.toggleViewMode(null);
+        verify(spy).popFragmentBackStack();
     }
 }
