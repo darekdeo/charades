@@ -12,6 +12,10 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
 
     @Inject CategoriesFormPresenter presenter;
 
+    public static CategoriesFormFragment newInstance() {
+        return new CategoriesFormFragment();
+    }
+
     void replace(CategoriesFormPresenter presenter) {
         this.presenter = presenter;
     }

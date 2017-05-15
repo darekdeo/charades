@@ -45,7 +45,7 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
 
         fragment = getSavedFragment(savedInstanceState, KEY_FRAGMENT);
         if (fragment == null) {
-            fragment = new CategoriesListFragment();
+            fragment = CategoriesListFragment.newInstance();
             replaceFragment(null, fragment, R.id.fragment_container, fragment.TAG);
         }
 
@@ -91,7 +91,7 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
      */
     public void toggleViewMode(@Nullable Bundle args) {
         if (getCurrentFragment(R.id.fragment_container).getClass() == CategoriesListFragment.class) {
-            fragment = new CategoriesFormFragment();
+            fragment = CategoriesFormFragment.newInstance();
             replaceFragment(args, fragment, R.id.fragment_container, fragment.TAG);
         } else {
             popFragmentBackStack();

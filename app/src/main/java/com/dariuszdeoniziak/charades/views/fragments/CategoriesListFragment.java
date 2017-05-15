@@ -23,6 +23,10 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
 
     @Inject CategoriesListPresenter presenter;
 
+    public static CategoriesListFragment newInstance() {
+        return new CategoriesListFragment();
+    }
+
     void replace(CategoriesListPresenter presenter) {
         this.presenter = presenter;
     }
