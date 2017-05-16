@@ -8,9 +8,11 @@
 
     <TextView
         android:id="@+id/categories_title"
+        style="@android:style/TextAppearance.Medium"
         android:text="Select category"
+        android:layout_marginBottom="@dimen/text_view_default_margin"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/categories_recycler"

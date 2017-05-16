@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
+              android:gravity="center_horizontal"
+              android:layout_margin="@dimen/activity_horizontal_margin"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/form_title"
+        style="@android:style/TextAppearance.Medium"
+        android:text="Edit category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/form_category_title"
+        android:layout_margin="@dimen/text_view_default_margin"
+        android:hint="Enter category title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/form_recycler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>
