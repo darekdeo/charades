@@ -9,11 +9,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
+import com.dariuszdeoniziak.charades.modules.ActivityModule;
 import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
 import com.dariuszdeoniziak.charades.utils.FontInjector;
 import com.dariuszdeoniziak.charades.views.Layout;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
-import com.dariuszdeoniziak.charades.modules.ActivityModule;
 
 import org.codejargon.feather.Feather;
 
@@ -61,7 +61,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void replaceFragment(@Nullable Bundle args, Fragment fragment, int containerResId, String tag) {
+    public void replaceFragment(@Nullable Bundle args, Fragment fragment, int containerResId, String tag, boolean backstack) {
         Fragment currentFragment = getCurrentFragment(containerResId);
 
         if (!(currentFragment != null && currentFragment.getTag().equals(tag))) {
@@ -69,7 +69,8 @@ public abstract class BaseActivity extends AppCompatActivity {
             if (args != null)
                 fragment.setArguments(args);
             transaction.replace(containerResId, fragment, tag);
-            transaction.addToBackStack(tag);
+            if (backstack)
+                transaction.addToBackStack(tag);
             transaction.commit();
         }
     }
