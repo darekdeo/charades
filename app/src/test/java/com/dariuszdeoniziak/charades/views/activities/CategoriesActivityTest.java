@@ -98,7 +98,12 @@ public class CategoriesActivityTest {
         spy.toggleViewMode(null);
 
         CategoriesFormFragment fragment = CategoriesFormFragment.newInstance();
-        verify(spy).replaceFragment(any(Bundle.class), any(CategoriesFormFragment.class), eq(R.id.fragment_container), eq(fragment.TAG));
+        verify(spy).replaceFragment(
+                any(Bundle.class),
+                any(CategoriesFormFragment.class),
+                eq(R.id.fragment_container),
+                eq(fragment.TAG),
+                eq(true));
 
         spy.toggleViewMode(null);
         verify(spy).popFragmentBackStack();

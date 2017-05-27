@@ -5,6 +5,12 @@ android {
     compileSdkVersion 23
     buildToolsVersion '25.0.0'
 
+    applicationVariants.all { variant ->
+        def productFlavor = variant.productFlavors[0] != null ? "${variant.productFlavors[0].name.capitalize()}" : ""
+        def buildType = "${variant.buildType.name.capitalize()}"
+        tasks["compile${productFlavor}${buildType}UnitTestSources"].dependsOn(tasks["merge${productFlavor}${buildType}Assets"])
+    }
+
     defaultConfig {
         applicationId "pl.dariuszdeoniziak.charades"
         minSdkVersion 15
