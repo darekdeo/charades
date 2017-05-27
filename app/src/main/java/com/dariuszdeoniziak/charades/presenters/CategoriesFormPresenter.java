@@ -29,4 +29,8 @@ public class CategoriesFormPresenter implements Presenter<CategoriesFormView> {
     public void onDropView() {
         view = null;
     }
+
+    public void onTitleEdited(CharSequence title) {
+
+    }
 }

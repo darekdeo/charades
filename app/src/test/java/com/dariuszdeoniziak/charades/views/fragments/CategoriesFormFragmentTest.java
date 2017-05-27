@@ -15,8 +15,9 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.FragmentController;
 import org.robolectric.annotation.Config;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 18, application = App.class)
@@ -52,5 +53,12 @@ public class CategoriesFormFragmentTest {
     public void onDropView() throws Exception {
         fragment.onDestroyView();
         verify(presenter).onDropView();
+    }
+
+    @Test
+    public void onTitleEdited() throws Exception {
+        fragment.onResume();
+        fragment.editTextCategoryTitle.setText("test title");
+        verify(presenter).onTitleEdited("test title");
     }
 }
