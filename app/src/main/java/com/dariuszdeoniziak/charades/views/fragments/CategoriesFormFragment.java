@@ -6,11 +6,16 @@ import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.presenters.CategoriesFormPresenter;
 import com.dariuszdeoniziak.charades.views.CategoriesFormView;
 import com.dariuszdeoniziak.charades.views.Layout;
+import com.jakewharton.rxbinding2.InitialValueObservable;
 import com.jakewharton.rxbinding2.widget.RxTextView;
+
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Predicate;
 import trikita.knork.Knork;
 
 @Layout(R.layout.fragment_categories_form)
@@ -19,6 +24,9 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     @Knork.Id(R.id.form_category_title) EditText editTextCategoryTitle;
 
     @Inject CategoriesFormPresenter presenter;
+
+    private static final int TYPING_DELAY = 1;
+    InitialValueObservable<CharSequence> titleTextChanges;
 
     public static CategoriesFormFragment newInstance() {
         return new CategoriesFormFragment();
@@ -32,13 +40,27 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     public void onResume() {
         super.onResume();
         presenter.onTakeView(this);
+        setupViewActions();
+    }
 
-        RxTextView.textChanges(editTextCategoryTitle)
+    public void setupViewActions() {
+        titleTextChanges = RxTextView.textChanges(editTextCategoryTitle);
+        titleTextChanges
+                .observeOn(AndroidSchedulers.mainThread())
+//                .delay(TYPING_DELAY, TimeUnit.SECONDS)
+                .debounce(TYPING_DELAY, TimeUnit.SECONDS)
+                .filter(new Predicate<CharSequence>() {
+                    @Override
+                    public boolean test(CharSequence charSequence) throws Exception {
+                        return charSequence.length() > 0;
+                    }
+                })
                 .subscribe(new Consumer<CharSequence>() {
                     @Override
                     public void accept(CharSequence charSequence) throws Exception {
                         String title = charSequence.toString();
                         presenter.onTitleEdited(title);
+//                        Toast.makeText(getActivity(), charSequence.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

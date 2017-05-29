@@ -15,8 +15,20 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.FragmentController;
 import org.robolectric.annotation.Config;
 
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Scheduler;
+import io.reactivex.functions.Function;
+import io.reactivex.observers.TestObserver;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.schedulers.TestScheduler;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
@@ -30,6 +42,24 @@ public class CategoriesFormFragmentTest {
 
     @Before
     public void setUp() {
+        RxJavaPlugins.setIoSchedulerHandler(new Function<Scheduler, Scheduler>() {
+            @Override
+            public Scheduler apply(Scheduler scheduler) throws Exception {
+                return Schedulers.trampoline();
+            }
+        });
+        RxJavaPlugins.setScheduleHandler(new Function<Runnable, Runnable>() {
+            @Override
+            public Runnable apply(Runnable runnable) throws Exception {
+                return new Runnable() {
+                    @Override
+                    public void run() {
+                        System.out.print("haha");
+                    }
+                };
+            }
+        });
+
         MockitoAnnotations.initMocks(this);
         fragment = Robolectric.buildFragment(CategoriesFormFragment.class).create().get();
         assertNotNull(fragment);
@@ -45,8 +75,10 @@ public class CategoriesFormFragmentTest {
 
     @Test
     public void onTakeView() throws Exception {
-        fragment.onResume();
-        verify(presenter).onTakeView(fragment);
+        CategoriesFormFragment spy = spy(fragment);
+        spy.onResume();
+        verify(presenter).onTakeView(spy);
+        verify(spy).setupViewActions();
     }
 
     @Test
@@ -57,8 +89,21 @@ public class CategoriesFormFragmentTest {
 
     @Test
     public void onTitleEdited() throws Exception {
+        String testText = "test title";
+
+        TestScheduler testScheduler = new TestScheduler();
         fragment.onResume();
-        fragment.editTextCategoryTitle.setText("test title");
-        verify(presenter).onTitleEdited("test title");
+        TestObserver<CharSequence> testObserver = fragment.titleTextChanges.test();
+        fragment.titleTextChanges.debounce(1, TimeUnit.SECONDS, testScheduler);
+
+        fragment.editTextCategoryTitle.setText(testText);
+        testScheduler.triggerActions();
+        testScheduler.advanceTimeTo(1, TimeUnit.SECONDS);
+
+        List<CharSequence> values = testObserver.values();
+        CharSequence charSequence = values.get(values.size() - 1);
+        assertEquals(testText, charSequence.toString());
+
+        verify(presenter).onTitleEdited(testText);
     }
 }
