@@ -16,14 +16,12 @@ import org.robolectric.android.controller.FragmentController;
 import org.robolectric.annotation.Config;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Scheduler;
 import io.reactivex.functions.Function;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
-import io.reactivex.schedulers.TestScheduler;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -48,15 +46,10 @@ public class CategoriesFormFragmentTest {
                 return Schedulers.trampoline();
             }
         });
-        RxJavaPlugins.setScheduleHandler(new Function<Runnable, Runnable>() {
+        RxJavaPlugins.setComputationSchedulerHandler(new Function<Scheduler, Scheduler>() {
             @Override
-            public Runnable apply(Runnable runnable) throws Exception {
-                return new Runnable() {
-                    @Override
-                    public void run() {
-                        System.out.print("haha");
-                    }
-                };
+            public Scheduler apply(Scheduler scheduler) throws Exception {
+                return Schedulers.trampoline();
             }
         });
 
@@ -91,14 +84,10 @@ public class CategoriesFormFragmentTest {
     public void onTitleEdited() throws Exception {
         String testText = "test title";
 
-        TestScheduler testScheduler = new TestScheduler();
         fragment.onResume();
         TestObserver<CharSequence> testObserver = fragment.titleTextChanges.test();
-        fragment.titleTextChanges.debounce(1, TimeUnit.SECONDS, testScheduler);
 
         fragment.editTextCategoryTitle.setText(testText);
-        testScheduler.triggerActions();
-        testScheduler.advanceTimeTo(1, TimeUnit.SECONDS);
 
         List<CharSequence> values = testObserver.values();
         CharSequence charSequence = values.get(values.size() - 1);

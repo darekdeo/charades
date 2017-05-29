@@ -47,7 +47,6 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
         titleTextChanges = RxTextView.textChanges(editTextCategoryTitle);
         titleTextChanges
                 .observeOn(AndroidSchedulers.mainThread())
-//                .delay(TYPING_DELAY, TimeUnit.SECONDS)
                 .debounce(TYPING_DELAY, TimeUnit.SECONDS)
                 .filter(new Predicate<CharSequence>() {
                     @Override
