@@ -2,7 +2,6 @@ package com.dariuszdeoniziak.charades.presenters;
 
 import com.dariuszdeoniziak.charades.models.interactors.PreferencesInteractor;
 import com.dariuszdeoniziak.charades.views.CategoriesView;
-import com.dariuszdeoniziak.charades.views.activities.CategoriesActivity;
 
 import javax.inject.Inject;
 

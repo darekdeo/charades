@@ -1,7 +1,5 @@
 package com.dariuszdeoniziak.charades.models.interactors;
 
-import android.content.Context;
-
 import com.dariuszdeoniziak.charades.models.Category;
 import com.dariuszdeoniziak.charades.models.Charade;
 
