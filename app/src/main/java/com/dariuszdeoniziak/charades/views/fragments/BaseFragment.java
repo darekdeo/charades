@@ -9,10 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dariuszdeoniziak.charades.modules.FragmentModule;
+import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
 import com.dariuszdeoniziak.charades.utils.FontInjector;
 import com.dariuszdeoniziak.charades.views.Layout;
 
 import org.codejargon.feather.Feather;
+
+import javax.inject.Inject;
 
 import trikita.knork.Knork;
 
@@ -23,6 +26,7 @@ public abstract class BaseFragment extends Fragment {
     @LayoutRes protected int layoutResId;
 
     Feather feather;
+    @Inject AndroidStaticsWrapper androidWrapper;
 
     public BaseFragment() {
         TAG = this.getClass().getSimpleName();

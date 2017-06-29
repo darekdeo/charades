@@ -1,8 +1,11 @@
 package com.dariuszdeoniziak.charades.views.fragments;
 
+import android.widget.Toast;
+
 import com.dariuszdeoniziak.charades.App;
 import com.dariuszdeoniziak.charades.BuildConfig;
 import com.dariuszdeoniziak.charades.presenters.CategoriesFormPresenter;
+import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
 
 import org.junit.After;
 import org.junit.Before;
@@ -37,6 +40,7 @@ public class CategoriesFormFragmentTest {
     FragmentController<CategoriesFormFragment> controller;
 
     @Mock CategoriesFormPresenter presenter;
+    @Mock AndroidStaticsWrapper androidWrapper;
 
     @Before
     public void setUp() {
@@ -56,7 +60,7 @@ public class CategoriesFormFragmentTest {
         MockitoAnnotations.initMocks(this);
         fragment = Robolectric.buildFragment(CategoriesFormFragment.class).create().get();
         assertNotNull(fragment);
-        fragment.replace(presenter); // replace injected presenter with mock
+        fragment.replace(presenter, androidWrapper); // replace injected presenter with mock
 
         controller = Robolectric.buildFragment(CategoriesFormFragment.class);
     }
@@ -94,5 +98,11 @@ public class CategoriesFormFragmentTest {
         assertEquals(testText, charSequence.toString());
 
         verify(presenter).onTitleEdited(testText);
+    }
+
+    @Test
+    public void testDisplayTextInfo() throws Exception {
+        fragment.displayTextInfo("test");
+        verify(androidWrapper).showToast(fragment.getActivity(), "test", Toast.LENGTH_SHORT);
     }
 }

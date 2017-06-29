@@ -31,6 +31,7 @@ public class CategoriesFormPresenter implements Presenter<CategoriesFormView> {
     }
 
     public void onTitleEdited(CharSequence title) {
+        view.displayTextInfo("Title edited!");
         // todo save data
     }
 }

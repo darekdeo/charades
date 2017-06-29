@@ -1,9 +1,11 @@
 package com.dariuszdeoniziak.charades.views.fragments;
 
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.presenters.CategoriesFormPresenter;
+import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
 import com.dariuszdeoniziak.charades.views.CategoriesFormView;
 import com.dariuszdeoniziak.charades.views.Layout;
 import com.jakewharton.rxbinding2.InitialValueObservable;
@@ -32,8 +34,9 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
         return new CategoriesFormFragment();
     }
 
-    void replace(CategoriesFormPresenter presenter) {
+    void replace(CategoriesFormPresenter presenter, AndroidStaticsWrapper androidWrapper) {
         this.presenter = presenter;
+        this.androidWrapper = androidWrapper;
     }
 
     @Override
@@ -68,5 +71,17 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     public void onDestroyView() {
         super.onDestroyView();
         presenter.onDropView();
+    }
+
+    @Override
+    public void displayTextInfo(final String text) {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    androidWrapper.showToast(getActivity(), text, Toast.LENGTH_SHORT);
+                }
+            });
+        }
     }
 }
