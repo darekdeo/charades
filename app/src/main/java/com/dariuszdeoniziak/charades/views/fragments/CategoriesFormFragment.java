@@ -75,13 +75,13 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
 
     @Override
     public void displayTextInfo(final String text) {
-        if (getActivity() != null) {
+        if (getActivity() != null)
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    androidWrapper.showToast(getActivity(), text, Toast.LENGTH_SHORT);
+                    if (getActivity() != null)
+                        androidWrapper.showToast(getActivity(), text, Toast.LENGTH_SHORT);
                 }
             });
-        }
     }
 }
