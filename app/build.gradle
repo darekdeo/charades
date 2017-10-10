@@ -61,6 +61,6 @@ dependencies {
     provided 'org.glassfish:javax.annotation:10.0-b28'
 }
 
-dexinfo {
+dexinfo { // To display run "./gradlew dexinfoDebug"
     maxDepth 2
 }
