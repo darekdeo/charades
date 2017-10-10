@@ -26,7 +26,6 @@ import trikita.knork.Knork;
 public class CategoriesActivity extends BaseActivity implements CategoriesView {
 
     private static final String KEY_FRAGMENT = "key_fragment";
-    BaseFragment fragment;
 
     @Inject TestClass testClass;
     @Inject CategoriesActivityPresenter presenter;
@@ -43,7 +42,7 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        fragment = getSavedFragment(savedInstanceState, KEY_FRAGMENT);
+        BaseFragment fragment = getSavedFragment(savedInstanceState, KEY_FRAGMENT);
         if (fragment == null) {
             fragment = CategoriesListFragment.newInstance();
             replaceFragment(null, fragment, R.id.fragment_container, fragment.TAG, false);
@@ -64,6 +63,7 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         presenter.onSave();
+        BaseFragment fragment = (BaseFragment) getCurrentFragment(R.id.fragment_container);
         saveFragment(fragment, outState, KEY_FRAGMENT);
     }
 
@@ -91,7 +91,7 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
      */
     public void toggleViewMode(@Nullable Bundle args) {
         if (getCurrentFragment(R.id.fragment_container).getClass() == CategoriesListFragment.class) {
-            fragment = CategoriesFormFragment.newInstance();
+            CategoriesFormFragment fragment = CategoriesFormFragment.newInstance();
             replaceFragment(args, fragment, R.id.fragment_container, fragment.TAG, true);
         } else {
             popFragmentBackStack();
