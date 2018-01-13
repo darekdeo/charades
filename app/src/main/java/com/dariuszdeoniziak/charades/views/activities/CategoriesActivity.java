@@ -52,8 +52,8 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
         presenter.onTakeView(this);
 
         buttonPlus.setOnClickListener(buttonPlusClickListener);
@@ -68,8 +68,8 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
         presenter.onDropView();
     }
 

@@ -15,8 +15,9 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.FragmentController;
 import org.robolectric.annotation.Config;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 18, application = App.class)
@@ -44,13 +45,13 @@ public class CategoriesListFragmentTest {
 
     @Test
     public void onTakeView() throws Exception {
-        fragment.onResume();
+        fragment.onStart();
         verify(presenter).onTakeView(fragment);
     }
 
     @Test
-    public void onDropView() throws Exception {
-        fragment.onDestroyView();
+    public void onStop() throws Exception {
+        fragment.onStop();
         verify(presenter).onDropView();
     }
 

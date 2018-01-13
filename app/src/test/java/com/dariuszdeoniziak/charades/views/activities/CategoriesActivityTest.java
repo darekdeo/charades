@@ -59,13 +59,13 @@ public class CategoriesActivityTest {
 
     @Test
     public void testLeaveView() throws Exception {
-        activity.onDestroy();
+        activity.onStop();
         verify(presenter).onDropView();
     }
 
     @Test
     public void testReturnToView() throws Exception {
-        activity.onResume();
+        activity.onStart();
         verify(presenter).onTakeView(activity);
     }
 

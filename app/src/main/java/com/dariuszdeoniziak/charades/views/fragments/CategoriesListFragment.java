@@ -32,14 +32,14 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         presenter.onTakeView(this);
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onStop() {
+        super.onStop();
         presenter.onDropView();
     }
 

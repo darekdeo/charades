@@ -73,14 +73,14 @@ public class CategoriesFormFragmentTest {
     @Test
     public void onTakeView() throws Exception {
         CategoriesFormFragment spy = spy(fragment);
-        spy.onResume();
+        spy.onStart();
         verify(presenter).onTakeView(spy);
         verify(spy).setupViewActions();
     }
 
     @Test
     public void onDropView() throws Exception {
-        fragment.onDestroyView();
+        fragment.onStop();
         verify(presenter).onDropView();
     }
 
@@ -88,7 +88,7 @@ public class CategoriesFormFragmentTest {
     public void onTitleEdited() throws Exception {
         String testText = "test title";
 
-        fragment.onResume();
+        fragment.onStart();
         TestObserver<CharSequence> testObserver = fragment.titleTextChanges.test();
 
         fragment.editTextCategoryTitle.setText(testText);

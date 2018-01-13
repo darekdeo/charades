@@ -40,8 +40,8 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         presenter.onTakeView(this);
         setupViewActions();
     }
@@ -68,8 +68,8 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onStop() {
+        super.onStop();
         presenter.onDropView();
     }
 
