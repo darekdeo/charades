@@ -1,31 +1,20 @@
 package com.dariuszdeoniziak.charades.presenters;
 
-import com.dariuszdeoniziak.charades.models.Category;
 import com.dariuszdeoniziak.charades.models.interactors.ModelInteractor;
 import com.dariuszdeoniziak.charades.views.CategoriesListView;
-
-import java.util.List;
-import java.util.concurrent.Callable;
+import com.google.common.base.Optional;
 
 import javax.inject.Inject;
 
 import io.reactivex.Single;
-import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+@SuppressWarnings({"Guava", "OptionalUsedAsFieldOrParameterType"})
 public class CategoriesListPresenter implements Presenter<CategoriesListView> {
 
-    CategoriesListView view;
+    private Optional<CategoriesListView> view = Optional.absent();
     ModelInteractor modelInteractor;
-    Single<List<Category>> categoriesSingle = Single.fromCallable(new Callable<List<Category>>() {
-
-        @Override
-        public List<Category> call() throws Exception {
-            return modelInteractor.getCategories();
-        }
-    });
 
     @Inject
     public CategoriesListPresenter(ModelInteractor modelInteractor) {
@@ -39,37 +28,26 @@ public class CategoriesListPresenter implements Presenter<CategoriesListView> {
 
     @Override
     public void onTakeView(CategoriesListView view) {
-        this.view = view;
+        this.view = Optional.fromNullable(view);
     }
 
     @Override
     public void onDropView() {
-        view = null;
+        view = Optional.absent();
     }
 
     public void loadCategories() {
-        view.showProgressIndicator();
-        categoriesSingle
+        Single.fromCallable(() -> modelInteractor.getCategories())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<Category>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(List<Category> value) {
-                        if (value.isEmpty())
-                            view.showEmptyList();
-                        else
-                            view.showCategories(value);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        view.showEmptyList();
-                    }
-                });
+                .filter(predicate -> view.isPresent())
+                .doOnSubscribe(disposable -> view.get().showProgressIndicator())
+                .doOnSuccess(categories -> {
+                    if (categories.isEmpty())
+                        view.get().showEmptyList();
+                    else
+                        view.get().showCategories(categories);
+                })
+                .doOnError(throwable -> view.get().showEmptyList());
     }
 }

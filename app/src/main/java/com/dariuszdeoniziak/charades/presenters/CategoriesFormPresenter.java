@@ -2,12 +2,15 @@ package com.dariuszdeoniziak.charades.presenters;
 
 import com.dariuszdeoniziak.charades.models.interactors.ModelInteractor;
 import com.dariuszdeoniziak.charades.views.CategoriesFormView;
+import com.google.common.base.Optional;
 
 import javax.inject.Inject;
 
+@SuppressWarnings({"Guava", "OptionalUsedAsFieldOrParameterType"})
 public class CategoriesFormPresenter implements Presenter<CategoriesFormView> {
 
-    CategoriesFormView view;
+
+    private Optional<CategoriesFormView> view = Optional.absent();
     ModelInteractor modelInteractor;
 
     @Inject
@@ -22,16 +25,18 @@ public class CategoriesFormPresenter implements Presenter<CategoriesFormView> {
 
     @Override
     public void onTakeView(CategoriesFormView view) {
-        this.view = view;
+        this.view = Optional.fromNullable(view);
     }
 
     @Override
     public void onDropView() {
-        view = null;
+        view = Optional.absent();
     }
 
     public void onTitleEdited(CharSequence title) {
-        view.displayTextInfo("Title edited!");
+        if (view.isPresent()) {
+            view.get().displayTextInfo("Title edited!");
+        }
         // todo save data
     }
 }

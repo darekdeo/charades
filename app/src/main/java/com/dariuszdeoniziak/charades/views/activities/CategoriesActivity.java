@@ -78,12 +78,7 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
         androidWrapper.showToast(this, text, Toast.LENGTH_SHORT);
     }
 
-    View.OnClickListener buttonPlusClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            toggleViewMode(null);
-        }
-    };
+    View.OnClickListener buttonPlusClickListener = v -> toggleViewMode(null);
 
     /**
      * Toggle between edit mode and list mode.

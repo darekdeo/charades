@@ -16,8 +16,6 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Predicate;
 import trikita.knork.Knork;
 
 @Layout(R.layout.fragment_categories_form)
@@ -49,21 +47,12 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     public void setupViewActions() {
         titleTextChanges = RxTextView.textChanges(editTextCategoryTitle);
         titleTextChanges
-                .observeOn(AndroidSchedulers.mainThread())
                 .debounce(TYPING_DELAY, TimeUnit.SECONDS)
-                .filter(new Predicate<CharSequence>() {
-                    @Override
-                    public boolean test(CharSequence charSequence) throws Exception {
-                        return charSequence.length() > 0;
-                    }
-                })
-                .subscribe(new Consumer<CharSequence>() {
-                    @Override
-                    public void accept(CharSequence charSequence) throws Exception {
-                        String title = charSequence.toString();
-                        presenter.onTitleEdited(title);
-//                        Toast.makeText(getActivity(), charSequence.toString(), Toast.LENGTH_SHORT).show();
-                    }
+                .filter(charSequence -> charSequence.length() > 0)
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(CharSequence::toString)
+                .subscribe(title -> {
+                    presenter.onTitleEdited(title);
                 });
     }
 
@@ -75,13 +64,6 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
 
     @Override
     public void displayTextInfo(final String text) {
-        if (getActivity() != null)
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (getActivity() != null)
-                        androidWrapper.showToast(getActivity(), text, Toast.LENGTH_SHORT);
-                }
-            });
+        androidWrapper.showToast(getActivity(), text, Toast.LENGTH_SHORT);
     }
 }
