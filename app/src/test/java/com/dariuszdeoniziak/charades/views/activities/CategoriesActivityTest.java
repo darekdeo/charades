@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
@@ -99,7 +100,7 @@ public class CategoriesActivityTest {
 
         CategoriesFormFragment fragment = CategoriesFormFragment.newInstance();
         verify(spy).replaceFragment(
-                any(Bundle.class),
+                Mockito.<Bundle>any(),
                 any(CategoriesFormFragment.class),
                 eq(R.id.fragment_container),
                 eq(fragment.TAG),
