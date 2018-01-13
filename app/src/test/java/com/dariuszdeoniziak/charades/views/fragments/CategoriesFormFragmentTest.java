@@ -20,8 +20,6 @@ import org.robolectric.annotation.Config;
 
 import java.util.List;
 
-import io.reactivex.Scheduler;
-import io.reactivex.functions.Function;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
@@ -44,18 +42,8 @@ public class CategoriesFormFragmentTest {
 
     @Before
     public void setUp() {
-        RxJavaPlugins.setIoSchedulerHandler(new Function<Scheduler, Scheduler>() {
-            @Override
-            public Scheduler apply(Scheduler scheduler) throws Exception {
-                return Schedulers.trampoline();
-            }
-        });
-        RxJavaPlugins.setComputationSchedulerHandler(new Function<Scheduler, Scheduler>() {
-            @Override
-            public Scheduler apply(Scheduler scheduler) throws Exception {
-                return Schedulers.trampoline();
-            }
-        });
+        RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
+        RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
 
         MockitoAnnotations.initMocks(this);
         fragment = Robolectric.buildFragment(CategoriesFormFragment.class).create().get();

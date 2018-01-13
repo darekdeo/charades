@@ -42,12 +42,14 @@ public class CategoriesListPresenter implements Presenter<CategoriesListView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter(predicate -> view.isPresent())
                 .doOnSubscribe(disposable -> view.get().showProgressIndicator())
+                .doAfterTerminate(() -> view.get().hideProgressIndicator())
                 .doOnSuccess(categories -> {
                     if (categories.isEmpty())
                         view.get().showEmptyList();
                     else
                         view.get().showCategories(categories);
                 })
-                .doOnError(throwable -> view.get().showEmptyList());
+                .doOnError(throwable -> view.get().showEmptyList())
+                .subscribe();
     }
 }

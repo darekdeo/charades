@@ -15,8 +15,6 @@ import org.mockito.MockitoAnnotations;
 import java.util.Collections;
 import java.util.List;
 
-import io.reactivex.Scheduler;
-import io.reactivex.functions.Function;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
@@ -34,12 +32,7 @@ public class CategoriesListPresenterTest {
 
     @Before
     public void setUp() throws Exception {
-        RxJavaPlugins.setIoSchedulerHandler(new Function<Scheduler, Scheduler>() {
-            @Override
-            public Scheduler apply(Scheduler scheduler) throws Exception {
-                return Schedulers.trampoline();
-            }
-        });
+        RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
 
         MockitoAnnotations.initMocks(this);
         presenter = new CategoriesListPresenter(modelInteractor);
@@ -54,21 +47,23 @@ public class CategoriesListPresenterTest {
 
     @Test
     public void loadCategoriesCallsShowCategories() {
-        when(presenter.modelInteractor.getCategories())
-                .thenReturn(categories);
+        presenter.onTakeView(view);
+        when(presenter.modelInteractor.getCategories()).thenReturn(categories);
         presenter.loadCategories();
         verify(modelInteractor).getCategories();
         verify(view).showProgressIndicator();
         verify(view).showCategories(categories);
+        verify(view).hideProgressIndicator();
     }
 
     @Test
     public void loadCategoriesCallsShowEmptyList() throws InterruptedException {
-        when(presenter.modelInteractor.getCategories())
-                .thenReturn(Collections.<Category>emptyList());
+        presenter.onTakeView(view);
+        when(presenter.modelInteractor.getCategories()).thenReturn(Collections.emptyList());
         presenter.loadCategories();
         verify(modelInteractor).getCategories();
         verify(view).showProgressIndicator();
         verify(view).showEmptyList();
+        verify(view).hideProgressIndicator();
     }
 }

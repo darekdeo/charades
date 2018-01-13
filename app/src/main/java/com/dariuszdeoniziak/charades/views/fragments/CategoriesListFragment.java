@@ -44,6 +44,11 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
     }
 
     @Override
+    public void hideProgressIndicator() {
+
+    }
+
+    @Override
     public void showProgressIndicator() {
 
     }
