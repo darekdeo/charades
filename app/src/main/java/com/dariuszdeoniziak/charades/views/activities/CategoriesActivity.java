@@ -2,7 +2,6 @@ package com.dariuszdeoniziak.charades.views.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +20,8 @@ import com.dariuszdeoniziak.charades.views.fragments.CategoriesListFragment;
 import javax.inject.Inject;
 
 import trikita.knork.Knork;
+
+import static com.dariuszdeoniziak.charades.utils.Logger.info;
 
 @Layout(R.layout.activity_categories)
 public class CategoriesActivity extends BaseActivity implements CategoriesView {
@@ -48,7 +49,7 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
             replaceFragment(null, fragment, R.id.fragment_container, fragment.TAG, false);
         }
 
-        Log.i(TAG, "onCreate: " + testClass.say());
+        info(testClass.say());
     }
 
     @Override
