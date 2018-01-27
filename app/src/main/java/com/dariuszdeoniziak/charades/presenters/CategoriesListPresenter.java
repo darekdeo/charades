@@ -1,8 +1,11 @@
 package com.dariuszdeoniziak.charades.presenters;
 
 import com.dariuszdeoniziak.charades.models.interactors.ModelInteractor;
+import com.dariuszdeoniziak.charades.views.AbsentView;
 import com.dariuszdeoniziak.charades.views.CategoriesListView;
 import com.google.common.base.Optional;
+
+import org.codejargon.feather.Feather;
 
 import javax.inject.Inject;
 
@@ -13,7 +16,7 @@ import io.reactivex.schedulers.Schedulers;
 @SuppressWarnings({"Guava", "OptionalUsedAsFieldOrParameterType"})
 public class CategoriesListPresenter implements Presenter<CategoriesListView> {
 
-    private Optional<CategoriesListView> view = Optional.absent();
+    private Optional<CategoriesListView> view = Optional.of(Feather.with().instance(AbsentView.class));
     ModelInteractor modelInteractor;
 
     @Inject
@@ -28,21 +31,19 @@ public class CategoriesListPresenter implements Presenter<CategoriesListView> {
 
     @Override
     public void onTakeView(CategoriesListView view) {
-        this.view = Optional.fromNullable(view);
+        this.view = Optional.of(view);
     }
 
     @Override
     public void onDropView() {
-        view = Optional.absent();
+        view = Optional.of(Feather.with().instance(AbsentView.class));
     }
 
     public void loadCategories() {
         Single.fromCallable(() -> modelInteractor.getCategories())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .filter(predicate -> view.isPresent())
                 .doOnSubscribe(disposable -> view.get().showProgressIndicator())
-                .doAfterTerminate(() -> view.get().hideProgressIndicator())
                 .doOnSuccess(categories -> {
                     if (categories.isEmpty())
                         view.get().showEmptyList();
@@ -50,6 +51,7 @@ public class CategoriesListPresenter implements Presenter<CategoriesListView> {
                         view.get().showCategories(categories);
                 })
                 .doOnError(throwable -> view.get().showEmptyList())
+                .doFinally(() -> view.get().hideProgressIndicator())
                 .subscribe();
     }
 }

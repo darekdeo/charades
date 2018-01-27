@@ -10,6 +10,7 @@ import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.models.TestClass;
 import com.dariuszdeoniziak.charades.presenters.CategoriesActivityPresenter;
 import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
+import com.dariuszdeoniziak.charades.utils.Logger;
 import com.dariuszdeoniziak.charades.views.CategoriesView;
 import com.dariuszdeoniziak.charades.views.Font;
 import com.dariuszdeoniziak.charades.views.Layout;
@@ -21,8 +22,6 @@ import javax.inject.Inject;
 
 import trikita.knork.Knork;
 
-import static com.dariuszdeoniziak.charades.utils.Logger.info;
-
 @Layout(R.layout.activity_categories)
 public class CategoriesActivity extends BaseActivity implements CategoriesView {
 
@@ -30,6 +29,7 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
 
     @Inject TestClass testClass;
     @Inject CategoriesActivityPresenter presenter;
+    @Inject Logger log;
 
     @Font(path = "fontawesome-webfont.ttf")
     @Knork.Id(R.id.button_plus) TextView buttonPlus;
@@ -49,7 +49,7 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
             replaceFragment(null, fragment, R.id.fragment_container, fragment.TAG, false);
         }
 
-        info(testClass.say());
+        log.info(testClass.say());
     }
 
     @Override

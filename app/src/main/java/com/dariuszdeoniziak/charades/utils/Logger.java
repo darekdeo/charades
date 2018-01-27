@@ -5,31 +5,22 @@ import android.util.Log;
 
 public class Logger {
 
-    public static void debug(String message) {
-        Log.d(tag(), defaults() + message);
-    }
+    public void debug(String message) {
+        Log.d(tag(), message); }
 
-    public static void info(String message) {
-        Log.i(tag(), defaults() + message);
-    }
+    public void info(String message) {
+        Log.i(tag(), message); }
 
-    public static void error(String message) {
-        Log.e(tag(), defaults() + message);
-    }
+    public void error(String message) {
+        Log.e(tag(), message); }
 
-    public static void error(String message, Throwable error) {
-        Log.e(tag(), defaults() + message, error);
-    }
+    public void error(String message, Throwable error) {
+        Log.e(tag(), message, error); }
 
-    private static String tag() {
-        return trace().getClassName();
-    }
+    private String tag() {
+        int CALLER = 5;
+        return trace(CALLER).getClassName(); }
 
-    private static String defaults() {
-        return trace().getMethodName() + " (" + trace().getLineNumber() + "): ";
-    }
-
-    private static StackTraceElement trace() {
-        return Thread.currentThread().getStackTrace()[5];
-    }
+    private StackTraceElement trace(int index) {
+        return Thread.currentThread().getStackTrace()[index]; }
 }

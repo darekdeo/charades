@@ -11,7 +11,7 @@ public class TestClass {
     @Inject
     public TestClass(Activity activity) {
         if (activity != null)
-            say = "i am at " + activity.getLocalClassName();
+            say = "i am in " + activity.getLocalClassName();
     }
 
     public String say() {
