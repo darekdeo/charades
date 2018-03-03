@@ -51,9 +51,7 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
                 .filter(charSequence -> charSequence.length() > 0)
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(CharSequence::toString)
-                .subscribe(title -> {
-                    presenter.onTitleEdited(title);
-                });
+                .subscribe(title -> presenter.onTitleEdited(title));
     }
 
     @Override

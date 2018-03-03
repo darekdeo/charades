@@ -45,13 +45,19 @@ public class CategoriesListFragmentTest {
 
     @Test
     public void onTakeView() throws Exception {
+        // when
         fragment.onStart();
+
+        // then
         verify(presenter).onTakeView(fragment);
     }
 
     @Test
     public void onStop() throws Exception {
+        // when
         fragment.onStop();
+
+        // then
         verify(presenter).onDropView();
     }
 

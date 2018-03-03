@@ -60,19 +60,28 @@ public class CategoriesActivityTest {
 
     @Test
     public void testLeaveView() throws Exception {
+        // when
         activity.onStop();
+
+        // then
         verify(presenter).onDropView();
     }
 
     @Test
     public void testReturnToView() throws Exception {
+        // when
         activity.onStart();
+
+        // then
         verify(presenter).onTakeView(activity);
     }
 
     @Test
     public void testSaveView() throws Exception {
+        // when
         activity.onSaveInstanceState(bundle);
+
+        // then
         verify(presenter).onSave();
     }
 
@@ -89,24 +98,34 @@ public class CategoriesActivityTest {
 
     @Test
     public void testDisplayTextInfo() throws Exception {
+        // when
         activity.displayTextInfo("test");
+
+        // then
         verify(androidWrapper).showToast(activity, "test", Toast.LENGTH_SHORT);
     }
 
     @Test
     public void testToggleEditMode() throws Exception {
+        // given
         CategoriesActivity spy = spy(activity);
+        CategoriesFormFragment fragment = CategoriesFormFragment.newInstance();
+
+        // when
         spy.toggleViewMode(null);
 
-        CategoriesFormFragment fragment = CategoriesFormFragment.newInstance();
+        // then
         verify(spy).replaceFragment(
-                Mockito.<Bundle>any(),
+                Mockito.any(),
                 any(CategoriesFormFragment.class),
                 eq(R.id.fragment_container),
                 eq(fragment.TAG),
                 eq(true));
 
+        // also when
         spy.toggleViewMode(null);
+
+        // then
         verify(spy).popFragmentBackStack();
     }
 }

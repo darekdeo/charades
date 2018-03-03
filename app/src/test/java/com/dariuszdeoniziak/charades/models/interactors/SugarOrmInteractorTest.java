@@ -108,6 +108,7 @@ public class SugarOrmInteractorTest {
 
     @Test
     public void getCharadesFromCategory() throws Exception {
+        // given
         Category category = Category.builder()
                 .name("test_category_name")
                 .build();
@@ -119,19 +120,36 @@ public class SugarOrmInteractorTest {
                 .build();
         interactor.saveCharade(charade);
 
+        // when
         List<Charade> charades = interactor.getCharades(category);
+
+        // then
         assertNotNull(charades);
         assertFalse(charades.isEmpty());
         assertEquals(charade.getName(), charades.get(0).getName());
 
+        // also when
         boolean deleted = interactor.deleteCategory(category);
+
+        // then
         assertTrue(deleted);
+
+        // also when
         category = interactor.getCategory(category.getId());
+
+        // then
         assertNull(category);
 
+        // also when
         deleted = interactor.deleteCharade(charade); // because is not deleted recursively through deleting category
+
+        // then
         assertTrue(deleted);
+
+        // also when
         charade = interactor.getCharade(charade.getId());
+
+        // then
         assertNull(charade);
     }
 

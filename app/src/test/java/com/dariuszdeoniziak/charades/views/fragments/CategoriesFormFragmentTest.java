@@ -60,27 +60,38 @@ public class CategoriesFormFragmentTest {
 
     @Test
     public void onTakeView() throws Exception {
+        // given
         CategoriesFormFragment spy = spy(fragment);
+
+        // when
         spy.onStart();
+
+        // then
         verify(presenter).onTakeView(spy);
         verify(spy).setupViewActions();
     }
 
     @Test
     public void onDropView() throws Exception {
+        // when
         fragment.onStop();
+
+        // then
         verify(presenter).onDropView();
     }
 
     @Test
     public void onTitleEdited() throws Exception {
+        // given
         String testText = "test title";
 
         fragment.onStart();
         TestObserver<CharSequence> testObserver = fragment.titleTextChanges.test();
 
+        // when
         fragment.editTextCategoryTitle.setText(testText);
 
+        // then
         List<CharSequence> values = testObserver.values();
         CharSequence charSequence = values.get(values.size() - 1);
         assertEquals(testText, charSequence.toString());
@@ -90,7 +101,10 @@ public class CategoriesFormFragmentTest {
 
     @Test
     public void testDisplayTextInfo() throws Exception {
+        // when
         fragment.displayTextInfo("test");
+
+        // then
         verify(androidWrapper).showToast(fragment.getActivity(), "test", Toast.LENGTH_SHORT);
     }
 }

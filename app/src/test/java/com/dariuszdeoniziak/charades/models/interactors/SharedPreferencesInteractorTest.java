@@ -34,12 +34,21 @@ public class SharedPreferencesInteractorTest {
 
     @Test
     public void testFirstRun() throws Exception {
+        // when then
         assertTrue(interactor.isFirstRun());
+
+        // also when
         interactor.saveFirstRun();
         Thread.sleep(1000);
+
+        // then
         assertFalse(interactor.isFirstRun());
+
+        // also when
         interactor.deleteFirstRun();
         Thread.sleep(1000);
+
+        // then
         assertTrue(interactor.isFirstRun());
     }
 

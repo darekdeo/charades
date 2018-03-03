@@ -47,9 +47,13 @@ public class CategoriesListPresenterTest {
 
     @Test
     public void loadCategoriesCallsShowCategories() {
-        presenter.onTakeView(view);
+        // given
         when(presenter.modelInteractor.getCategories()).thenReturn(categories);
+
+        // when
         presenter.loadCategories();
+
+        // then
         verify(modelInteractor).getCategories();
         verify(view).showProgressIndicator();
         verify(view).showCategories(categories);
@@ -58,9 +62,13 @@ public class CategoriesListPresenterTest {
 
     @Test
     public void loadCategoriesCallsShowEmptyList() throws InterruptedException {
-        presenter.onTakeView(view);
+        // given
         when(presenter.modelInteractor.getCategories()).thenReturn(Collections.emptyList());
+
+        // when
         presenter.loadCategories();
+
+        // then
         verify(modelInteractor).getCategories();
         verify(view).showProgressIndicator();
         verify(view).showEmptyList();
