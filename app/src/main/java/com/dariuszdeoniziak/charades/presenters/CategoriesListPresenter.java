@@ -16,7 +16,7 @@ import io.reactivex.schedulers.Schedulers;
 @SuppressWarnings({"Guava", "OptionalUsedAsFieldOrParameterType"})
 public class CategoriesListPresenter implements Presenter<CategoriesListView> {
 
-    private Optional<CategoriesListView> view = Optional.of(Feather.with().instance(AbsentView.class));
+    private Optional<CategoriesListView> view = Optional.of(AbsentView.getInstance());
     ModelInteractor modelInteractor;
 
     @Inject
@@ -31,7 +31,8 @@ public class CategoriesListPresenter implements Presenter<CategoriesListView> {
 
     @Override
     public void onTakeView(CategoriesListView view) {
-        this.view = Optional.of(view);
+        this.view = Optional.fromNullable(view)
+                .or(Optional.of(AbsentView.getInstance()));
     }
 
     @Override

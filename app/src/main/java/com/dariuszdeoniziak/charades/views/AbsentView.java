@@ -3,7 +3,6 @@ package com.dariuszdeoniziak.charades.views;
 
 import com.dariuszdeoniziak.charades.models.Category;
 import com.dariuszdeoniziak.charades.utils.Logger;
-import com.google.common.base.Optional;
 
 import org.codejargon.feather.Feather;
 
@@ -18,6 +17,10 @@ public class AbsentView implements
         CategoriesView {
 
     Logger log;
+
+    public static AbsentView getInstance() {
+        return Feather.with().instance(AbsentView.class);
+    }
 
     @Inject
     public AbsentView(Logger log) {
@@ -42,7 +45,4 @@ public class AbsentView implements
     @Override
     public void showEmptyList() {
         log.info("tried to show empty list"); }
-
-    public static Optional getOptional() {
-        return Optional.of(Feather.with().instance(AbsentView.class)); }
 }

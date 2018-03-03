@@ -5,14 +5,12 @@ import com.dariuszdeoniziak.charades.views.AbsentView;
 import com.dariuszdeoniziak.charades.views.CategoriesView;
 import com.google.common.base.Optional;
 
-import org.codejargon.feather.Feather;
-
 import javax.inject.Inject;
 
 @SuppressWarnings({"Guava", "OptionalUsedAsFieldOrParameterType"})
 public class CategoriesActivityPresenter implements Presenter<CategoriesView> {
 
-    Optional<CategoriesView> view = Optional.of(Feather.with().instance(AbsentView.class));
+    private Optional<CategoriesView> view = Optional.of(AbsentView.getInstance());
     PreferencesInteractor preferences;
 
     @Inject
@@ -27,7 +25,8 @@ public class CategoriesActivityPresenter implements Presenter<CategoriesView> {
 
     @Override
     public void onTakeView(CategoriesView view) {
-        this.view = Optional.of(view);
+        this.view = Optional.fromNullable(view)
+                .or(Optional.of(AbsentView.getInstance()));
         if (!preferences.isFirstRun())
             view.displayTextInfo("Hello again!");
     }
@@ -35,6 +34,6 @@ public class CategoriesActivityPresenter implements Presenter<CategoriesView> {
     @Override
     public void onDropView() {
         view.get().displayTextInfo("View is dying!");
-        view = Optional.of(Feather.with().instance(AbsentView.class));
+        view = Optional.of(AbsentView.getInstance());
     }
 }

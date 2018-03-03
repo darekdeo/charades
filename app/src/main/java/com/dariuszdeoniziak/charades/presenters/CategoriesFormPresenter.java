@@ -11,8 +11,8 @@ import javax.inject.Inject;
 public class CategoriesFormPresenter implements Presenter<CategoriesFormView> {
 
 
-    private Optional<CategoriesFormView> view = AbsentView.getOptional();
-    ModelInteractor modelInteractor;
+    private Optional<CategoriesFormView> view = Optional.of(AbsentView.getInstance());
+    private ModelInteractor modelInteractor;
 
     @Inject
     public CategoriesFormPresenter(ModelInteractor modelInteractor) {
@@ -26,12 +26,13 @@ public class CategoriesFormPresenter implements Presenter<CategoriesFormView> {
 
     @Override
     public void onTakeView(CategoriesFormView view) {
-        this.view = Optional.of(view);
+        this.view = Optional.fromNullable(view)
+                .or(Optional.of(AbsentView.getInstance()));
     }
 
     @Override
     public void onDropView() {
-        view = AbsentView.getOptional();
+        view = Optional.of(AbsentView.getInstance());
     }
 
     public void onTitleEdited(CharSequence title) {
