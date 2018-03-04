@@ -43,7 +43,7 @@ public class CategoriesFormPresenterTest {
 
     @Test
     public void loadCategory() throws Exception {
-        // TODO implement tests
+        // TODO: implement tests
     }
 
     @Test

@@ -8,6 +8,10 @@ import com.google.common.base.Optional;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 @SuppressWarnings({"Guava", "OptionalUsedAsFieldOrParameterType"})
 public class CategoriesFormPresenter implements Presenter<CategoriesFormView> {
 
@@ -38,13 +42,18 @@ public class CategoriesFormPresenter implements Presenter<CategoriesFormView> {
     }
 
     public void loadCategory(int categoryId) {
-        // TODO load from database and present on view
+        // TODO: load from database and present on view
     }
 
     public void onTitleEdited(CharSequence title) {
-        category.setName(title.toString());
-        modelInteractor.saveCategory(category);
-
-        view.get().displayTextInfo("Title edited!");
+        Observable
+                .fromCallable(() -> {
+                    category.setName(title.toString());
+                    return modelInteractor.saveCategory(category);
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(categoryId -> view.get().displayTextInfo(
+                        "Title edited for category: " + categoryId));
     }
 }
