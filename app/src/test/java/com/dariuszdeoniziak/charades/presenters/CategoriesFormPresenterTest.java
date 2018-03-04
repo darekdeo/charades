@@ -14,7 +14,10 @@ import org.mockito.MockitoAnnotations;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
 
 @RunWith(RxJavaTestRunner.class)
 public class CategoriesFormPresenterTest {
@@ -39,7 +42,21 @@ public class CategoriesFormPresenterTest {
     }
 
     @Test
-    public void onTitleEdited() throws Exception {
+    public void loadCategory() throws Exception {
+        // TODO implement tests
+    }
 
+    @Test
+    public void onTitleEdited() throws Exception {
+        // given
+        String categoryName = "test_category_title";
+
+        // when
+        presenter.onTitleEdited(categoryName);
+
+        // then
+        assertNotNull(presenter.category);
+        assertEquals(categoryName, presenter.category.getName());
+        verify(modelInteractor).saveCategory(presenter.category);
     }
 }

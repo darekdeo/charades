@@ -1,5 +1,6 @@
 package com.dariuszdeoniziak.charades.presenters;
 
+import com.dariuszdeoniziak.charades.models.Category;
 import com.dariuszdeoniziak.charades.models.interactors.ModelInteractor;
 import com.dariuszdeoniziak.charades.views.AbsentView;
 import com.dariuszdeoniziak.charades.views.CategoriesFormView;
@@ -14,6 +15,8 @@ public class CategoriesFormPresenter implements Presenter<CategoriesFormView> {
     private Optional<CategoriesFormView> view = Optional.of(AbsentView.getInstance());
     private ModelInteractor modelInteractor;
 
+    public Category category = new Category();
+
     @Inject
     public CategoriesFormPresenter(ModelInteractor modelInteractor) {
         this.modelInteractor = modelInteractor;
@@ -21,7 +24,6 @@ public class CategoriesFormPresenter implements Presenter<CategoriesFormView> {
 
     @Override
     public void onSave() {
-
     }
 
     @Override
@@ -35,8 +37,14 @@ public class CategoriesFormPresenter implements Presenter<CategoriesFormView> {
         view = Optional.of(AbsentView.getInstance());
     }
 
+    public void loadCategory(int categoryId) {
+        // TODO load from database and present on view
+    }
+
     public void onTitleEdited(CharSequence title) {
+        category.setName(title.toString());
+        modelInteractor.saveCategory(category);
+
         view.get().displayTextInfo("Title edited!");
-        // todo save data
     }
 }

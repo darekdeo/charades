@@ -1,5 +1,6 @@
 package com.dariuszdeoniziak.charades.views.fragments;
 
+import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -25,11 +26,24 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
 
     @Inject CategoriesFormPresenter presenter;
 
+    int categoryId = 0;
+
     private static final int TYPING_DELAY = 1;
     InitialValueObservable<CharSequence> titleTextChanges;
 
+    public static String KEY_CATEGORY_ID = "key_category_id";
+
     public static CategoriesFormFragment newInstance() {
-        return new CategoriesFormFragment();
+        return newInstance(0);
+    }
+
+    public static CategoriesFormFragment newInstance(Integer categoryId) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(KEY_CATEGORY_ID, categoryId);
+
+        CategoriesFormFragment fragment = new CategoriesFormFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     void replace(CategoriesFormPresenter presenter, AndroidStaticsWrapper androidWrapper) {
@@ -38,9 +52,18 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            categoryId = getArguments().getInt(KEY_CATEGORY_ID, 0);
+        }
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         presenter.onTakeView(this);
+        presenter.loadCategory(categoryId);
         setupViewActions();
     }
 

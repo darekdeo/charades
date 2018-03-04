@@ -17,6 +17,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.FragmentController;
 import org.robolectric.annotation.Config;
+import org.robolectric.util.FragmentTestUtil;
 
 import java.util.List;
 
@@ -59,6 +60,25 @@ public class CategoriesFormFragmentTest {
     }
 
     @Test
+    public void testInstantiation() throws Exception {
+        // given
+        CategoriesFormFragment fragment = CategoriesFormFragment.newInstance();
+        CategoriesFormFragment argFragment = CategoriesFormFragment.newInstance(1);
+
+        // when
+        FragmentTestUtil.startFragment(fragment); // impossible to test custom instantiation in new API
+
+        // then
+        assertEquals(0, fragment.categoryId);
+
+        // also when
+        FragmentTestUtil.startFragment(argFragment); // new API does not allow passing arguments
+
+        // then
+        assertEquals(1, argFragment.categoryId);
+    }
+
+    @Test
     public void onTakeView() throws Exception {
         // given
         CategoriesFormFragment spy = spy(fragment);
@@ -69,6 +89,7 @@ public class CategoriesFormFragmentTest {
         // then
         verify(presenter).onTakeView(spy);
         verify(spy).setupViewActions();
+        verify(presenter).loadCategory(spy.categoryId);
     }
 
     @Test
