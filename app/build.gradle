@@ -60,7 +60,7 @@ dependencies {
 
     implementation 'co.trikita:knork:1.2.0'
     implementation 'org.codejargon.feather:feather:1.0'
-    implementation 'com.github.satyan:sugar:1.4'
+    implementation 'com.github.satyan:sugar:1.5'
 
     compileOnly "org.projectlombok:lombok:1.16.20"
     annotationProcessor 'org.projectlombok:lombok:1.16.20'
