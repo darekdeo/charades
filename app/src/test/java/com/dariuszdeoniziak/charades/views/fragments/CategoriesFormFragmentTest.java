@@ -117,11 +117,11 @@ public class CategoriesFormFragmentTest {
         CharSequence charSequence = values.get(values.size() - 1);
         assertEquals(testText, charSequence.toString());
 
-        verify(presenter).onTitleEdited(testText);
+        verify(presenter).saveCategoryTitle(testText);
     }
 
     @Test
-    public void testDisplayTextInfo() throws Exception {
+    public void displayTextInfo() throws Exception {
         // when
         fragment.displayTextInfo("test");
 

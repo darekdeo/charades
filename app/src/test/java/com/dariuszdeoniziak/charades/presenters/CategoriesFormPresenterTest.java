@@ -44,15 +44,20 @@ public class CategoriesFormPresenterTest {
     @Test
     public void loadCategory() throws Exception {
         // TODO: implement tests
+        // given
+
+        // when
+
+        // then
     }
 
     @Test
-    public void onTitleEdited() throws Exception {
+    public void saveCategoryTitle() throws Exception {
         // given
         String categoryName = "test_category_title";
 
         // when
-        presenter.onTitleEdited(categoryName);
+        presenter.saveCategoryTitle(categoryName);
 
         // then
         assertNotNull(presenter.category);

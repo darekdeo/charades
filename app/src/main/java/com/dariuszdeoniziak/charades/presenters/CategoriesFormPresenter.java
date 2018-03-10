@@ -42,10 +42,22 @@ public class CategoriesFormPresenter implements Presenter<CategoriesFormView> {
     }
 
     public void loadCategory(int categoryId) {
-        // TODO: load from database and present on view
+        Observable
+                .fromCallable(() -> {
+                    Category category = modelInteractor.getCategory(categoryId);
+                    if (category != null)
+                        this.category = category;
+                    return this.category;
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(category -> {
+                    view.get().displayTextInfo("Category loaded: " + category.getId());
+                    // TODO: present loaded category on view
+                });
     }
 
-    public void onTitleEdited(CharSequence title) {
+    public void saveCategoryTitle(CharSequence title) {
         Observable
                 .fromCallable(() -> {
                     category.setName(title.toString());
