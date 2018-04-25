@@ -75,7 +75,7 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     }
 
     @Override
-    public void displayTextInfo(String text) {
+    public void showTextInfo(String text) {
         androidWrapper.showToast(this, text, Toast.LENGTH_SHORT);
     }
 

@@ -123,7 +123,7 @@ public class CategoriesFormFragmentTest {
     @Test
     public void displayTextInfo() {
         // when
-        fragment.displayTextInfo("test");
+        fragment.showTextInfo("test");
 
         // then
         verify(androidWrapper).showToast(fragment.getActivity(), "test", Toast.LENGTH_SHORT);

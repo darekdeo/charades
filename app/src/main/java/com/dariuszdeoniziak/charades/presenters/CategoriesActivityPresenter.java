@@ -28,12 +28,12 @@ public class CategoriesActivityPresenter implements Presenter<CategoriesView> {
         this.view = Optional.fromNullable(view)
                 .or(Optional.of(AbsentView.getInstance()));
         if (!preferences.isFirstRun())
-            view.displayTextInfo("Hello again!");
+            view.showTextInfo("Hello again!");
     }
 
     @Override
     public void onDropView() {
-        view.get().displayTextInfo("View is dying!");
+        view.get().showTextInfo("View is dying!");
         view = Optional.of(AbsentView.getInstance());
     }
 }

@@ -41,7 +41,7 @@ public class CategoriesFormPresenter implements Presenter<CategoriesFormView> {
         view = Optional.of(AbsentView.getInstance());
     }
 
-    public void loadCategory(int categoryId) {
+    public void loadCategory(long categoryId) {
         Observable
                 .fromCallable(() -> {
                     Category category = modelInteractor.getCategory(categoryId);
@@ -52,8 +52,8 @@ public class CategoriesFormPresenter implements Presenter<CategoriesFormView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(category -> {
-                    view.get().displayTextInfo("Category loaded: " + category.getId());
-                    // TODO: present loaded category on view
+                    if (category.getId() != null)
+                        view.get().showCategory(category);
                 });
     }
 
@@ -65,7 +65,7 @@ public class CategoriesFormPresenter implements Presenter<CategoriesFormView> {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(categoryId -> view.get().displayTextInfo(
+                .subscribe(categoryId -> view.get().showTextInfo(
                         "Title edited for category: " + categoryId));
     }
 }

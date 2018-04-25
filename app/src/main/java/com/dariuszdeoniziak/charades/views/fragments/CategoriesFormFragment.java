@@ -6,6 +6,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.dariuszdeoniziak.charades.R;
+import com.dariuszdeoniziak.charades.models.Category;
 import com.dariuszdeoniziak.charades.presenters.CategoriesFormPresenter;
 import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
 import com.dariuszdeoniziak.charades.views.CategoriesFormView;
@@ -28,7 +29,7 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
 
     @Inject CategoriesFormPresenter presenter;
 
-    int categoryId = 0;
+    long categoryId = 0;
 
     private static final int TYPING_DELAY = 1;
     InitialValueObservable<CharSequence> titleTextChanges;
@@ -86,7 +87,12 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     }
 
     @Override
-    public void displayTextInfo(final String text) {
+    public void showTextInfo(final String text) {
         androidWrapper.showToast(getActivity(), text, Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void showCategory(Category category) {
+        // TODO: show category and write test
     }
 }

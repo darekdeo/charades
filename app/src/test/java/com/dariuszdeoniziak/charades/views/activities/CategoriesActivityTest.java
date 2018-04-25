@@ -99,7 +99,7 @@ public class CategoriesActivityTest {
     @Test
     public void testDisplayTextInfo() {
         // when
-        activity.displayTextInfo("test");
+        activity.showTextInfo("test");
 
         // then
         verify(androidWrapper).showToast(activity, "test", Toast.LENGTH_SHORT);

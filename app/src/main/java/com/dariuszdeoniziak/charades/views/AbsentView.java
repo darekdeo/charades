@@ -27,7 +27,7 @@ public class AbsentView implements
         this.log = log; }
 
     @Override
-    public void displayTextInfo(String text) {
+    public void showTextInfo(String text) {
         log.info("tried to display text: " + text); }
 
     @Override
@@ -45,4 +45,8 @@ public class AbsentView implements
     @Override
     public void showEmptyList() {
         log.info("tried to show empty list"); }
+
+    @Override
+    public void showCategory(Category category) {
+        log.info("tried to show category: " + category.toString()); }
 }

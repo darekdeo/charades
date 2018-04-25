@@ -41,7 +41,7 @@ public class CategoriesActivityPresenterTest {
         presenter.onTakeView(view);
 
         // then
-        verify(view).displayTextInfo("Hello again!");
+        verify(view).showTextInfo("Hello again!");
     }
 
     @Test

@@ -1,5 +1,8 @@
 package com.dariuszdeoniziak.charades.views;
 
+import com.dariuszdeoniziak.charades.models.Category;
+
 public interface CategoriesFormView {
-    void displayTextInfo(String text);
+    void showTextInfo(String text);
+    void showCategory(Category category);
 }
