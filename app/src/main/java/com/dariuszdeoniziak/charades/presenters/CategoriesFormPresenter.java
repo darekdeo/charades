@@ -12,7 +12,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-@SuppressWarnings({"Guava", "OptionalUsedAsFieldOrParameterType"})
+@SuppressWarnings({"Guava", "OptionalUsedAsFieldOrParameterType", "CheckResult"})
 public class CategoriesFormPresenter implements Presenter<CategoriesFormView> {
 
 

@@ -79,7 +79,7 @@ public class CategoriesFormFragmentTest {
     }
 
     @Test
-    public void onTakeView() throws Exception {
+    public void onTakeView() {
         // given
         CategoriesFormFragment spy = spy(fragment);
 
@@ -93,7 +93,7 @@ public class CategoriesFormFragmentTest {
     }
 
     @Test
-    public void onDropView() throws Exception {
+    public void onDropView() {
         // when
         fragment.onStop();
 
@@ -102,7 +102,7 @@ public class CategoriesFormFragmentTest {
     }
 
     @Test
-    public void onTitleEdited() throws Exception {
+    public void onTitleEdited() {
         // given
         String testText = "test title";
 
@@ -121,7 +121,7 @@ public class CategoriesFormFragmentTest {
     }
 
     @Test
-    public void displayTextInfo() throws Exception {
+    public void displayTextInfo() {
         // when
         fragment.displayTextInfo("test");
 

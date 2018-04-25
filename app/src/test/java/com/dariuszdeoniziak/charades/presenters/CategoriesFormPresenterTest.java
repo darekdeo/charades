@@ -27,7 +27,7 @@ public class CategoriesFormPresenterTest {
     CategoriesFormPresenter presenter;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
 
         MockitoAnnotations.initMocks(this);
@@ -36,13 +36,13 @@ public class CategoriesFormPresenterTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         RxJavaPlugins.reset();
         reset(view, modelInteractor);
     }
 
     @Test
-    public void loadCategory() throws Exception {
+    public void loadCategory() {
         // TODO: implement tests
         // given
 
@@ -52,7 +52,7 @@ public class CategoriesFormPresenterTest {
     }
 
     @Test
-    public void saveCategoryTitle() throws Exception {
+    public void saveCategoryTitle() {
         // given
         String categoryName = "test_category_title";
 

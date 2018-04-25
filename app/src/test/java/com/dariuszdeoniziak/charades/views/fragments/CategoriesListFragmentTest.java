@@ -44,7 +44,7 @@ public class CategoriesListFragmentTest {
     }
 
     @Test
-    public void onTakeView() throws Exception {
+    public void onTakeView() {
         // when
         fragment.onStart();
 
@@ -53,7 +53,7 @@ public class CategoriesListFragmentTest {
     }
 
     @Test
-    public void onStop() throws Exception {
+    public void onStop() {
         // when
         fragment.onStop();
 

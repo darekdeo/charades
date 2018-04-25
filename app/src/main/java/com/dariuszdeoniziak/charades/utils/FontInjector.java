@@ -13,8 +13,7 @@ public class FontInjector {
     public static void inject(Object object) {
         Field[] fields;
         if ((fields = object.getClass().getDeclaredFields()).length > 0) {
-            for (int i = 0; i < fields.length; i++) {
-                Field field = fields[i];
+            for (Field field : fields) {
                 Font font;
                 if ((font = field.getAnnotation(Font.class)) != null) {
                     field.setAccessible(true);

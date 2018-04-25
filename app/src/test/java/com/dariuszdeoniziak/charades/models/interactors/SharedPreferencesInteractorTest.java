@@ -23,13 +23,13 @@ public class SharedPreferencesInteractorTest {
     PreferencesInteractor interactor;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         Context context = RuntimeEnvironment.application;
         interactor = new SharedPreferencesInteractor(context);
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
     }
 
     @Test

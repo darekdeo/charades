@@ -1,5 +1,6 @@
 package com.dariuszdeoniziak.charades.views.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import javax.inject.Inject;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import trikita.knork.Knork;
 
+@SuppressLint("CheckResult")
 @Layout(R.layout.fragment_categories_form)
 public class CategoriesFormFragment extends BaseFragment implements CategoriesFormView {
 

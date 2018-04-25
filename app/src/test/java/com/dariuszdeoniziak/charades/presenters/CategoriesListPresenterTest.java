@@ -31,7 +31,7 @@ public class CategoriesListPresenterTest {
     CategoriesListPresenter presenter;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
 
         MockitoAnnotations.initMocks(this);
@@ -40,7 +40,7 @@ public class CategoriesListPresenterTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         RxJavaPlugins.reset();
         reset(categories, view, modelInteractor);
     }
@@ -61,7 +61,7 @@ public class CategoriesListPresenterTest {
     }
 
     @Test
-    public void loadCategoriesCallsShowEmptyList() throws InterruptedException {
+    public void loadCategoriesCallsShowEmptyList() {
         // given
         when(presenter.modelInteractor.getCategories()).thenReturn(Collections.emptyList());
 

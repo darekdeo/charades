@@ -30,18 +30,18 @@ public class SugarOrmInteractorTest {
     ModelInteractor interactor;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         Context context = RuntimeEnvironment.application;
         interactor = new SugarOrmInteractor(context);
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         interactor.finish();
     }
 
     @Test
-    public void crudCategory() throws Exception {
+    public void crudCategory() {
         Category category = Category.builder()
                 .name("test_category_name")
                 .build();
@@ -74,7 +74,7 @@ public class SugarOrmInteractorTest {
     }
 
     @Test
-    public void crudCharade() throws Exception {
+    public void crudCharade() {
         Charade charade = Charade.builder()
                 .name("test_charade_name")
                 .build();
@@ -107,7 +107,7 @@ public class SugarOrmInteractorTest {
     }
 
     @Test
-    public void getCharadesFromCategory() throws Exception {
+    public void getCharadesFromCategory() {
         // given
         Category category = Category.builder()
                 .name("test_category_name")

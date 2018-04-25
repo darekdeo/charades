@@ -21,13 +21,13 @@ public class CategoriesActivityPresenterTest {
     CategoriesActivityPresenter presenter;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
         presenter = new CategoriesActivityPresenter(preferencesInteractor);
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         reset(view, preferencesInteractor);
     }
 

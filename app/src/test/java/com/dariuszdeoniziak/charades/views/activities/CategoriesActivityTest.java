@@ -44,7 +44,7 @@ public class CategoriesActivityTest {
     @Mock AndroidStaticsWrapper androidWrapper;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
         activity = Robolectric.buildActivity(CategoriesActivity.class).create().get();
         assertNotNull(activity);
@@ -54,12 +54,12 @@ public class CategoriesActivityTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         reset(presenter, bundle, fragment, androidWrapper);
     }
 
     @Test
-    public void testLeaveView() throws Exception {
+    public void testLeaveView() {
         // when
         activity.onStop();
 
@@ -68,7 +68,7 @@ public class CategoriesActivityTest {
     }
 
     @Test
-    public void testReturnToView() throws Exception {
+    public void testReturnToView() {
         // when
         activity.onStart();
 
@@ -77,7 +77,7 @@ public class CategoriesActivityTest {
     }
 
     @Test
-    public void testSaveView() throws Exception {
+    public void testSaveView() {
         // when
         activity.onSaveInstanceState(bundle);
 
@@ -86,7 +86,7 @@ public class CategoriesActivityTest {
     }
 
     @Test
-    public void testCreate() throws Exception {
+    public void testCreate() {
         CategoriesActivity activity = controller.get();
         Fragment fragment = activity.getCurrentFragment(R.id.fragment_container);
         assertNull(fragment);
@@ -97,7 +97,7 @@ public class CategoriesActivityTest {
     }
 
     @Test
-    public void testDisplayTextInfo() throws Exception {
+    public void testDisplayTextInfo() {
         // when
         activity.displayTextInfo("test");
 
@@ -106,7 +106,7 @@ public class CategoriesActivityTest {
     }
 
     @Test
-    public void testToggleEditMode() throws Exception {
+    public void testToggleEditMode() {
         // given
         CategoriesActivity spy = spy(activity);
         CategoriesFormFragment fragment = CategoriesFormFragment.newInstance();
