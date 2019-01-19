@@ -5,17 +5,19 @@ import com.dariuszdeoniziak.charades.models.Charade;
 
 import java.util.List;
 
+
 public interface ModelInteractor {
+
     void finish();
 
     long saveCategory(Category category);
     Category getCategory(long id);
     List<Category> getCategories();
-    boolean deleteCategory(Category category);
+    long deleteCategory(Category category);
 
     long saveCharade(Charade charade);
     Charade getCharade(long id);
     List<Charade> getCharades();
-    List<Charade> getCharades(Category category);
-    boolean deleteCharade(Charade charade);
+    List<Charade> getCharades(long categoryId);
+    long deleteCharade(Charade charade);
 }

@@ -2,27 +2,27 @@ package com.dariuszdeoniziak.charades.presenters;
 
 import com.dariuszdeoniziak.charades.models.Category;
 import com.dariuszdeoniziak.charades.models.interactors.ModelInteractor;
-import com.dariuszdeoniziak.charades.views.AbsentView;
+import com.dariuszdeoniziak.charades.utils.Optional;
 import com.dariuszdeoniziak.charades.views.CategoriesFormView;
-import com.google.common.base.Optional;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-@SuppressWarnings({"Guava", "OptionalUsedAsFieldOrParameterType", "CheckResult"})
+
 public class CategoriesFormPresenter implements Presenter<CategoriesFormView> {
 
-
-    private Optional<CategoriesFormView> view = Optional.of(AbsentView.getInstance());
+    private Optional<CategoriesFormView> view = Optional.empty();
     private ModelInteractor modelInteractor;
+    private Optional<Disposable> disposable = Optional.empty();
 
     public Category category = new Category();
 
     @Inject
-    public CategoriesFormPresenter(ModelInteractor modelInteractor) {
+    CategoriesFormPresenter(ModelInteractor modelInteractor) {
         this.modelInteractor = modelInteractor;
     }
 
@@ -32,40 +32,40 @@ public class CategoriesFormPresenter implements Presenter<CategoriesFormView> {
 
     @Override
     public void onTakeView(CategoriesFormView view) {
-        this.view = Optional.fromNullable(view)
-                .or(Optional.of(AbsentView.getInstance()));
+        this.view = Optional.of(view);
     }
 
     @Override
     public void onDropView() {
-        view = Optional.of(AbsentView.getInstance());
+        disposable.ifPresent(Disposable::dispose); // TODO write tests
+        disposable.ifPresent(Disposable::dispose);
+        view = Optional.empty();
     }
 
     public void loadCategory(long categoryId) {
-        Observable
+        disposable = Optional.of(Observable
                 .fromCallable(() -> {
                     Category category = modelInteractor.getCategory(categoryId);
                     if (category != null)
                         this.category = category;
                     return this.category;
                 })
+                .filter(category -> category.id != null)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(category -> {
-                    if (category.getId() != null)
-                        view.get().showCategory(category);
-                });
+                .subscribe(category -> view.ifPresent(action -> action.showCategory(category))));
     }
 
     public void saveCategoryTitle(CharSequence title) {
-        Observable
+        disposable.ifPresent(Disposable::dispose); // TODO write tests
+        disposable = Optional.of(Observable
                 .fromCallable(() -> {
-                    category.setName(title.toString());
+                    category.name = title.toString();
                     return modelInteractor.saveCategory(category);
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(categoryId -> view.get().showTextInfo(
-                        "Title edited for category: " + categoryId));
+                .subscribe(categoryId -> view.ifPresent(action -> action.showTextInfo(
+                        "Title edited for category: " + categoryId))));
     }
 }

@@ -35,8 +35,8 @@ import static org.mockito.Mockito.verify;
 @Config(constants = BuildConfig.class, sdk = 18, application = App.class)
 public class CategoriesFormFragmentTest {
 
-    CategoriesFormFragment fragment;
-    FragmentController<CategoriesFormFragment> controller;
+    private CategoriesFormFragment fragment;
+    private FragmentController<CategoriesFormFragment> controller;
 
     @Mock CategoriesFormPresenter presenter;
     @Mock AndroidStaticsWrapper androidWrapper;
@@ -60,7 +60,7 @@ public class CategoriesFormFragmentTest {
     }
 
     @Test
-    public void testInstantiation() throws Exception {
+    public void testInstantiation() {
         // given
         CategoriesFormFragment fragment = CategoriesFormFragment.newInstance();
         CategoriesFormFragment argFragment = CategoriesFormFragment.newInstance(1);

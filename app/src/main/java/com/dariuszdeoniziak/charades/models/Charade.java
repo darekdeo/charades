@@ -1,20 +1,32 @@
 package com.dariuszdeoniziak.charades.models;
 
-import com.orm.dsl.Table;
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Index;
+import android.arch.persistence.room.PrimaryKey;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import static android.arch.persistence.room.ForeignKey.CASCADE;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder @Setter @Getter
-@Table
+
+@Entity(
+        tableName = "charades",
+        indices = {@Index("category_id")},
+        foreignKeys = @ForeignKey(
+                entity = Category.class,
+                parentColumns = "id",
+                childColumns = "category_id",
+                onDelete = CASCADE
+        )
+)
 public class Charade {
 
-    Long id;
-    Long category;
-    String name;
+    @PrimaryKey
+    public Long id;
+
+    @ColumnInfo(name = "charade_name")
+    public String name;
+
+    @ColumnInfo(name = "category_id")
+    public Long categoryId;
 }

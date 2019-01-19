@@ -8,6 +8,7 @@ import com.dariuszdeoniziak.charades.views.Font;
 
 import java.lang.reflect.Field;
 
+
 public class FontInjector {
 
     public static void inject(Object object) {

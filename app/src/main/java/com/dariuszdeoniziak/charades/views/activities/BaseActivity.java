@@ -21,6 +21,7 @@ import javax.inject.Inject;
 
 import trikita.knork.Knork;
 
+
 public abstract class BaseActivity extends AppCompatActivity {
 
     public final String TAG;

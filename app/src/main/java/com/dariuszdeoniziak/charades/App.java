@@ -3,9 +3,9 @@ package com.dariuszdeoniziak.charades;
 import android.app.Application;
 
 import com.dariuszdeoniziak.charades.modules.AppModule;
-import com.orm.SugarContext;
 
 import org.codejargon.feather.Feather;
+
 
 public class App extends Application {
 
@@ -27,7 +27,6 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        SugarContext.init(this);
         feather = Feather.with(new AppModule(this));
         feather.injectFields(this);
     }
@@ -37,6 +36,5 @@ public class App extends Application {
         super.onTerminate();
 
         feather = null;
-        SugarContext.terminate();
     }
 }

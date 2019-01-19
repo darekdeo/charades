@@ -22,6 +22,7 @@ import javax.inject.Inject;
 
 import trikita.knork.Knork;
 
+
 @Layout(R.layout.activity_categories)
 public class CategoriesActivity extends BaseActivity implements CategoriesView {
 

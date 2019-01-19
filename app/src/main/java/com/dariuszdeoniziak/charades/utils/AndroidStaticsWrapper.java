@@ -3,6 +3,7 @@ package com.dariuszdeoniziak.charades.utils;
 import android.content.Context;
 import android.widget.Toast;
 
+
 public class AndroidStaticsWrapper {
     public void showToast(Context context, String text, int length) {
         Toast.makeText(context, text, length).show();

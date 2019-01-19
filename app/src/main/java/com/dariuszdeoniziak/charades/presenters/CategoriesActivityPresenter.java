@@ -1,20 +1,19 @@
 package com.dariuszdeoniziak.charades.presenters;
 
 import com.dariuszdeoniziak.charades.models.interactors.PreferencesInteractor;
-import com.dariuszdeoniziak.charades.views.AbsentView;
+import com.dariuszdeoniziak.charades.utils.Optional;
 import com.dariuszdeoniziak.charades.views.CategoriesView;
-import com.google.common.base.Optional;
 
 import javax.inject.Inject;
 
-@SuppressWarnings({"Guava", "OptionalUsedAsFieldOrParameterType"})
+
 public class CategoriesActivityPresenter implements Presenter<CategoriesView> {
 
-    private Optional<CategoriesView> view = Optional.of(AbsentView.getInstance());
+    private Optional<CategoriesView> view = Optional.empty();
     PreferencesInteractor preferences;
 
     @Inject
-    public CategoriesActivityPresenter(PreferencesInteractor preferences) {
+    CategoriesActivityPresenter(PreferencesInteractor preferences) {
         this.preferences = preferences;
     }
 
@@ -25,15 +24,14 @@ public class CategoriesActivityPresenter implements Presenter<CategoriesView> {
 
     @Override
     public void onTakeView(CategoriesView view) {
-        this.view = Optional.fromNullable(view)
-                .or(Optional.of(AbsentView.getInstance()));
+        this.view = Optional.of(view);
         if (!preferences.isFirstRun())
             view.showTextInfo("Hello again!");
     }
 
     @Override
     public void onDropView() {
-        view.get().showTextInfo("View is dying!");
-        view = Optional.of(AbsentView.getInstance());
+        view.ifPresent(action -> action.showTextInfo("View is dying!"));
+        view = Optional.empty();
     }
 }

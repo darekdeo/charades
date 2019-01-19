@@ -6,11 +6,12 @@ import android.preference.PreferenceManager;
 
 import javax.inject.Inject;
 
+
 public class SharedPreferencesInteractor implements PreferencesInteractor {
 
     private final String FIRST_RUN = "first_run";
 
-    SharedPreferences preferences;
+    private SharedPreferences preferences;
 
     @Inject
     public SharedPreferencesInteractor(Context context) {

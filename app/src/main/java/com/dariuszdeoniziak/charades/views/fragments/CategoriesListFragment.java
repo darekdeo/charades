@@ -15,6 +15,7 @@ import javax.inject.Inject;
 
 import trikita.knork.Knork;
 
+
 @Layout(R.layout.fragment_categories_list)
 public class CategoriesListFragment extends BaseFragment implements CategoriesListView {
 

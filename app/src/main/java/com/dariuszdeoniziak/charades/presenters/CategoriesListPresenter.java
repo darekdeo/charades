@@ -1,11 +1,8 @@
 package com.dariuszdeoniziak.charades.presenters;
 
 import com.dariuszdeoniziak.charades.models.interactors.ModelInteractor;
-import com.dariuszdeoniziak.charades.views.AbsentView;
+import com.dariuszdeoniziak.charades.utils.Optional;
 import com.dariuszdeoniziak.charades.views.CategoriesListView;
-import com.google.common.base.Optional;
-
-import org.codejargon.feather.Feather;
 
 import javax.inject.Inject;
 
@@ -13,14 +10,14 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-@SuppressWarnings({"Guava", "OptionalUsedAsFieldOrParameterType"})
+
 public class CategoriesListPresenter implements Presenter<CategoriesListView> {
 
-    private Optional<CategoriesListView> view = Optional.of(AbsentView.getInstance());
+    private Optional<CategoriesListView> view = Optional.empty();
     ModelInteractor modelInteractor;
 
     @Inject
-    public CategoriesListPresenter(ModelInteractor modelInteractor) {
+    CategoriesListPresenter(ModelInteractor modelInteractor) {
         this.modelInteractor = modelInteractor;
     }
 
@@ -31,28 +28,27 @@ public class CategoriesListPresenter implements Presenter<CategoriesListView> {
 
     @Override
     public void onTakeView(CategoriesListView view) {
-        this.view = Optional.fromNullable(view)
-                .or(Optional.of(AbsentView.getInstance()));
+        this.view = Optional.of(view);
     }
 
     @Override
     public void onDropView() {
-        view = Optional.of(Feather.with().instance(AbsentView.class));
+        view = Optional.empty();
     }
 
     public void loadCategories() {
         Single.fromCallable(() -> modelInteractor.getCategories())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> view.get().showProgressIndicator())
-                .doOnSuccess(categories -> {
+                .doOnSubscribe(disposable -> view.ifPresent(CategoriesListView::showProgressIndicator))
+                .doOnSuccess(categories -> view.ifPresent(action -> {
                     if (categories.isEmpty())
-                        view.get().showEmptyList();
+                        action.showEmptyList();
                     else
-                        view.get().showCategories(categories);
-                })
-                .doOnError(throwable -> view.get().showEmptyList())
-                .doFinally(() -> view.get().hideProgressIndicator())
+                        action.showCategories(categories);
+                }))
+                .doOnError(throwable -> view.ifPresent(CategoriesListView::showEmptyList))
+                .doFinally(() -> view.ifPresent(CategoriesListView::hideProgressIndicator))
                 .subscribe();
     }
 }

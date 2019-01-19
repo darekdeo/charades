@@ -3,16 +3,15 @@ package com.dariuszdeoniziak.charades.modules;
 import android.app.Activity;
 import android.content.Context;
 
-import com.dariuszdeoniziak.charades.models.interactors.ModelInteractor;
 import com.dariuszdeoniziak.charades.models.interactors.PreferencesInteractor;
 import com.dariuszdeoniziak.charades.models.interactors.SharedPreferencesInteractor;
-import com.dariuszdeoniziak.charades.models.interactors.SugarOrmInteractor;
 
 import org.codejargon.feather.Provides;
 
 import java.lang.ref.WeakReference;
 
 import javax.inject.Singleton;
+
 
 public class ActivityModule {
 
@@ -32,12 +31,6 @@ public class ActivityModule {
     @Singleton
     public Context provideContext() {
         return activityRef.get();
-    }
-
-    @Provides
-    @Singleton
-    public ModelInteractor provideModelInteractor() {
-        return new SugarOrmInteractor(activityRef.get());
     }
 
     @Provides

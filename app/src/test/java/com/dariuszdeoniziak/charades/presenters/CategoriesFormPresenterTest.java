@@ -49,9 +49,8 @@ public class CategoriesFormPresenterTest {
     public void loadCategory() {
         // given
         Long categoryId = 1L;
-        Category category = Category.builder()
-                .id(categoryId)
-                .build();
+        Category category = new Category();
+        category.id = categoryId;
         when(modelInteractor.getCategory(categoryId)).thenReturn(category);
 
         // when
@@ -60,7 +59,7 @@ public class CategoriesFormPresenterTest {
         // then
         verify(modelInteractor).getCategory(categoryId);
         assertNotNull(presenter.category);
-        assertEquals(categoryId, presenter.category.getId());
+        assertEquals(categoryId, presenter.category.id);
         verify(view).showCategory(category);
     }
 
@@ -76,7 +75,7 @@ public class CategoriesFormPresenterTest {
         // then
         verify(modelInteractor).getCategory(categoryId);
         assertNotNull(presenter.category);
-        assertNotEquals(categoryId, presenter.category.getId());
+        assertNotEquals(categoryId, presenter.category.id);
         verify(view, never()).showCategory(presenter.category);
     }
 
@@ -90,7 +89,7 @@ public class CategoriesFormPresenterTest {
 
         // then
         assertNotNull(presenter.category);
-        assertEquals(categoryName, presenter.category.getName());
+        assertEquals(categoryName, presenter.category.name);
         verify(modelInteractor).saveCategory(presenter.category);
     }
 }

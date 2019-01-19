@@ -3,6 +3,7 @@ package com.dariuszdeoniziak.charades.utils;
 
 import android.util.Log;
 
+
 public class Logger {
 
     public void debug(String message) {

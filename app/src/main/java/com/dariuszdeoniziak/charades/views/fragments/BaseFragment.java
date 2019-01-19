@@ -19,6 +19,7 @@ import javax.inject.Inject;
 
 import trikita.knork.Knork;
 
+
 public abstract class BaseFragment extends Fragment {
 
     public final String TAG;

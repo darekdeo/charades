@@ -4,6 +4,7 @@ import com.dariuszdeoniziak.charades.models.Category;
 
 import java.util.List;
 
+
 public interface CategoriesListView {
     void hideProgressIndicator();
     void showProgressIndicator();

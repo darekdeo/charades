@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import javax.inject.Inject;
 
+
 public class TestClass {
 
     private String say = "i don't know where i am";
