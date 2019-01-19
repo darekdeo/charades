@@ -22,13 +22,14 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+
 @RunWith(RxJavaTestRunner.class)
 public class CategoriesListPresenterTest {
 
     @Mock List<Category> categories;
     @Mock CategoriesListView view;
     @Mock ModelInteractor modelInteractor;
-    CategoriesListPresenter presenter;
+    private CategoriesListPresenter presenter;
 
     @Before
     public void setUp() {

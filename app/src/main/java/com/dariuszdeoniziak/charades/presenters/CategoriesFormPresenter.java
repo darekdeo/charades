@@ -15,8 +15,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CategoriesFormPresenter implements Presenter<CategoriesFormView> {
 
+    private final ModelInteractor modelInteractor;
     private Optional<CategoriesFormView> view = Optional.empty();
-    private ModelInteractor modelInteractor;
     private Optional<Disposable> disposable = Optional.empty();
 
     public Category category = new Category();

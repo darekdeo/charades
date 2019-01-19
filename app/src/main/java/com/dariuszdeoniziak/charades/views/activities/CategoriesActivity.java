@@ -2,12 +2,10 @@ package com.dariuszdeoniziak.charades.views.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dariuszdeoniziak.charades.R;
-import com.dariuszdeoniziak.charades.models.TestClass;
 import com.dariuszdeoniziak.charades.presenters.CategoriesActivityPresenter;
 import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
 import com.dariuszdeoniziak.charades.utils.Logger;
@@ -28,7 +26,6 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
 
     private static final String KEY_FRAGMENT = "key_fragment";
 
-    @Inject TestClass testClass;
     @Inject CategoriesActivityPresenter presenter;
     @Inject Logger log;
 
@@ -49,8 +46,6 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
             fragment = CategoriesListFragment.newInstance();
             replaceFragment(null, fragment, R.id.fragment_container, fragment.TAG, false);
         }
-
-        log.info(testClass.say());
     }
 
     @Override
@@ -58,7 +53,7 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
         super.onStart();
         presenter.onTakeView(this);
 
-        buttonPlus.setOnClickListener(buttonPlusClickListener);
+        buttonPlus.setOnClickListener(v -> toggleViewMode(null));
     }
 
     @Override
@@ -77,10 +72,9 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
 
     @Override
     public void showTextInfo(String text) {
+        log.info("text: " + text);
         androidWrapper.showToast(this, text, Toast.LENGTH_SHORT);
     }
-
-    View.OnClickListener buttonPlusClickListener = v -> toggleViewMode(null);
 
     /**
      * Toggle between edit mode and list mode.

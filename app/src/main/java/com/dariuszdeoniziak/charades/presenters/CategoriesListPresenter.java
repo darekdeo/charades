@@ -13,8 +13,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CategoriesListPresenter implements Presenter<CategoriesListView> {
 
+    final ModelInteractor modelInteractor;
     private Optional<CategoriesListView> view = Optional.empty();
-    ModelInteractor modelInteractor;
 
     @Inject
     CategoriesListPresenter(ModelInteractor modelInteractor) {
@@ -36,8 +36,8 @@ public class CategoriesListPresenter implements Presenter<CategoriesListView> {
         view = Optional.empty();
     }
 
-    public void loadCategories() {
-        Single.fromCallable(() -> modelInteractor.getCategories())
+    void loadCategories() {
+        Single.fromCallable(modelInteractor::getCategories)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> view.ifPresent(CategoriesListView::showProgressIndicator))

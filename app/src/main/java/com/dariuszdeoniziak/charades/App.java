@@ -11,13 +11,9 @@ public class App extends Application {
 
     private static final String TAG = App.class.getName();
 
-    private static App instance = null;
+    private final static App instance = null;
 
-    Feather feather;
-
-    public static App i() {
-        return getInstance();
-    }
+    private Feather feather;
 
     public static App getInstance() {
         return instance;

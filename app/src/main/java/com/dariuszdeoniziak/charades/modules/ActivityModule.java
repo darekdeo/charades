@@ -15,7 +15,7 @@ import javax.inject.Singleton;
 
 public class ActivityModule {
 
-    private WeakReference<Activity> activityRef;
+    private final WeakReference<Activity> activityRef;
 
     public ActivityModule(Activity activity) {
         this.activityRef = new WeakReference<>(activity);

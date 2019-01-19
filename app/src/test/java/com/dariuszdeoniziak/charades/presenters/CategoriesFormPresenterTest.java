@@ -28,7 +28,7 @@ public class CategoriesFormPresenterTest {
 
     @Mock CategoriesFormView view;
     @Mock ModelInteractor modelInteractor;
-    CategoriesFormPresenter presenter;
+    private CategoriesFormPresenter presenter;
 
     @Before
     public void setUp() {

@@ -9,6 +9,7 @@ import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.models.Category;
 import com.dariuszdeoniziak.charades.presenters.CategoriesFormPresenter;
 import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
+import com.dariuszdeoniziak.charades.utils.Optional;
 import com.dariuszdeoniziak.charades.views.CategoriesFormView;
 import com.dariuszdeoniziak.charades.views.Layout;
 import com.jakewharton.rxbinding2.InitialValueObservable;
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import trikita.knork.Knork;
 
 
@@ -32,10 +34,11 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
 
     long categoryId = 0;
 
+    private final static String KEY_CATEGORY_ID = "key_category_id";
     private static final int TYPING_DELAY = 1;
-    InitialValueObservable<CharSequence> titleTextChanges;
 
-    public static String KEY_CATEGORY_ID = "key_category_id";
+    InitialValueObservable<CharSequence> titleTextChanges;
+    private Optional<Disposable> titleTextChangesDisposable = Optional.empty();
 
     public static CategoriesFormFragment newInstance() {
         return newInstance(0);
@@ -73,17 +76,18 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
 
     public void setupViewActions() {
         titleTextChanges = RxTextView.textChanges(editTextCategoryTitle);
-        titleTextChanges
+        titleTextChangesDisposable = Optional.of(titleTextChanges
                 .debounce(TYPING_DELAY, TimeUnit.SECONDS)
                 .filter(charSequence -> charSequence.length() > 0)
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(CharSequence::toString)
-                .subscribe(title -> presenter.saveCategoryTitle(title));
+                .subscribe(title -> presenter.saveCategoryTitle(title)));
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        titleTextChangesDisposable.ifPresent(Disposable::dispose);
         presenter.onDropView();
     }
 

@@ -18,7 +18,7 @@ public class CategoriesActivityPresenterTest {
 
     @Mock CategoriesView view;
     @Mock PreferencesInteractor preferencesInteractor;
-    CategoriesActivityPresenter presenter;
+    private CategoriesActivityPresenter presenter;
 
     @Before
     public void setUp() {

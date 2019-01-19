@@ -11,7 +11,7 @@ public class SharedPreferencesInteractor implements PreferencesInteractor {
 
     private final String FIRST_RUN = "first_run";
 
-    private SharedPreferences preferences;
+    private final SharedPreferences preferences;
 
     @Inject
     public SharedPreferencesInteractor(Context context) {

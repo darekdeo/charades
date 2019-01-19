@@ -24,9 +24,8 @@ public abstract class BaseFragment extends Fragment {
 
     public final String TAG;
 
-    @LayoutRes protected int layoutResId;
+    @LayoutRes private int layoutResId;
 
-    Feather feather;
     @Inject AndroidStaticsWrapper androidWrapper;
 
     public BaseFragment() {
@@ -36,7 +35,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        feather = Feather.with(new FragmentModule(this));
+        Feather feather = Feather.with(new FragmentModule(this));
         feather.injectFields(this);
     }
 
@@ -52,7 +51,7 @@ public abstract class BaseFragment extends Fragment {
         return view;
     }
 
-    protected void getAnnotations() {
+    private void getAnnotations() {
         Layout layout;
         if ((layout = getClass().getAnnotation(Layout.class)) != null) {
             layoutResId = layout.value();

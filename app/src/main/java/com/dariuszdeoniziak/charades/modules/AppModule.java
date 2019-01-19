@@ -7,7 +7,7 @@ import java.lang.ref.WeakReference;
 
 public class AppModule {
 
-    private WeakReference<App> appRef;
+    private final WeakReference<App> appRef;
 
     public AppModule(App app) {
         this.appRef = new WeakReference<>(app);

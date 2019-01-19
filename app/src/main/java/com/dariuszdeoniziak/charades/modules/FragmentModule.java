@@ -16,7 +16,7 @@ import javax.inject.Singleton;
 
 public class FragmentModule {
 
-    private WeakReference<BaseFragment> fragmentRef;
+    private final WeakReference<BaseFragment> fragmentRef;
 
     public FragmentModule(BaseFragment fragment) {
         this.fragmentRef = new WeakReference<>(fragment);

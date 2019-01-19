@@ -26,9 +26,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public final String TAG;
 
-    @LayoutRes protected int layoutResId;
+    @LayoutRes private int layoutResId;
 
-    Feather feather;
     @Inject AndroidStaticsWrapper androidWrapper;
 
     public BaseActivity() {
@@ -39,7 +38,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        feather = Feather.with(new ActivityModule(this));
+        Feather feather = Feather.with(new ActivityModule(this));
         feather.injectFields(this);
 
         getAnnotations();
@@ -57,7 +56,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        feather = null;
         Knork.reset(this);
         super.onDestroy();
     }

@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Optional<T> {
 
-    private T value;
+    private final T value;
 
     private Optional() {
         this.value = null;

@@ -19,12 +19,13 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 
+
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 18, application = App.class)
 public class CategoriesListFragmentTest {
 
-    CategoriesListFragment fragment;
-    FragmentController<CategoriesListFragment> controller;
+    private CategoriesListFragment fragment;
+    private FragmentController<CategoriesListFragment> controller;
 
     @Mock CategoriesListPresenter presenter;
 

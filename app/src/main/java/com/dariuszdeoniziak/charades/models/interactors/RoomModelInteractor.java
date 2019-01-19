@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 public class RoomModelInteractor implements ModelInteractor {
 
-    private CharadesRoomDatabase database;
+    private final CharadesRoomDatabase database;
 
     @Inject
     public RoomModelInteractor(CharadesRoomDatabase database) {

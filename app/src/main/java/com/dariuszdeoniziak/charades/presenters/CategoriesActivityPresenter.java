@@ -10,7 +10,7 @@ import javax.inject.Inject;
 public class CategoriesActivityPresenter implements Presenter<CategoriesView> {
 
     private Optional<CategoriesView> view = Optional.empty();
-    PreferencesInteractor preferences;
+    final PreferencesInteractor preferences;
 
     @Inject
     CategoriesActivityPresenter(PreferencesInteractor preferences) {

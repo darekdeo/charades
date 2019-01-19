@@ -16,11 +16,12 @@ import org.robolectric.annotation.Config;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 18, application = App.class)
 public class SharedPreferencesInteractorTest {
 
-    PreferencesInteractor interactor;
+    private PreferencesInteractor interactor;
 
     @Before
     public void setUp() {
