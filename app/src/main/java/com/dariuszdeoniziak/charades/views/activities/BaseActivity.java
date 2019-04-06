@@ -1,12 +1,6 @@
 package com.dariuszdeoniziak.charades.views.activities;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
 import com.dariuszdeoniziak.charades.modules.ActivityModule;
@@ -19,6 +13,12 @@ import org.codejargon.feather.Feather;
 
 import javax.inject.Inject;
 
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import trikita.knork.Knork;
 
 
@@ -64,7 +64,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         Fragment currentFragment = getCurrentFragment(containerResId);
 
         if (!(currentFragment != null && currentFragment.getTag().equals(tag))) {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             if (args != null)
                 fragment.setArguments(args);
             transaction.replace(containerResId, fragment, tag);
@@ -75,12 +75,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void popFragmentBackStack() {
-        FragmentManager manager = getFragmentManager();
+        FragmentManager manager = getSupportFragmentManager();
         manager.popBackStack();
     }
 
     public Fragment getCurrentFragment(int containerResId) {
-        FragmentManager manager = getFragmentManager();
+        FragmentManager manager = getSupportFragmentManager();
 
         Fragment fragment;
         fragment = getFragmentFromBackStack(manager);
@@ -102,12 +102,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public BaseFragment getSavedFragment(Bundle bundle, String key) {
         if (bundle != null && !TextUtils.isEmpty(key))
-            return (BaseFragment) getFragmentManager().getFragment(bundle, key);
+            return (BaseFragment) getSupportFragmentManager().getFragment(bundle, key);
         return null;
     }
 
     public void saveFragment(BaseFragment fragment, Bundle bundle, String key) {
         if (fragment != null && bundle != null && !TextUtils.isEmpty(key))
-            getFragmentManager().putFragment(bundle, key, fragment);
+            getSupportFragmentManager().putFragment(bundle, key, fragment);
     }
 }

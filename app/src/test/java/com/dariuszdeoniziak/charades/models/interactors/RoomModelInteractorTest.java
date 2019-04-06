@@ -1,10 +1,7 @@
 package com.dariuszdeoniziak.charades.models.interactors;
 
-import android.arch.persistence.room.Room;
 import android.content.Context;
 
-import com.dariuszdeoniziak.charades.App;
-import com.dariuszdeoniziak.charades.BuildConfig;
 import com.dariuszdeoniziak.charades.models.Category;
 import com.dariuszdeoniziak.charades.models.Charade;
 import com.dariuszdeoniziak.charades.models.CharadesRoomDatabase;
@@ -13,11 +10,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import java.util.List;
+
+import androidx.room.Room;
+import androidx.test.core.app.ApplicationProvider;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -25,15 +23,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 18, application = App.class)
+@RunWith(AndroidJUnit4.class)
 public class RoomModelInteractorTest {
 
     private ModelInteractor interactor;
 
     @Before
     public void setUp() {
-        Context context = RuntimeEnvironment.application;
+        Context context = ApplicationProvider.getApplicationContext();
         CharadesRoomDatabase database = Room
                 .inMemoryDatabaseBuilder(
                         context,

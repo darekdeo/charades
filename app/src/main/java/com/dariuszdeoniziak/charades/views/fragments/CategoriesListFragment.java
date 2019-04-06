@@ -1,6 +1,5 @@
 package com.dariuszdeoniziak.charades.views.fragments;
 
-import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
 import com.dariuszdeoniziak.charades.R;
@@ -13,6 +12,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.recyclerview.widget.RecyclerView;
 import trikita.knork.Knork;
 
 

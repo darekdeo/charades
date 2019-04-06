@@ -1,7 +1,6 @@
 package com.dariuszdeoniziak.charades.views.activities;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +17,7 @@ import com.dariuszdeoniziak.charades.views.fragments.CategoriesListFragment;
 
 import javax.inject.Inject;
 
+import androidx.annotation.Nullable;
 import trikita.knork.Knork;
 
 

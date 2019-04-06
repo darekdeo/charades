@@ -12,7 +12,6 @@ import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
 import com.dariuszdeoniziak.charades.utils.Optional;
 import com.dariuszdeoniziak.charades.views.CategoriesFormView;
 import com.dariuszdeoniziak.charades.views.Layout;
-import com.jakewharton.rxbinding2.InitialValueObservable;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.util.concurrent.TimeUnit;
@@ -21,6 +20,7 @@ import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import trikita.knork.Knork;
 
 
@@ -37,7 +37,6 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     private final static String KEY_CATEGORY_ID = "key_category_id";
     private static final int TYPING_DELAY = 1;
 
-    InitialValueObservable<CharSequence> titleTextChanges;
     private Optional<Disposable> titleTextChangesDisposable = Optional.empty();
 
     public static CategoriesFormFragment newInstance() {
@@ -74,9 +73,10 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
         setupViewActions();
     }
 
-    public void setupViewActions() {
-        titleTextChanges = RxTextView.textChanges(editTextCategoryTitle);
-        titleTextChangesDisposable = Optional.of(titleTextChanges
+    private void setupViewActions() {
+        titleTextChangesDisposable = Optional.of(RxTextView
+                .textChanges(editTextCategoryTitle)
+                .subscribeOn(Schedulers.io())
                 .debounce(TYPING_DELAY, TimeUnit.SECONDS)
                 .filter(charSequence -> charSequence.length() > 0)
                 .observeOn(AndroidSchedulers.mainThread())

@@ -1,7 +1,5 @@
 package com.dariuszdeoniziak.charades.modules;
 
-import android.arch.persistence.room.Room;
-
 import com.dariuszdeoniziak.charades.models.CharadesRoomDatabase;
 import com.dariuszdeoniziak.charades.models.interactors.ModelInteractor;
 import com.dariuszdeoniziak.charades.models.interactors.RoomModelInteractor;
@@ -12,6 +10,8 @@ import org.codejargon.feather.Provides;
 import java.lang.ref.WeakReference;
 
 import javax.inject.Singleton;
+
+import androidx.room.Room;
 
 
 public class FragmentModule {
