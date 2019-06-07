@@ -5,12 +5,6 @@ android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
 
-    applicationVariants.all { variant ->
-        def productFlavor = variant.productFlavors[0] != null ? "${variant.productFlavors[0].name.capitalize()}" : ""
-        def buildType = "${variant.buildType.name.capitalize()}"
-        tasks["compile${productFlavor}${buildType}UnitTestSources"].dependsOn(tasks["merge${productFlavor}${buildType}Assets"])
-    }
-
     defaultConfig {
         applicationId "pl.dariuszdeoniziak.charades"
         minSdkVersion 15
@@ -27,7 +21,6 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
             minifyEnabled true
@@ -46,7 +39,7 @@ android {
     }
 }
 
-def rxLibVersion = '2.0.1'
+def rxLibVersion = '2.1.1'
 def roomLibVersion = '2.0.0'
 
 dependencies {
@@ -54,10 +47,10 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.23.0'
-    testImplementation 'androidx.test:core:1.1.0'
-    testImplementation 'androidx.test:runner:1.1.1'
-    testImplementation 'androidx.test:rules:1.1.1'
-    testImplementation 'androidx.test.ext:junit:1.1.0'
+    testImplementation 'androidx.test:core:1.2.0'
+    testImplementation 'androidx.test:runner:1.2.0'
+    testImplementation 'androidx.test:rules:1.2.0'
+    testImplementation 'androidx.test.ext:junit:1.1.1'
     testImplementation "org.robolectric:robolectric:4.2"
 
     androidTestImplementation 'org.mockito:mockito-android:2.23.0'
