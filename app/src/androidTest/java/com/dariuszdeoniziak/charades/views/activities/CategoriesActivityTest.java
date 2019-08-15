@@ -1,7 +1,7 @@
 package com.dariuszdeoniziak.charades.views.activities;
 
 import com.dariuszdeoniziak.charades.R;
-import com.dariuszdeoniziak.charades.presenters.CategoriesActivityPresenter;
+import com.dariuszdeoniziak.charades.presenters.CategoriesPresenter;
 import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
 import com.dariuszdeoniziak.charades.views.fragments.CategoriesFormFragment;
 import com.dariuszdeoniziak.charades.views.fragments.CategoriesListFragment;
@@ -31,7 +31,7 @@ import static org.mockito.Mockito.verify;
 public class CategoriesActivityTest {
 
     @Mock
-    CategoriesActivityPresenter presenter;
+    CategoriesPresenter presenter;
     @Mock
     AndroidStaticsWrapper androidStaticsWrapper;
 

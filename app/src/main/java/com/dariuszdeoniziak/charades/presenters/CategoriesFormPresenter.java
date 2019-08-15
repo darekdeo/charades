@@ -13,11 +13,10 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class CategoriesFormPresenter implements Presenter<CategoriesFormView> {
+public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormView> {
 
     private final ModelInteractor modelInteractor;
-    private Optional<CategoriesFormView> view = Optional.empty();
-    private Optional<Disposable> disposable = Optional.empty();
+    private Optional<Disposable> saveCategoryDisposable = Optional.empty();
 
     public Category category = new Category();
 
@@ -27,27 +26,16 @@ public class CategoriesFormPresenter implements Presenter<CategoriesFormView> {
     }
 
     @Override
-    public void onSave() {
-    }
-
-    @Override
-    public void onTakeView(CategoriesFormView view) {
-        this.view = Optional.of(view);
-    }
-
-    @Override
     public void onDropView() {
-        disposable.ifPresent(Disposable::dispose); // TODO write tests
-        disposable.ifPresent(Disposable::dispose);
-        view = Optional.empty();
+        saveCategoryDisposable.ifPresent(Disposable::dispose);
+        super.onDropView();
     }
 
     public void loadCategory(long categoryId) {
-        disposable = Optional.of(Observable
+        run(() -> Observable
                 .fromCallable(() -> {
-                    Category category = modelInteractor.getCategory(categoryId);
-                    if (category != null)
-                        this.category = category;
+                    Optional.of(modelInteractor.getCategory(categoryId))
+                            .ifPresent(category -> this.category = category);
                     return this.category;
                 })
                 .filter(category -> category.id != null)
@@ -57,8 +45,8 @@ public class CategoriesFormPresenter implements Presenter<CategoriesFormView> {
     }
 
     public void saveCategoryTitle(CharSequence title) {
-        disposable.ifPresent(Disposable::dispose); // TODO write tests
-        disposable = Optional.of(Observable
+        saveCategoryDisposable.ifPresent(Disposable::dispose);
+        saveCategoryDisposable = Optional.of(Observable
                 .fromCallable(() -> {
                     category.name = title.toString();
                     return modelInteractor.saveCategory(category);

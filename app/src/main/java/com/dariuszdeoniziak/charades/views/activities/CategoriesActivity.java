@@ -5,7 +5,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dariuszdeoniziak.charades.R;
-import com.dariuszdeoniziak.charades.presenters.CategoriesActivityPresenter;
+import com.dariuszdeoniziak.charades.presenters.CategoriesPresenter;
 import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
 import com.dariuszdeoniziak.charades.utils.Logger;
 import com.dariuszdeoniziak.charades.views.CategoriesView;
@@ -26,13 +26,13 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
 
     private static final String KEY_FRAGMENT = "key_fragment";
 
-    @Inject CategoriesActivityPresenter presenter;
+    @Inject CategoriesPresenter presenter;
     @Inject Logger log;
 
     @Font(path = "fontawesome-webfont.ttf")
     @Knork.Id(R.id.button_plus) TextView buttonPlus;
 
-    void replace(CategoriesActivityPresenter presenter, AndroidStaticsWrapper androidWrapper) {
+    void replace(CategoriesPresenter presenter, AndroidStaticsWrapper androidWrapper) {
         this.presenter = presenter;
         this.androidWrapper = androidWrapper;
     }

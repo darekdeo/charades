@@ -1,19 +1,17 @@
 package com.dariuszdeoniziak.charades.presenters;
 
 import com.dariuszdeoniziak.charades.models.interactors.PreferencesInteractor;
-import com.dariuszdeoniziak.charades.utils.Optional;
 import com.dariuszdeoniziak.charades.views.CategoriesView;
 
 import javax.inject.Inject;
 
 
-public class CategoriesActivityPresenter implements Presenter<CategoriesView> {
+public class CategoriesPresenter extends AbstractPresenter<CategoriesView> {
 
-    private Optional<CategoriesView> view = Optional.empty();
     final PreferencesInteractor preferences;
 
     @Inject
-    CategoriesActivityPresenter(PreferencesInteractor preferences) {
+    CategoriesPresenter(PreferencesInteractor preferences) {
         this.preferences = preferences;
     }
 
@@ -24,7 +22,7 @@ public class CategoriesActivityPresenter implements Presenter<CategoriesView> {
 
     @Override
     public void onTakeView(CategoriesView view) {
-        this.view = Optional.of(view);
+        super.onTakeView(view);
         if (!preferences.isFirstRun())
             view.showTextInfo("Hello again!");
     }
@@ -32,6 +30,6 @@ public class CategoriesActivityPresenter implements Presenter<CategoriesView> {
     @Override
     public void onDropView() {
         view.ifPresent(action -> action.showTextInfo("View is dying!"));
-        view = Optional.empty();
+        super.onDropView();
     }
 }

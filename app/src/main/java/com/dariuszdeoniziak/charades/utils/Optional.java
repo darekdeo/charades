@@ -1,8 +1,5 @@
 package com.dariuszdeoniziak.charades.utils;
 
-import java.util.Objects;
-
-
 public class Optional<T> {
 
     private final T value;
@@ -12,7 +9,7 @@ public class Optional<T> {
     }
 
     private Optional(T value) {
-        this.value = Objects.requireNonNull(value);
+        this.value = value;
     }
 
     public static <T> Optional<T> empty() {
@@ -23,13 +20,13 @@ public class Optional<T> {
         return new Optional<>(value);
     }
 
-    public interface Action<T> {
-        void apply(T value);
-    }
-
     public void ifPresent(Action<T> action) {
         if (value != null) {
             action.apply(value);
         }
+    }
+
+    public interface Action<T> {
+        void apply(T value);
     }
 }

@@ -14,16 +14,16 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-public class CategoriesActivityPresenterTest {
+public class CategoriesPresenterTest {
 
     @Mock CategoriesView view;
     @Mock PreferencesInteractor preferencesInteractor;
-    private CategoriesActivityPresenter presenter;
+    private CategoriesPresenter presenter;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        presenter = new CategoriesActivityPresenter(preferencesInteractor);
+        presenter = new CategoriesPresenter(preferencesInteractor);
     }
 
     @After
