@@ -3,7 +3,7 @@ package com.dariuszdeoniziak.charades.views.fragments;
 import android.widget.TextView;
 
 import com.dariuszdeoniziak.charades.R;
-import com.dariuszdeoniziak.charades.models.Category;
+import com.dariuszdeoniziak.charades.data.models.room.CategoryRoomModel;
 import com.dariuszdeoniziak.charades.presenters.CategoriesListPresenter;
 import com.dariuszdeoniziak.charades.views.CategoriesListView;
 import com.dariuszdeoniziak.charades.views.Layout;
@@ -55,7 +55,7 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
     }
 
     @Override
-    public void showCategories(List<Category> categories) {
+    public void showCategories(List<CategoryRoomModel> categories) {
 
     }
 

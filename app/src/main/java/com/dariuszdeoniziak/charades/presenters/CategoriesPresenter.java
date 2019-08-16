@@ -1,6 +1,6 @@
 package com.dariuszdeoniziak.charades.presenters;
 
-import com.dariuszdeoniziak.charades.models.interactors.PreferencesInteractor;
+import com.dariuszdeoniziak.charades.data.datasources.PreferencesDataSource;
 import com.dariuszdeoniziak.charades.views.CategoriesView;
 
 import javax.inject.Inject;
@@ -8,10 +8,10 @@ import javax.inject.Inject;
 
 public class CategoriesPresenter extends AbstractPresenter<CategoriesView> {
 
-    final PreferencesInteractor preferences;
+    final PreferencesDataSource preferences;
 
     @Inject
-    CategoriesPresenter(PreferencesInteractor preferences) {
+    CategoriesPresenter(PreferencesDataSource preferences) {
         this.preferences = preferences;
     }
 

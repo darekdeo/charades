@@ -1,20 +1,22 @@
-package com.dariuszdeoniziak.charades.models.interactors;
+package com.dariuszdeoniziak.charades.data.datasources.sharedpreferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.dariuszdeoniziak.charades.data.datasources.PreferencesDataSource;
+
 import javax.inject.Inject;
 
 
-public class SharedPreferencesInteractor implements PreferencesInteractor {
+public class SharedPreferencesDataSource implements PreferencesDataSource {
 
     private final String FIRST_RUN = "first_run";
 
     private final SharedPreferences preferences;
 
     @Inject
-    public SharedPreferencesInteractor(Context context) {
+    public SharedPreferencesDataSource(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 

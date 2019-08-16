@@ -1,4 +1,4 @@
-package com.dariuszdeoniziak.charades.models;
+package com.dariuszdeoniziak.charades.data.models.room;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -13,13 +13,13 @@ import static androidx.room.ForeignKey.CASCADE;
         tableName = "charades",
         indices = {@Index("category_id")},
         foreignKeys = @ForeignKey(
-                entity = Category.class,
+                entity = CategoryRoomModel.class,
                 parentColumns = "id",
                 childColumns = "category_id",
                 onDelete = CASCADE
         )
 )
-public class Charade {
+public class CharadeRoomModel {
 
     @PrimaryKey
     public Long id;

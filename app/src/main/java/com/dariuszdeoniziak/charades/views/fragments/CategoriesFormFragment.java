@@ -6,7 +6,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.dariuszdeoniziak.charades.R;
-import com.dariuszdeoniziak.charades.models.Category;
+import com.dariuszdeoniziak.charades.data.models.room.CategoryRoomModel;
 import com.dariuszdeoniziak.charades.presenters.CategoriesFormPresenter;
 import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
 import com.dariuszdeoniziak.charades.utils.Optional;
@@ -97,7 +97,7 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     }
 
     @Override
-    public void showCategory(Category category) {
+    public void showCategory(CategoryRoomModel category) {
         // TODO: show category and write test
     }
 }

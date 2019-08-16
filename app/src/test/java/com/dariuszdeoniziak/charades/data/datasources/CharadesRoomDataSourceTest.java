@@ -1,10 +1,11 @@
-package com.dariuszdeoniziak.charades.models.interactors;
+package com.dariuszdeoniziak.charades.data.datasources;
 
 import android.content.Context;
 
-import com.dariuszdeoniziak.charades.models.Category;
-import com.dariuszdeoniziak.charades.models.Charade;
-import com.dariuszdeoniziak.charades.models.CharadesRoomDatabase;
+import com.dariuszdeoniziak.charades.data.datasources.room.CharadesRoomDataSource;
+import com.dariuszdeoniziak.charades.data.datasources.room.CharadesRoomDatabase;
+import com.dariuszdeoniziak.charades.data.models.room.CategoryRoomModel;
+import com.dariuszdeoniziak.charades.data.models.room.CharadeRoomModel;
 
 import org.junit.After;
 import org.junit.Before;
@@ -24,9 +25,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
-public class RoomModelInteractorTest {
+public class CharadesRoomDataSourceTest {
 
-    private ModelInteractor interactor;
+    private CharadesDataSource interactor;
 
     @Before
     public void setUp() {
@@ -38,7 +39,7 @@ public class RoomModelInteractorTest {
                 )
                 .allowMainThreadQueries()
                 .build();
-        interactor = new RoomModelInteractor(database);
+        interactor = new CharadesRoomDataSource(database);
     }
 
     @After
@@ -48,7 +49,7 @@ public class RoomModelInteractorTest {
 
     @Test
     public void crudCategory() {
-        Category category = new Category();
+        CategoryRoomModel category = new CategoryRoomModel();
         category.name = "test_category_name";
 
         // create
@@ -57,7 +58,7 @@ public class RoomModelInteractorTest {
         assertTrue(id > 0);
 
         // read
-        List<Category> categories = interactor.getCategories();
+        List<CategoryRoomModel> categories = interactor.getCategories();
         assertNotNull(categories);
         assertFalse(categories.isEmpty());
 
@@ -81,7 +82,7 @@ public class RoomModelInteractorTest {
     @Test
     public void crudCharade() {
         // given
-        Charade charade = new Charade();
+        CharadeRoomModel charade = new CharadeRoomModel();
         charade.name = "test_charade_name";
 
         // create
@@ -90,7 +91,7 @@ public class RoomModelInteractorTest {
         assertTrue(id > 0);
 
         // read
-        List<Charade> charades = interactor.getCharades();
+        List<CharadeRoomModel> charades = interactor.getCharades();
         assertNotNull(charades);
         assertFalse(charades.isEmpty());
 
@@ -114,17 +115,17 @@ public class RoomModelInteractorTest {
     @Test
     public void getCharadesFromCategory() {
         // given
-        Category category = new Category();
+        CategoryRoomModel category = new CategoryRoomModel();
         category.name = "test_category_name";
         category.id = interactor.saveCategory(category);
 
-        Charade charade = new Charade();
+        CharadeRoomModel charade = new CharadeRoomModel();
         charade.name = "test_charade_name";
         charade.categoryId = category.id;
         charade.id = interactor.saveCharade(charade);
 
         // when
-        List<Charade> charades = interactor.getCharades(category.id);
+        List<CharadeRoomModel> charades = interactor.getCharades(category.id);
 
         // then
         assertNotNull(charades);

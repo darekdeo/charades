@@ -3,8 +3,8 @@ package com.dariuszdeoniziak.charades.modules;
 import android.app.Activity;
 import android.content.Context;
 
-import com.dariuszdeoniziak.charades.models.interactors.PreferencesInteractor;
-import com.dariuszdeoniziak.charades.models.interactors.SharedPreferencesInteractor;
+import com.dariuszdeoniziak.charades.data.datasources.PreferencesDataSource;
+import com.dariuszdeoniziak.charades.data.datasources.sharedpreferences.SharedPreferencesDataSource;
 
 import org.codejargon.feather.Provides;
 
@@ -35,7 +35,7 @@ public class ActivityModule {
 
     @Provides
     @Singleton
-    public PreferencesInteractor providePreferencesInteractor() {
-        return new SharedPreferencesInteractor(activityRef.get());
+    public PreferencesDataSource providePreferencesInteractor() {
+        return new SharedPreferencesDataSource(activityRef.get());
     }
 }

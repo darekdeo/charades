@@ -1,6 +1,6 @@
 package com.dariuszdeoniziak.charades.presenters;
 
-import com.dariuszdeoniziak.charades.models.interactors.ModelInteractor;
+import com.dariuszdeoniziak.charades.data.datasources.CharadesDataSource;
 import com.dariuszdeoniziak.charades.views.CategoriesListView;
 
 import javax.inject.Inject;
@@ -12,15 +12,15 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CategoriesListPresenter extends AbstractPresenter<CategoriesListView> {
 
-    final ModelInteractor modelInteractor;
+    final CharadesDataSource charadesDataSource;
 
     @Inject
-    CategoriesListPresenter(ModelInteractor modelInteractor) {
-        this.modelInteractor = modelInteractor;
+    CategoriesListPresenter(CharadesDataSource charadesDataSource) {
+        this.charadesDataSource = charadesDataSource;
     }
 
     void loadCategories() {
-        run(() -> Single.fromCallable(modelInteractor::getCategories)
+        run(() -> Single.fromCallable(charadesDataSource::getCategories)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> view.ifPresent(CategoriesListView::showProgressIndicator))

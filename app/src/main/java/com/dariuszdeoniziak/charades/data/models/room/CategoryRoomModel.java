@@ -1,4 +1,4 @@
-package com.dariuszdeoniziak.charades.models;
+package com.dariuszdeoniziak.charades.data.models.room;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 
 
 @Entity(tableName = "categories")
-public class Category {
+public class CategoryRoomModel {
 
     @PrimaryKey(autoGenerate = true)
     public Long id;

@@ -1,4 +1,6 @@
-package com.dariuszdeoniziak.charades.models;
+package com.dariuszdeoniziak.charades.data.datasources.room;
+
+import com.dariuszdeoniziak.charades.data.models.room.CategoryRoomModel;
 
 import java.util.List;
 
@@ -11,20 +13,20 @@ import androidx.room.Update;
 
 
 @Dao
-public interface CategoryDao {
+public interface CategoryRoomDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    long insert(Category category);
+    long insert(CategoryRoomModel category);
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
-    int update(Category category);
+    int update(CategoryRoomModel category);
 
     @Delete
-    int delete(Category category);
+    int delete(CategoryRoomModel category);
 
     @Query("SELECT * FROM categories WHERE id=:id LIMIT 1")
-    Category getById(long id);
+    CategoryRoomModel getById(long id);
 
     @Query("SELECT * FROM categories")
-    List<Category> getAll();
+    List<CategoryRoomModel> getAll();
 }

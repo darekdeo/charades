@@ -1,7 +1,7 @@
 package com.dariuszdeoniziak.charades.presenters;
 
-import com.dariuszdeoniziak.charades.models.Category;
-import com.dariuszdeoniziak.charades.models.interactors.ModelInteractor;
+import com.dariuszdeoniziak.charades.data.datasources.CharadesDataSource;
+import com.dariuszdeoniziak.charades.data.models.room.CategoryRoomModel;
 import com.dariuszdeoniziak.charades.utils.RxJavaTestRunner;
 import com.dariuszdeoniziak.charades.views.CategoriesFormView;
 
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 public class CategoriesFormPresenterTest {
 
     @Mock CategoriesFormView view;
-    @Mock ModelInteractor modelInteractor;
+    @Mock CharadesDataSource charadesDataSource;
     private CategoriesFormPresenter presenter;
 
     @Before
@@ -35,29 +35,29 @@ public class CategoriesFormPresenterTest {
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
 
         MockitoAnnotations.initMocks(this);
-        presenter = new CategoriesFormPresenter(modelInteractor);
+        presenter = new CategoriesFormPresenter(charadesDataSource);
         presenter.onTakeView(view);
     }
 
     @After
     public void tearDown() {
         RxJavaPlugins.reset();
-        reset(view, modelInteractor);
+        reset(view, charadesDataSource);
     }
 
     @Test
     public void loadCategory() {
         // given
         Long categoryId = 1L;
-        Category category = new Category();
+        CategoryRoomModel category = new CategoryRoomModel();
         category.id = categoryId;
-        when(modelInteractor.getCategory(categoryId)).thenReturn(category);
+        when(charadesDataSource.getCategory(categoryId)).thenReturn(category);
 
         // when
         presenter.loadCategory(categoryId);
 
         // then
-        verify(modelInteractor).getCategory(categoryId);
+        verify(charadesDataSource).getCategory(categoryId);
         assertNotNull(presenter.category);
         assertEquals(categoryId, presenter.category.id);
         verify(view).showCategory(category);
@@ -67,13 +67,13 @@ public class CategoriesFormPresenterTest {
     public void loadNullCategory() {
         // given
         Long categoryId = 1L;
-        when(modelInteractor.getCategory(categoryId)).thenReturn(null);
+        when(charadesDataSource.getCategory(categoryId)).thenReturn(null);
 
         // when
         presenter.loadCategory(categoryId);
 
         // then
-        verify(modelInteractor).getCategory(categoryId);
+        verify(charadesDataSource).getCategory(categoryId);
         assertNotNull(presenter.category);
         assertNotEquals(categoryId, presenter.category.id);
         verify(view, never()).showCategory(presenter.category);
@@ -90,6 +90,6 @@ public class CategoriesFormPresenterTest {
         // then
         assertNotNull(presenter.category);
         assertEquals(categoryName, presenter.category.name);
-        verify(modelInteractor).saveCategory(presenter.category);
+        verify(charadesDataSource).saveCategory(presenter.category);
     }
 }

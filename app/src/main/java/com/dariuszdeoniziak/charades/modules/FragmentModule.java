@@ -1,8 +1,8 @@
 package com.dariuszdeoniziak.charades.modules;
 
-import com.dariuszdeoniziak.charades.models.CharadesRoomDatabase;
-import com.dariuszdeoniziak.charades.models.interactors.ModelInteractor;
-import com.dariuszdeoniziak.charades.models.interactors.RoomModelInteractor;
+import com.dariuszdeoniziak.charades.data.datasources.CharadesDataSource;
+import com.dariuszdeoniziak.charades.data.datasources.room.CharadesRoomDataSource;
+import com.dariuszdeoniziak.charades.data.datasources.room.CharadesRoomDatabase;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 
 import org.codejargon.feather.Provides;
@@ -24,8 +24,8 @@ public class FragmentModule {
 
     @Provides
     @Singleton
-    public ModelInteractor provideModelInteractor() {
-        return new RoomModelInteractor(Room
+    public CharadesDataSource provideModelInteractor() {
+        return new CharadesRoomDataSource(Room
                 .databaseBuilder(
                         fragmentRef.get().getActivity().getApplicationContext(),
                         CharadesRoomDatabase.class,

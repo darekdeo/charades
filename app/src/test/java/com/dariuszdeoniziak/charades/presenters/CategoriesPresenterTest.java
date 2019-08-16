@@ -1,6 +1,6 @@
 package com.dariuszdeoniziak.charades.presenters;
 
-import com.dariuszdeoniziak.charades.models.interactors.PreferencesInteractor;
+import com.dariuszdeoniziak.charades.data.datasources.PreferencesDataSource;
 import com.dariuszdeoniziak.charades.views.CategoriesView;
 
 import org.junit.After;
@@ -17,18 +17,18 @@ import static org.mockito.Mockito.when;
 public class CategoriesPresenterTest {
 
     @Mock CategoriesView view;
-    @Mock PreferencesInteractor preferencesInteractor;
+    @Mock PreferencesDataSource preferencesDataSource;
     private CategoriesPresenter presenter;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        presenter = new CategoriesPresenter(preferencesInteractor);
+        presenter = new CategoriesPresenter(preferencesDataSource);
     }
 
     @After
     public void tearDown() {
-        reset(view, preferencesInteractor);
+        reset(view, preferencesDataSource);
     }
 
     @Test

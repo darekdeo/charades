@@ -1,5 +1,7 @@
-package com.dariuszdeoniziak.charades.models;
+package com.dariuszdeoniziak.charades.data.datasources.room;
 
+
+import com.dariuszdeoniziak.charades.data.models.room.CharadeRoomModel;
 
 import java.util.List;
 
@@ -12,23 +14,23 @@ import androidx.room.Update;
 
 
 @Dao
-public interface CharadeDao {
+public interface CharadeRoomDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    long insert(Charade charade);
+    long insert(CharadeRoomModel charade);
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
-    int update(Charade charade);
+    int update(CharadeRoomModel charade);
 
     @Delete
-    int delete(Charade charade);
+    int delete(CharadeRoomModel charade);
 
     @Query("SELECT * FROM charades WHERE id=:id LIMIT 1")
-    Charade getById(long id);
+    CharadeRoomModel getById(long id);
 
     @Query("SELECT * FROM charades")
-    List<Charade> getAll();
+    List<CharadeRoomModel> getAll();
 
     @Query("SELECT * FROM charades WHERE category_id=:categoryId")
-    List<Charade> getAllForCategory(long categoryId);
+    List<CharadeRoomModel> getAllForCategory(long categoryId);
 }

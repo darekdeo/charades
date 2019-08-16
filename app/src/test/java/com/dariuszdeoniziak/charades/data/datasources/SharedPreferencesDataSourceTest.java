@@ -1,6 +1,8 @@
-package com.dariuszdeoniziak.charades.models.interactors;
+package com.dariuszdeoniziak.charades.data.datasources;
 
 import android.content.Context;
+
+import com.dariuszdeoniziak.charades.data.datasources.sharedpreferences.SharedPreferencesDataSource;
 
 import org.junit.After;
 import org.junit.Before;
@@ -15,14 +17,14 @@ import static org.junit.Assert.assertTrue;
 
 
 @RunWith(AndroidJUnit4.class)
-public class SharedPreferencesInteractorTest {
+public class SharedPreferencesDataSourceTest {
 
-    private PreferencesInteractor interactor;
+    private PreferencesDataSource interactor;
 
     @Before
     public void setUp() {
         Context context = ApplicationProvider.getApplicationContext();
-        interactor = new SharedPreferencesInteractor(context);
+        interactor = new SharedPreferencesDataSource(context);
     }
 
     @After

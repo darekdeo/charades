@@ -1,7 +1,7 @@
 package com.dariuszdeoniziak.charades.presenters;
 
-import com.dariuszdeoniziak.charades.models.Category;
-import com.dariuszdeoniziak.charades.models.interactors.ModelInteractor;
+import com.dariuszdeoniziak.charades.data.datasources.CharadesDataSource;
+import com.dariuszdeoniziak.charades.data.models.room.CategoryRoomModel;
 import com.dariuszdeoniziak.charades.utils.Optional;
 import com.dariuszdeoniziak.charades.views.CategoriesFormView;
 
@@ -15,14 +15,14 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormView> {
 
-    private final ModelInteractor modelInteractor;
+    private final CharadesDataSource charadesDataSource;
     private Optional<Disposable> saveCategoryDisposable = Optional.empty();
 
-    public Category category = new Category();
+    public CategoryRoomModel category = new CategoryRoomModel();
 
     @Inject
-    CategoriesFormPresenter(ModelInteractor modelInteractor) {
-        this.modelInteractor = modelInteractor;
+    CategoriesFormPresenter(CharadesDataSource charadesDataSource) {
+        this.charadesDataSource = charadesDataSource;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormVie
     public void loadCategory(long categoryId) {
         run(() -> Observable
                 .fromCallable(() -> {
-                    Optional.of(modelInteractor.getCategory(categoryId))
+                    Optional.of(charadesDataSource.getCategory(categoryId))
                             .ifPresent(category -> this.category = category);
                     return this.category;
                 })
@@ -49,7 +49,7 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormVie
         saveCategoryDisposable = Optional.of(Observable
                 .fromCallable(() -> {
                     category.name = title.toString();
-                    return modelInteractor.saveCategory(category);
+                    return charadesDataSource.saveCategory(category);
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
