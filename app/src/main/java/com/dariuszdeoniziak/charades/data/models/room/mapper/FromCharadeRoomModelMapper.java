@@ -8,7 +8,7 @@ import com.dariuszdeoniziak.charades.utils.Mapper;
 public class FromCharadeRoomModelMapper implements Mapper<CharadeRoomModel, Charade> {
 
     @Override
-    public Charade map(CharadeRoomModel charadeRoomModel) { // TODO test mapper
+    public Charade map(CharadeRoomModel charadeRoomModel) {
         Charade charade = new Charade();
         charade.id = charadeRoomModel.id;
         charade.name = charadeRoomModel.name;

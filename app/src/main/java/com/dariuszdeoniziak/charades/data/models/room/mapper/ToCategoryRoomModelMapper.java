@@ -8,7 +8,7 @@ import com.dariuszdeoniziak.charades.utils.Mapper;
 public class ToCategoryRoomModelMapper implements Mapper<Category, CategoryRoomModel> {
 
     @Override
-    public CategoryRoomModel map(Category category) { // TODO test mapper
+    public CategoryRoomModel map(Category category) {
         CategoryRoomModel categoryRoomModel = new CategoryRoomModel();
         categoryRoomModel.id = category.id;
         categoryRoomModel.name = category.name;
