@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
@@ -18,6 +17,10 @@ import java.util.Collection;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
+
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 @RunWith(RxJavaParameterizedTestRunner.class)
@@ -48,7 +51,7 @@ public class PreferencesRepositoryImplTest {
 
     @After
     public void tearDown() {
-        Mockito.reset(preferencesLocalDataSource);
+        reset(preferencesLocalDataSource);
     }
 
     @Test
@@ -60,13 +63,13 @@ public class PreferencesRepositoryImplTest {
         testObserver
                 .assertNoErrors()
                 .assertComplete();
-        Mockito.verify(preferencesLocalDataSource).saveFirstRun();
+        verify(preferencesLocalDataSource).saveFirstRun();
     }
 
     @Test
     public void isFirstRun() {
         // given
-        Mockito.when(preferencesLocalDataSource.isFirstRun()).thenReturn(isFirstRun);
+        when(preferencesLocalDataSource.isFirstRun()).thenReturn(isFirstRun);
 
         // when
         TestObserver<Boolean> testObserver = preferencesRepository.isFirstRun().test();
@@ -75,7 +78,7 @@ public class PreferencesRepositoryImplTest {
         testObserver
                 .assertNoErrors()
                 .assertValue(isFirstRun);
-        Mockito.verify(preferencesLocalDataSource).isFirstRun();
+        verify(preferencesLocalDataSource).isFirstRun();
     }
 
     @Test
@@ -87,6 +90,6 @@ public class PreferencesRepositoryImplTest {
         testObserver
                 .assertNoErrors()
                 .assertComplete();
-        Mockito.verify(preferencesLocalDataSource).deleteFirstRun();
+        verify(preferencesLocalDataSource).deleteFirstRun();
     }
 }

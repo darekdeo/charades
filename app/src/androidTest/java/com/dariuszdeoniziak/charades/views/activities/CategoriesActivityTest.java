@@ -55,9 +55,7 @@ public class CategoriesActivityTest {
         scenarioRule.getScenario().moveToState(Lifecycle.State.STARTED);
 
         // then
-        scenarioRule.getScenario().onActivity((activity) -> {
-            verify(presenter).onTakeView(activity);
-        });
+        scenarioRule.getScenario().onActivity((activity) -> verify(presenter).onTakeView(activity));
     }
 
     @Test

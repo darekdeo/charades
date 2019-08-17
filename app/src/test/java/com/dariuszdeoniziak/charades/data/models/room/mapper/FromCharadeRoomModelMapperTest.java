@@ -3,8 +3,9 @@ package com.dariuszdeoniziak.charades.data.models.room.mapper;
 import com.dariuszdeoniziak.charades.data.models.Charade;
 import com.dariuszdeoniziak.charades.data.models.room.CharadeRoomModel;
 
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class FromCharadeRoomModelMapperTest {
@@ -22,8 +23,8 @@ public class FromCharadeRoomModelMapperTest {
         Charade charade = mapper.map(charadeRoomModel);
 
         // then
-        Assert.assertEquals(charadeRoomModel.id, charade.id);
-        Assert.assertEquals(charadeRoomModel.name, charade.name);
-        Assert.assertEquals(charadeRoomModel.categoryId, charade.categoryId);
+        assertEquals(charadeRoomModel.id, charade.id);
+        assertEquals(charadeRoomModel.name, charade.name);
+        assertEquals(charadeRoomModel.categoryId, charade.categoryId);
     }
 }

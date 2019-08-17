@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import io.reactivex.Single;
@@ -19,9 +18,12 @@ import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 
 @RunWith(RxJavaTestRunner.class)
 public class CategoriesFormPresenterTest {
@@ -69,9 +71,9 @@ public class CategoriesFormPresenterTest {
         presenter.loadCategory(0L);
 
         // then
-        verify(charadesRepository, Mockito.never()).getCategory(Mockito.anyLong());
+        verify(charadesRepository, never()).getCategory(anyLong());
         assertNotNull(presenter.category);
-        verify(view, Mockito.never()).showCategory(presenter.category);
+        verify(view, never()).showCategory(presenter.category);
     }
 
     @Test
@@ -80,7 +82,7 @@ public class CategoriesFormPresenterTest {
         Category category = new Category();
         presenter.category = category;
         String categoryName = "test_category_title";
-        Mockito.when(charadesRepository.saveCategory(category)).thenReturn(Single.just(1L));
+        when(charadesRepository.saveCategory(category)).thenReturn(Single.just(1L));
 
         // when
         presenter.saveCategoryTitle(categoryName);

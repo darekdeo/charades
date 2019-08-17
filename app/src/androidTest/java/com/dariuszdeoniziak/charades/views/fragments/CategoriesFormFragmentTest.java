@@ -26,6 +26,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 
+
 @RunWith(AndroidJUnit4.class)
 public class CategoriesFormFragmentTest {
 

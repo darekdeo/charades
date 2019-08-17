@@ -10,7 +10,7 @@ import io.reactivex.disposables.Disposable;
 public abstract class AbstractPresenter<V> implements Presenter<V> {
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-    protected Optional<V> view = Optional.empty();
+    Optional<V> view = Optional.empty();
 
     @Override
     public void onSave() {
@@ -33,7 +33,7 @@ public abstract class AbstractPresenter<V> implements Presenter<V> {
         compositeDisposable.add(operation.invoke());
     }
 
-    public interface Operation {
+    interface Operation {
         Disposable invoke();
     }
 }
