@@ -51,6 +51,7 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormVie
                     return category;
                 })
                 .flatMap(charadesRepository::saveCategory)
+                .doOnSuccess((categoryId) -> category.id = categoryId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(categoryId -> view.ifPresent(action -> action.showTextInfo(

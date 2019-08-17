@@ -79,16 +79,18 @@ public class CategoriesFormPresenterTest {
     @Test
     public void saveCategoryTitle() {
         // given
+        Long categoryId = 1L;
         Category category = new Category();
         presenter.category = category;
         String categoryName = "test_category_title";
-        when(charadesRepository.saveCategory(category)).thenReturn(Single.just(1L));
+        when(charadesRepository.saveCategory(category)).thenReturn(Single.just(categoryId));
 
         // when
         presenter.saveCategoryTitle(categoryName);
 
         // then
         assertNotNull(presenter.category);
+        assertEquals(categoryId, presenter.category.id);
         assertEquals(categoryName, presenter.category.name);
         verify(charadesRepository).saveCategory(presenter.category);
     }
