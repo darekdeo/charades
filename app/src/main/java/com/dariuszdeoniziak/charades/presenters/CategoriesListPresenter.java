@@ -1,26 +1,25 @@
 package com.dariuszdeoniziak.charades.presenters;
 
-import com.dariuszdeoniziak.charades.data.datasources.CharadesDataSource;
+import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.views.CategoriesListView;
 
 import javax.inject.Inject;
 
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 
 public class CategoriesListPresenter extends AbstractPresenter<CategoriesListView> {
 
-    final CharadesDataSource charadesDataSource;
+    final CharadesRepository charadesRepository;
 
     @Inject
-    CategoriesListPresenter(CharadesDataSource charadesDataSource) {
-        this.charadesDataSource = charadesDataSource;
+    CategoriesListPresenter(CharadesRepository charadesRepository) {
+        this.charadesRepository = charadesRepository;
     }
 
     void loadCategories() {
-        run(() -> Single.fromCallable(charadesDataSource::getCategories)
+        run(() -> charadesRepository.getCategories()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> view.ifPresent(CategoriesListView::showProgressIndicator))

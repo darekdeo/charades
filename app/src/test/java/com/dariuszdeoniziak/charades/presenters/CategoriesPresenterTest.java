@@ -1,6 +1,6 @@
 package com.dariuszdeoniziak.charades.presenters;
 
-import com.dariuszdeoniziak.charades.data.datasources.PreferencesDataSource;
+import com.dariuszdeoniziak.charades.data.repositories.PreferencesRepository;
 import com.dariuszdeoniziak.charades.views.CategoriesView;
 
 import org.junit.After;
@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import io.reactivex.Single;
 
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
@@ -17,25 +19,25 @@ import static org.mockito.Mockito.when;
 public class CategoriesPresenterTest {
 
     @Mock CategoriesView view;
-    @Mock PreferencesDataSource preferencesDataSource;
+    @Mock PreferencesRepository preferencesRepository;
     private CategoriesPresenter presenter;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        presenter = new CategoriesPresenter(preferencesDataSource);
+        presenter = new CategoriesPresenter(preferencesRepository);
     }
 
     @After
     public void tearDown() {
-        reset(view, preferencesDataSource);
+        reset(view, preferencesRepository);
     }
 
     @Test
     public void showWelcomeBackMessage() {
         // given
         when(presenter.preferences.isFirstRun()).
-                thenReturn(false);
+                thenReturn(Single.just(false));
 
         // when
         presenter.onTakeView(view);
@@ -48,7 +50,7 @@ public class CategoriesPresenterTest {
     public void doNotShowWelcomeBackMessage() {
         // given
         when(presenter.preferences.isFirstRun()).
-                thenReturn(true);
+                thenReturn(Single.just(true));
 
         // when
         presenter.onTakeView(view);

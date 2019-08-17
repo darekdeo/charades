@@ -1,7 +1,7 @@
 package com.dariuszdeoniziak.charades.presenters;
 
-import com.dariuszdeoniziak.charades.data.datasources.CharadesDataSource;
-import com.dariuszdeoniziak.charades.data.models.room.CategoryRoomModel;
+import com.dariuszdeoniziak.charades.data.models.Category;
+import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.utils.RxJavaTestRunner;
 import com.dariuszdeoniziak.charades.views.CategoriesFormView;
 
@@ -10,15 +10,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import io.reactivex.Single;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 public class CategoriesFormPresenterTest {
 
     @Mock CategoriesFormView view;
-    @Mock CharadesDataSource charadesDataSource;
+    @Mock CharadesRepository charadesRepository;
     private CategoriesFormPresenter presenter;
 
     @Before
@@ -35,54 +35,52 @@ public class CategoriesFormPresenterTest {
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
 
         MockitoAnnotations.initMocks(this);
-        presenter = new CategoriesFormPresenter(charadesDataSource);
+        presenter = new CategoriesFormPresenter(charadesRepository);
         presenter.onTakeView(view);
     }
 
     @After
     public void tearDown() {
         RxJavaPlugins.reset();
-        reset(view, charadesDataSource);
+        reset(view, charadesRepository);
     }
 
     @Test
     public void loadCategory() {
         // given
         Long categoryId = 1L;
-        CategoryRoomModel category = new CategoryRoomModel();
+        Category category = new Category();
         category.id = categoryId;
-        when(charadesDataSource.getCategory(categoryId)).thenReturn(category);
+        when(charadesRepository.getCategory(categoryId)).thenReturn(Single.just(category));
 
         // when
         presenter.loadCategory(categoryId);
 
         // then
-        verify(charadesDataSource).getCategory(categoryId);
+        verify(charadesRepository).getCategory(categoryId);
         assertNotNull(presenter.category);
         assertEquals(categoryId, presenter.category.id);
         verify(view).showCategory(category);
     }
 
     @Test
-    public void loadNullCategory() {
-        // given
-        Long categoryId = 1L;
-        when(charadesDataSource.getCategory(categoryId)).thenReturn(null);
-
+    public void doNotLoadNullCategoryId() {
         // when
-        presenter.loadCategory(categoryId);
+        presenter.loadCategory(0L);
 
         // then
-        verify(charadesDataSource).getCategory(categoryId);
+        verify(charadesRepository, Mockito.never()).getCategory(Mockito.anyLong());
         assertNotNull(presenter.category);
-        assertNotEquals(categoryId, presenter.category.id);
-        verify(view, never()).showCategory(presenter.category);
+        verify(view, Mockito.never()).showCategory(presenter.category);
     }
 
     @Test
     public void saveCategoryTitle() {
         // given
+        Category category = new Category();
+        presenter.category = category;
         String categoryName = "test_category_title";
+        Mockito.when(charadesRepository.saveCategory(category)).thenReturn(Single.just(1L));
 
         // when
         presenter.saveCategoryTitle(categoryName);
@@ -90,6 +88,6 @@ public class CategoriesFormPresenterTest {
         // then
         assertNotNull(presenter.category);
         assertEquals(categoryName, presenter.category.name);
-        verify(charadesDataSource).saveCategory(presenter.category);
+        verify(charadesRepository).saveCategory(presenter.category);
     }
 }

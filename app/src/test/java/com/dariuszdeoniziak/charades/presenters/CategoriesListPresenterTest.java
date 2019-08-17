@@ -1,7 +1,7 @@
 package com.dariuszdeoniziak.charades.presenters;
 
-import com.dariuszdeoniziak.charades.data.datasources.CharadesDataSource;
-import com.dariuszdeoniziak.charades.data.models.room.CategoryRoomModel;
+import com.dariuszdeoniziak.charades.data.models.Category;
+import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.utils.RxJavaTestRunner;
 import com.dariuszdeoniziak.charades.views.CategoriesListView;
 
@@ -15,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.Collections;
 import java.util.List;
 
+import io.reactivex.Single;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
@@ -26,9 +27,9 @@ import static org.mockito.Mockito.when;
 @RunWith(RxJavaTestRunner.class)
 public class CategoriesListPresenterTest {
 
-    @Mock List<CategoryRoomModel> categories;
+    @Mock List<Category> categories;
     @Mock CategoriesListView view;
-    @Mock CharadesDataSource charadesDataSource;
+    @Mock CharadesRepository charadesRepository;
     private CategoriesListPresenter presenter;
 
     @Before
@@ -36,26 +37,26 @@ public class CategoriesListPresenterTest {
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
 
         MockitoAnnotations.initMocks(this);
-        presenter = new CategoriesListPresenter(charadesDataSource);
+        presenter = new CategoriesListPresenter(charadesRepository);
         presenter.onTakeView(view);
     }
 
     @After
     public void tearDown() {
         RxJavaPlugins.reset();
-        reset(categories, view, charadesDataSource);
+        reset(categories, view, charadesRepository);
     }
 
     @Test
     public void loadCategoriesCallsShowCategories() {
         // given
-        when(presenter.charadesDataSource.getCategories()).thenReturn(categories);
+        when(presenter.charadesRepository.getCategories()).thenReturn(Single.just(categories));
 
         // when
         presenter.loadCategories();
 
         // then
-        verify(charadesDataSource).getCategories();
+        verify(charadesRepository).getCategories();
         verify(view).showProgressIndicator();
         verify(view).showCategories(categories);
         verify(view).hideProgressIndicator();
@@ -64,13 +65,13 @@ public class CategoriesListPresenterTest {
     @Test
     public void loadCategoriesCallsShowEmptyList() {
         // given
-        when(presenter.charadesDataSource.getCategories()).thenReturn(Collections.emptyList());
+        when(presenter.charadesRepository.getCategories()).thenReturn(Single.just(Collections.emptyList()));
 
         // when
         presenter.loadCategories();
 
         // then
-        verify(charadesDataSource).getCategories();
+        verify(charadesRepository).getCategories();
         verify(view).showProgressIndicator();
         verify(view).showEmptyList();
         verify(view).hideProgressIndicator();

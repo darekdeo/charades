@@ -1,9 +1,9 @@
 package com.dariuszdeoniziak.charades.views;
 
-import com.dariuszdeoniziak.charades.data.models.room.CategoryRoomModel;
+import com.dariuszdeoniziak.charades.data.models.Category;
 
 
 public interface CategoriesFormView {
     void showTextInfo(String text);
-    void showCategory(CategoryRoomModel category);
+    void showCategory(Category category);
 }

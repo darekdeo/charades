@@ -1,6 +1,6 @@
 package com.dariuszdeoniziak.charades.presenters;
 
-import com.dariuszdeoniziak.charades.data.datasources.PreferencesDataSource;
+import com.dariuszdeoniziak.charades.data.repositories.PreferencesRepository;
 import com.dariuszdeoniziak.charades.views.CategoriesView;
 
 import javax.inject.Inject;
@@ -8,10 +8,10 @@ import javax.inject.Inject;
 
 public class CategoriesPresenter extends AbstractPresenter<CategoriesView> {
 
-    final PreferencesDataSource preferences;
+    final PreferencesRepository preferences;
 
     @Inject
-    CategoriesPresenter(PreferencesDataSource preferences) {
+    CategoriesPresenter(PreferencesRepository preferences) {
         this.preferences = preferences;
     }
 
@@ -23,7 +23,7 @@ public class CategoriesPresenter extends AbstractPresenter<CategoriesView> {
     @Override
     public void onTakeView(CategoriesView view) {
         super.onTakeView(view);
-        if (!preferences.isFirstRun())
+        if (!preferences.isFirstRun().blockingGet())
             view.showTextInfo("Hello again!");
     }
 
