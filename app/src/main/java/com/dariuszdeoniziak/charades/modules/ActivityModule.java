@@ -5,6 +5,8 @@ import android.content.Context;
 
 import com.dariuszdeoniziak.charades.data.datasources.PreferencesDataSource;
 import com.dariuszdeoniziak.charades.data.datasources.sharedpreferences.SharedPreferencesDataSource;
+import com.dariuszdeoniziak.charades.data.repositories.PreferencesRepository;
+import com.dariuszdeoniziak.charades.data.repositories.PreferencesRepositoryImpl;
 
 import org.codejargon.feather.Provides;
 
@@ -35,7 +37,13 @@ public class ActivityModule {
 
     @Provides
     @Singleton
-    public PreferencesDataSource providePreferencesInteractor() {
+    public PreferencesDataSource providePreferencesDataSource() {
         return new SharedPreferencesDataSource(activityRef.get());
+    }
+
+    @Provides
+    @Singleton
+    public PreferencesRepository providePreferencesRepository() {
+        return new PreferencesRepositoryImpl(providePreferencesDataSource());
     }
 }

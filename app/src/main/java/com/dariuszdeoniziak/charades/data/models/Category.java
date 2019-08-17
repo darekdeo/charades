@@ -1,5 +1,10 @@
 package com.dariuszdeoniziak.charades.data.models;
 
 public class Category {
-    // TODO
+
+    public Long id;
+
+    public String name;
+
+    public String description;
 }
