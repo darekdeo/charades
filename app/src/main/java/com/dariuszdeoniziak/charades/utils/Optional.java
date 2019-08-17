@@ -26,6 +26,10 @@ public class Optional<T> {
         }
     }
 
+    public T get() {
+        return value;
+    }
+
     public interface Action<T> {
         void apply(T value);
     }
