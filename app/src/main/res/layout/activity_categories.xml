@@ -5,25 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".views.activities.CategoriesActivity">
+    tools:context=".views.activities.CategoriesActivity"
+    >
 
     <include layout="@layout/content_categories"/>
 
     <LinearLayout
-        android:gravity="center"
-        android:layout_gravity="bottom"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        >
 
         <TextView
-            android:gravity="center"
-            android:textSize="28sp"
             android:id="@+id/button_plus"
+            android:layout_width="@dimen/icon_button_size"
+            android:layout_height="@dimen/icon_button_size"
+            android:gravity="center"
             android:text="@string/icon_plus"
             android:textColor="@android:color/black"
-            android:layout_width="@dimen/icon_button_size"
-            android:layout_height="@dimen/icon_button_size"/>
-
+            android:textSize="@dimen/icon_text_size"
+            />
     </LinearLayout>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

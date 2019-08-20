@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">charades</string>
     <string name="action_settings">Settings</string>
+    <string name="categories_list_header">Select category</string>
+    <string name="categories_form_header">Edit category</string>
+    <string name="categories_form_hint_title">Enter category title</string>
 
     <string name="icon_plus" translatable="false">&#xf067;</string>
+    <string name="icon_trash" translatable="false">&#xf1f8;</string>
+
+    <string name="lorem_ipsum" translatable="false">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh augue, suscipit a, scelerisque sed, lacinia in, mi. Cras vel lorem. Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam. Quisque semper justo at risus. Donec venenatis, turpis vel hendrerit interdum, dui ligula ultricies purus, sed posuere libero dui id orci. Nam congue, pede vitae dapibus aliquet, elit magna vulputate arcu, vel tempus metus leo non est. Etiam sit amet lectus quis est congue mollis. Phasellus congue lacus eget neque. Phasellus ornare, ante vitae consectetuer consequat, purus sapien ultricies dolor, et mollis pede metus eget nisi. Praesent sodales velit quis augue. Cras suscipit, urna at aliquam rhoncus, urna quam viverra nisi, in interdum massa nibh nec erat.</string>
 </resources>
