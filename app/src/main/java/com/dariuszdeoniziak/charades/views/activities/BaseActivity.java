@@ -5,7 +5,6 @@ import android.text.TextUtils;
 
 import com.dariuszdeoniziak.charades.modules.ActivityModule;
 import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
-import com.dariuszdeoniziak.charades.utils.FontInjector;
 import com.dariuszdeoniziak.charades.views.Layout;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 
@@ -44,7 +43,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         getAnnotations();
         setContentView(layoutResId);
         Knork.inject(getWindow().getDecorView(), this);
-        FontInjector.inject(this);
     }
 
     private void getAnnotations() {

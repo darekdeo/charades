@@ -5,16 +5,16 @@ import android.widget.TextView;
 
 import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.data.models.Category;
-import com.dariuszdeoniziak.charades.views.Font;
+import com.dariuszdeoniziak.charades.views.widgets.FontAwesomeView;
 
 import androidx.annotation.NonNull;
+
 
 public class CategoryViewHolder extends BaseViewHolder<Category> {
 
     private TextView nameView;
     private TextView descriptionView;
-    @Font(path = "fontawesome-webfont.ttf")
-    private TextView deleteView;
+    private FontAwesomeView deleteView;
 
     public CategoryViewHolder(@NonNull View itemView) {
         super(itemView);

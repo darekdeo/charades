@@ -35,7 +35,7 @@
             />
     </LinearLayout>
 
-    <TextView
+    <com.dariuszdeoniziak.charades.views.widgets.FontAwesomeView
         android:id="@+id/button_delete"
         android:layout_width="@dimen/icon_button_size"
         android:layout_height="@dimen/icon_button_size"

@@ -9,7 +9,6 @@ import com.dariuszdeoniziak.charades.presenters.CategoriesPresenter;
 import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
 import com.dariuszdeoniziak.charades.utils.Logger;
 import com.dariuszdeoniziak.charades.views.CategoriesView;
-import com.dariuszdeoniziak.charades.views.Font;
 import com.dariuszdeoniziak.charades.views.Layout;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 import com.dariuszdeoniziak.charades.views.fragments.CategoriesFormFragment;
@@ -29,7 +28,6 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     @Inject CategoriesPresenter presenter;
     @Inject Logger log;
 
-    @Font(path = "fontawesome-webfont.ttf")
     @Knork.Id(R.id.button_plus) TextView buttonPlus;
 
     void replace(CategoriesPresenter presenter, AndroidStaticsWrapper androidWrapper) {
