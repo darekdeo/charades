@@ -39,16 +39,17 @@ public class CategoriesListFragmentTest {
     }
 
     @Test
-    public void onTakeView() {
+    public void onStart() {
         // given
         fragmentScenario.moveToState(Lifecycle.State.CREATED);
 
-        // when fragment starts
+        // when
         fragmentScenario.moveToState(Lifecycle.State.STARTED);
 
         // then
         fragmentScenario.onFragment((fragment) -> {
             verify(presenter).onTakeView(fragment);
+            verify(presenter).loadCategories();
         });
     }
 
@@ -60,5 +61,4 @@ public class CategoriesListFragmentTest {
         // then
         verify(presenter).onDropView();
     }
-
 }

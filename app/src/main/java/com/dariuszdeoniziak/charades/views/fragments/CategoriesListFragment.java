@@ -1,5 +1,9 @@
 package com.dariuszdeoniziak.charades.views.fragments;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dariuszdeoniziak.charades.R;
@@ -7,11 +11,14 @@ import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.presenters.CategoriesListPresenter;
 import com.dariuszdeoniziak.charades.views.CategoriesListView;
 import com.dariuszdeoniziak.charades.views.Layout;
+import com.dariuszdeoniziak.charades.views.adapters.CategoriesListAdapter;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import trikita.knork.Knork;
 
@@ -23,6 +30,7 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
     @Knork.Id(R.id.categories_recycler) RecyclerView categoriesRecyclerView;
 
     @Inject CategoriesListPresenter presenter;
+    @Inject CategoriesListAdapter categoriesListAdapter;
 
     public static CategoriesListFragment newInstance() {
         return new CategoriesListFragment();
@@ -32,10 +40,20 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
         this.presenter = presenter;
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        categoriesRecyclerView.setAdapter(categoriesListAdapter);
+        return view;
+    }
+
     @Override
     public void onStart() {
         super.onStart();
         presenter.onTakeView(this);
+        presenter.loadCategories();
     }
 
     @Override
@@ -46,21 +64,21 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
 
     @Override
     public void hideProgressIndicator() {
-
+        // TODO hide loader
     }
 
     @Override
     public void showProgressIndicator() {
-
+        // TODO show loader
     }
 
     @Override
     public void showCategories(List<Category> categories) {
-
+        categoriesListAdapter.adapt(categories);
     }
 
     @Override
     public void showEmptyList() {
-
+        // TODO show no list items info
     }
 }

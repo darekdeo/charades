@@ -18,7 +18,7 @@ public class CategoriesListPresenter extends AbstractPresenter<CategoriesListVie
         this.charadesRepository = charadesRepository;
     }
 
-    void loadCategories() {
+    public void loadCategories() {
         run(() -> charadesRepository.getCategories()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
