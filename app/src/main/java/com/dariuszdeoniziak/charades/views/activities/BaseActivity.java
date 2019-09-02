@@ -1,7 +1,6 @@
 package com.dariuszdeoniziak.charades.views.activities;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 
 import com.dariuszdeoniziak.charades.modules.ActivityModule;
 import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
@@ -13,7 +12,6 @@ import org.codejargon.feather.Feather;
 import javax.inject.Inject;
 
 import androidx.annotation.LayoutRes;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -23,15 +21,9 @@ import trikita.knork.Knork;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    public final String TAG;
-
     @LayoutRes private int layoutResId;
 
     @Inject AndroidStaticsWrapper androidWrapper;
-
-    public BaseActivity() {
-        TAG = this.getClass().getSimpleName();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,54 +50,51 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void replaceFragment(@Nullable Bundle args, Fragment fragment, int containerResId, String tag, boolean backstack) {
+    public void replaceFragment(CreateFragment createFragment, String tag, int containerResId, boolean backstack) {
         Fragment currentFragment = getCurrentFragment(containerResId);
 
-        if (!(currentFragment != null && currentFragment.getTag().equals(tag))) {
+        if (!(currentFragment != null && currentFragment.getTag() != null && currentFragment.getTag().equals(tag))) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            if (args != null)
-                fragment.setArguments(args);
-            transaction.replace(containerResId, fragment, tag);
+            transaction.replace(containerResId, createFragment.create(), tag);
             if (backstack)
                 transaction.addToBackStack(tag);
             transaction.commit();
         }
     }
 
-    public void popFragmentBackStack() {
+    public void popOrReplaceFragment(CreateFragment createFragment, String tag, int containerResId) {
         FragmentManager manager = getSupportFragmentManager();
-        manager.popBackStack();
+
+        Fragment fragmentByTag = manager.findFragmentByTag(tag);
+
+        if (fragmentByTag != null) {
+            manager.popBackStack(tag, 0);
+        } else {
+            replaceFragment(createFragment, tag, containerResId, false);
+        }
     }
 
-    public Fragment getCurrentFragment(int containerResId) {
+    public BaseFragment getCurrentFragment(int containerResId) {
         FragmentManager manager = getSupportFragmentManager();
 
-        Fragment fragment;
-        fragment = getFragmentFromBackStack(manager);
+        BaseFragment fragment = getFragmentFromBackStack(manager);
 
         if (fragment != null)
             return fragment;
 
-        return manager.findFragmentById(containerResId);
+        return (BaseFragment) manager.findFragmentById(containerResId);
     }
 
-    private Fragment getFragmentFromBackStack(FragmentManager manager) {
+    private BaseFragment getFragmentFromBackStack(FragmentManager manager) {
         int count = manager.getBackStackEntryCount();
         if (count > 0) {
             FragmentManager.BackStackEntry entry = manager.getBackStackEntryAt(count - 1);
-            return manager.findFragmentByTag(entry.getName());
+            return (BaseFragment) manager.findFragmentByTag(entry.getName());
         }
         return null;
     }
 
-    public BaseFragment getSavedFragment(Bundle bundle, String key) {
-        if (bundle != null && !TextUtils.isEmpty(key))
-            return (BaseFragment) getSupportFragmentManager().getFragment(bundle, key);
-        return null;
-    }
-
-    public void saveFragment(BaseFragment fragment, Bundle bundle, String key) {
-        if (fragment != null && bundle != null && !TextUtils.isEmpty(key))
-            getSupportFragmentManager().putFragment(bundle, key, fragment);
+    interface CreateFragment {
+        BaseFragment create();
     }
 }

@@ -7,6 +7,10 @@ import com.dariuszdeoniziak.charades.data.datasources.PreferencesDataSource;
 import com.dariuszdeoniziak.charades.data.datasources.sharedpreferences.SharedPreferencesDataSource;
 import com.dariuszdeoniziak.charades.data.repositories.PreferencesRepository;
 import com.dariuszdeoniziak.charades.data.repositories.PreferencesRepositoryImpl;
+import com.dariuszdeoniziak.charades.utils.Mapper;
+import com.dariuszdeoniziak.charades.views.CategoryScreen;
+import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
+import com.dariuszdeoniziak.charades.views.mappers.ToCategoryScreenMapper;
 
 import org.codejargon.feather.Provides;
 
@@ -45,5 +49,11 @@ public class ActivityModule {
     @Singleton
     public PreferencesRepository providePreferencesRepository() {
         return new PreferencesRepositoryImpl(providePreferencesDataSource());
+    }
+
+    @Provides
+    @Singleton
+    public Mapper<BaseFragment, CategoryScreen> provideToCategoryScreenMapper() {
+        return new ToCategoryScreenMapper();
     }
 }

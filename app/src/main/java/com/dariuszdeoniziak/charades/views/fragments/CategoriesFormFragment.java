@@ -39,6 +39,8 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
 
     private Optional<Disposable> titleTextChangesDisposable = Optional.empty();
 
+    public static String TAG = CategoriesFormFragment.class.getSimpleName();
+
     public static CategoriesFormFragment newInstance() {
         return newInstance(0);
     }

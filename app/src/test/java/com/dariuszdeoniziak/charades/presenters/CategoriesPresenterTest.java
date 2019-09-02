@@ -2,6 +2,7 @@ package com.dariuszdeoniziak.charades.presenters;
 
 import com.dariuszdeoniziak.charades.data.repositories.PreferencesRepository;
 import com.dariuszdeoniziak.charades.views.CategoriesView;
+import com.dariuszdeoniziak.charades.views.CategoryScreen;
 
 import org.junit.After;
 import org.junit.Before;
@@ -11,9 +12,10 @@ import org.mockito.MockitoAnnotations;
 
 import io.reactivex.Single;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public class CategoriesPresenterTest {
@@ -36,7 +38,7 @@ public class CategoriesPresenterTest {
     @Test
     public void showWelcomeBackMessage() {
         // given
-        when(presenter.preferences.isFirstRun()).
+        when(preferencesRepository.isFirstRun()).
                 thenReturn(Single.just(false));
 
         // when
@@ -49,13 +51,53 @@ public class CategoriesPresenterTest {
     @Test
     public void doNotShowWelcomeBackMessage() {
         // given
-        when(presenter.preferences.isFirstRun()).
-                thenReturn(Single.just(true));
+        when(preferencesRepository.isFirstRun()).thenReturn(Single.just(true));
 
         // when
         presenter.onTakeView(view);
 
         // then
-        verifyZeroInteractions(view);
+        verify(view, never()).showTextInfo(anyString());
+    }
+
+    @Test
+    public void onTakeViewShouldFirstTimeDisplayList() {
+        // given
+        when(preferencesRepository.isFirstRun()).thenReturn(Single.just(true));
+        when(view.getCurrentScreen()).thenReturn(CategoryScreen.NONE);
+
+        // when
+        presenter.onTakeView(view);
+
+        // then
+        verify(view).toList();
+    }
+
+    @Test
+    public void onToggleViewModeFromListToForm() {
+        // given
+        when(preferencesRepository.isFirstRun()).thenReturn(Single.just(true));
+        when(view.getCurrentScreen()).thenReturn(CategoryScreen.LIST);
+
+        // when
+        presenter.onTakeView(view);
+        presenter.onToggleViewMode();
+
+        // then
+        verify(view).toForm();
+    }
+
+    @Test
+    public void onToggleViewModeFromFormToList() {
+        // given
+        when(preferencesRepository.isFirstRun()).thenReturn(Single.just(true));
+        when(view.getCurrentScreen()).thenReturn(CategoryScreen.FORM);
+
+        // when
+        presenter.onTakeView(view);
+        presenter.onToggleViewMode();
+
+        // then
+        verify(view).toList();
     }
 }

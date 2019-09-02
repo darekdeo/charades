@@ -21,15 +21,9 @@ import trikita.knork.Knork;
 
 public abstract class BaseFragment extends Fragment {
 
-    public final String TAG;
-
     @LayoutRes private int layoutResId;
 
     @Inject AndroidStaticsWrapper androidWrapper;
-
-    public BaseFragment() {
-        TAG = this.getClass().getSimpleName();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

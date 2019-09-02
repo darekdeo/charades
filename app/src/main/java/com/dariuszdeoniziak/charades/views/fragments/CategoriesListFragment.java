@@ -32,6 +32,8 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
     @Inject CategoriesListPresenter presenter;
     @Inject CategoriesListAdapter categoriesListAdapter;
 
+    public static String TAG = CategoriesListFragment.class.getSimpleName();
+
     public static CategoriesListFragment newInstance() {
         return new CategoriesListFragment();
     }

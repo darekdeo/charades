@@ -8,7 +8,9 @@ import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.presenters.CategoriesPresenter;
 import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
 import com.dariuszdeoniziak.charades.utils.Logger;
+import com.dariuszdeoniziak.charades.utils.Mapper;
 import com.dariuszdeoniziak.charades.views.CategoriesView;
+import com.dariuszdeoniziak.charades.views.CategoryScreen;
 import com.dariuszdeoniziak.charades.views.Layout;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 import com.dariuszdeoniziak.charades.views.fragments.CategoriesFormFragment;
@@ -16,50 +18,39 @@ import com.dariuszdeoniziak.charades.views.fragments.CategoriesListFragment;
 
 import javax.inject.Inject;
 
-import androidx.annotation.Nullable;
 import trikita.knork.Knork;
 
 
 @Layout(R.layout.activity_categories)
 public class CategoriesActivity extends BaseActivity implements CategoriesView {
 
-    private static final String KEY_FRAGMENT = "key_fragment";
-
     @Inject CategoriesPresenter presenter;
     @Inject Logger log;
+    @Inject Mapper<BaseFragment, CategoryScreen> toCategoryScreenMapper;
 
     @Knork.Id(R.id.button_plus) TextView buttonPlus;
 
-    void replace(CategoriesPresenter presenter, AndroidStaticsWrapper androidWrapper) {
+    void replace(
+            CategoriesPresenter presenter,
+            AndroidStaticsWrapper androidWrapper,
+            Mapper<BaseFragment, CategoryScreen> toCategoryScreenMapper
+    ) {
         this.presenter = presenter;
         this.androidWrapper = androidWrapper;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        BaseFragment fragment = getSavedFragment(savedInstanceState, KEY_FRAGMENT);
-        if (fragment == null) {
-            fragment = CategoriesListFragment.newInstance();
-            replaceFragment(null, fragment, R.id.fragment_container, fragment.TAG, false);
-        }
+        this.toCategoryScreenMapper = toCategoryScreenMapper;
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         presenter.onTakeView(this);
-
-        buttonPlus.setOnClickListener(v -> toggleViewMode(null));
+        buttonPlus.setOnClickListener(v -> presenter.onToggleViewMode());
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         presenter.onSave();
-        BaseFragment fragment = (BaseFragment) getCurrentFragment(R.id.fragment_container);
-        saveFragment(fragment, outState, KEY_FRAGMENT);
     }
 
     @Override
@@ -74,16 +65,23 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
         androidWrapper.showToast(this, text, Toast.LENGTH_SHORT);
     }
 
-    /**
-     * Toggle between edit mode and list mode.
-     * @param args an args to open certain category to edit.
-     */
-    public void toggleViewMode(@Nullable Bundle args) {
-        if (getCurrentFragment(R.id.fragment_container).getClass() == CategoriesListFragment.class) {
-            CategoriesFormFragment fragment = CategoriesFormFragment.newInstance();
-            replaceFragment(args, fragment, R.id.fragment_container, fragment.TAG, true);
-        } else {
-            popFragmentBackStack();
-        }
+    @Override
+    public void toList() {
+        popOrReplaceFragment(CategoriesListFragment::newInstance, CategoriesListFragment.TAG, R.id.fragment_container);
+    }
+
+    @Override
+    public void toForm() {
+        replaceFragment(CategoriesFormFragment::newInstance, CategoriesFormFragment.TAG, R.id.fragment_container, true);
+    }
+
+    @Override
+    public void toEditForm(Integer categoryId) {
+        replaceFragment(CategoriesFormFragment::newInstance, CategoriesFormFragment.TAG, R.id.fragment_container, true);
+    }
+
+    @Override
+    public CategoryScreen getCurrentScreen() {
+        return toCategoryScreenMapper.map(getCurrentFragment(R.id.fragment_container));
     }
 }
