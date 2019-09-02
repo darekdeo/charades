@@ -69,7 +69,7 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     public void onStart() {
         super.onStart();
         presenter.onTakeView(this);
-        presenter.loadCategory(categoryId);
+        presenter.onLoadCategory(categoryId);
         setupViewActions();
     }
 
@@ -81,7 +81,7 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
                 .filter(charSequence -> charSequence.length() > 0)
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(CharSequence::toString)
-                .subscribe(title -> presenter.saveCategoryTitle(title)));
+                .subscribe(title -> presenter.onSaveCategoryTitle(title)));
     }
 
     @Override

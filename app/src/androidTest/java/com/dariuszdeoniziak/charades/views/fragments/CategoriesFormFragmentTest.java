@@ -63,7 +63,7 @@ public class CategoriesFormFragmentTest {
         // then
         fragmentScenario.onFragment((fragment) -> {
             verify(presenter).onTakeView(fragment);
-            verify(presenter).loadCategory(fragment.categoryId);
+            verify(presenter).onLoadCategory(fragment.categoryId);
         });
     }
 
@@ -86,6 +86,6 @@ public class CategoriesFormFragmentTest {
         onView(withId(R.id.form_category_title)).check(matches(withText(testText)));
 
         // then text should be saved
-        verify(presenter).saveCategoryTitle(testText);
+        verify(presenter).onSaveCategoryTitle(testText);
     }
 }

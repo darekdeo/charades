@@ -53,7 +53,7 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
     public void onStart() {
         super.onStart();
         presenter.onTakeView(this);
-        presenter.loadCategories();
+        presenter.onLoadCategories();
     }
 
     @Override

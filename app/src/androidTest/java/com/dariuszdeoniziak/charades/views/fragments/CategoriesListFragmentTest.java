@@ -49,7 +49,7 @@ public class CategoriesListFragmentTest {
         // then
         fragmentScenario.onFragment((fragment) -> {
             verify(presenter).onTakeView(fragment);
-            verify(presenter).loadCategories();
+            verify(presenter).onLoadCategories();
         });
     }
 

@@ -56,7 +56,7 @@ public class CategoriesFormPresenterTest {
         when(charadesRepository.getCategory(categoryId)).thenReturn(Single.just(category));
 
         // when
-        presenter.loadCategory(categoryId);
+        presenter.onLoadCategory(categoryId);
 
         // then
         verify(charadesRepository).getCategory(categoryId);
@@ -68,7 +68,7 @@ public class CategoriesFormPresenterTest {
     @Test
     public void doNotLoadNullCategoryId() {
         // when
-        presenter.loadCategory(0L);
+        presenter.onLoadCategory(0L);
 
         // then
         verify(charadesRepository, never()).getCategory(anyLong());
@@ -86,7 +86,7 @@ public class CategoriesFormPresenterTest {
         when(charadesRepository.saveCategory(category)).thenReturn(Single.just(categoryId));
 
         // when
-        presenter.saveCategoryTitle(categoryName);
+        presenter.onSaveCategoryTitle(categoryName);
 
         // then
         assertNotNull(presenter.category);

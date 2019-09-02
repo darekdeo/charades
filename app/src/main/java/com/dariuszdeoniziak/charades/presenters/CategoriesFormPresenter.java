@@ -32,7 +32,7 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormVie
         super.onDropView();
     }
 
-    public void loadCategory(Long categoryId) {
+    public void onLoadCategory(Long categoryId) {
         if (categoryId > 0L) {
             loadCategoryDisposable.ifPresent(Disposable::dispose);
             loadCategoryDisposable = Optional.of(charadesRepository.getCategory(categoryId)
@@ -43,7 +43,7 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormVie
         }
     }
 
-    public void saveCategoryTitle(CharSequence title) {
+    public void onSaveCategoryTitle(CharSequence title) {
         saveCategoryDisposable.ifPresent(Disposable::dispose);
         saveCategoryDisposable = Optional.of(Single.just(category)
                 .map((category) -> {

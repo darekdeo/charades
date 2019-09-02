@@ -53,7 +53,7 @@ public class CategoriesListPresenterTest {
         when(presenter.charadesRepository.getCategories()).thenReturn(Single.just(categories));
 
         // when
-        presenter.loadCategories();
+        presenter.onLoadCategories();
 
         // then
         verify(charadesRepository).getCategories();
@@ -68,7 +68,7 @@ public class CategoriesListPresenterTest {
         when(presenter.charadesRepository.getCategories()).thenReturn(Single.just(Collections.emptyList()));
 
         // when
-        presenter.loadCategories();
+        presenter.onLoadCategories();
 
         // then
         verify(charadesRepository).getCategories();
