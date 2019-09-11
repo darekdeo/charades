@@ -35,6 +35,10 @@ public class CategoriesListPresenter extends AbstractPresenter<CategoriesListVie
                 .subscribe());
     }
 
+    public void onSelectCategory(Category category) {
+        // TODO implement on select category, pass action to activity
+    }
+
     public void onEditCategory(Category category) {
         // TODO implement on edit category, pass action to activity
     }

@@ -51,6 +51,11 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
         categoriesRecyclerView.setAdapter(categoriesListAdapter);
         categoriesListAdapter.setCategoryClickListener(new CategoryViewHolder.CategoryClickListener() {
             @Override
+            public void select(Category category) {
+                presenter.onSelectCategory(category);
+            }
+
+            @Override
             public void edit(Category category) {
                 presenter.onEditCategory(category);
             }

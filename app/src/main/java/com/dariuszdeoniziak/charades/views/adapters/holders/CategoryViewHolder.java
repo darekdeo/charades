@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 
 public class CategoryViewHolder extends BaseViewHolder<Category> {
 
+    private View itemView;
     private TextView nameView;
     private TextView descriptionView;
     private FontAwesomeView editView;
@@ -21,6 +22,7 @@ public class CategoryViewHolder extends BaseViewHolder<Category> {
 
     public CategoryViewHolder(@NonNull View itemView) {
         super(itemView);
+        this.itemView = itemView;
         nameView = itemView.findViewById(R.id.category_name);
         descriptionView = itemView.findViewById(R.id.category_description);
         editView = itemView.findViewById(R.id.button_edit);
@@ -30,6 +32,7 @@ public class CategoryViewHolder extends BaseViewHolder<Category> {
     public void bind(Category category) {
         nameView.setText(category.name);
         descriptionView.setText(category.description);
+        itemView.setOnClickListener(v -> categoryClickListener.ifPresent(l -> l.select(category)));
         editView.setOnClickListener(v -> categoryClickListener.ifPresent(l -> l.edit(category)));
         deleteView.setOnClickListener(v -> categoryClickListener.ifPresent(l -> l.delete(category)));
     }
@@ -39,6 +42,8 @@ public class CategoryViewHolder extends BaseViewHolder<Category> {
     }
 
     public interface CategoryClickListener {
+
+        void select(Category category);
 
         void edit(Category category);
 
