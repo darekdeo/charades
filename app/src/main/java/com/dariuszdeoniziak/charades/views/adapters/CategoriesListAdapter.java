@@ -12,10 +12,18 @@ import androidx.annotation.NonNull;
 
 public class CategoriesListAdapter extends BaseAdapter<Category, CategoryViewHolder> {
 
+    private CategoryViewHolder.CategoryClickListener categoryClickListener;
+
     @NonNull
     @Override
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.holder_category, parent, false);
-        return new CategoryViewHolder(view);
+        CategoryViewHolder holder = new CategoryViewHolder(view);
+        holder.setCategoryClickListener(categoryClickListener);
+        return holder;
+    }
+
+    public void setCategoryClickListener(CategoryViewHolder.CategoryClickListener listener) {
+        categoryClickListener = listener;
     }
 }

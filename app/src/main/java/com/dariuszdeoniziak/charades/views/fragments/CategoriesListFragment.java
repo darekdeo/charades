@@ -12,6 +12,7 @@ import com.dariuszdeoniziak.charades.presenters.CategoriesListPresenter;
 import com.dariuszdeoniziak.charades.views.CategoriesListView;
 import com.dariuszdeoniziak.charades.views.Layout;
 import com.dariuszdeoniziak.charades.views.adapters.CategoriesListAdapter;
+import com.dariuszdeoniziak.charades.views.adapters.holders.CategoryViewHolder;
 
 import java.util.List;
 
@@ -48,6 +49,17 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
         View view = super.onCreateView(inflater, container, savedInstanceState);
         categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         categoriesRecyclerView.setAdapter(categoriesListAdapter);
+        categoriesListAdapter.setCategoryClickListener(new CategoryViewHolder.CategoryClickListener() {
+            @Override
+            public void edit(Category category) {
+                presenter.onEditCategory(category);
+            }
+
+            @Override
+            public void delete(Category category) {
+                presenter.onDeleteCategory(category);
+            }
+        });
         return view;
     }
 

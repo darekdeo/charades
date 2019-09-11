@@ -1,5 +1,6 @@
 package com.dariuszdeoniziak.charades.presenters;
 
+import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.views.CategoriesListView;
 
@@ -32,5 +33,13 @@ public class CategoriesListPresenter extends AbstractPresenter<CategoriesListVie
                 .doOnError(throwable -> view.ifPresent(CategoriesListView::showEmptyList))
                 .doFinally(() -> view.ifPresent(CategoriesListView::hideProgressIndicator))
                 .subscribe());
+    }
+
+    public void onEditCategory(Category category) {
+        // TODO implement on edit category, pass action to activity
+    }
+
+    public void onDeleteCategory(Category category) {
+        // TODO implement on delete category, pass action to activity
     }
 }
