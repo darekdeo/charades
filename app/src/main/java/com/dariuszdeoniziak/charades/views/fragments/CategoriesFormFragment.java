@@ -42,12 +42,12 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     public static String TAG = CategoriesFormFragment.class.getSimpleName();
 
     public static CategoriesFormFragment newInstance() {
-        return newInstance(0);
+        return newInstance(0L);
     }
 
-    public static CategoriesFormFragment newInstance(Integer categoryId) {
+    public static CategoriesFormFragment newInstance(Long categoryId) {
         Bundle bundle = new Bundle();
-        bundle.putInt(KEY_CATEGORY_ID, categoryId);
+        bundle.putLong(KEY_CATEGORY_ID, categoryId);
 
         CategoriesFormFragment fragment = new CategoriesFormFragment();
         fragment.setArguments(bundle);
@@ -63,7 +63,7 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            categoryId = getArguments().getInt(KEY_CATEGORY_ID, 0);
+            categoryId = getArguments().getLong(KEY_CATEGORY_ID, 0);
         }
     }
 

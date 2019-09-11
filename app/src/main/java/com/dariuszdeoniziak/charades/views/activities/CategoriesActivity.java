@@ -76,8 +76,8 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     }
 
     @Override
-    public void toEditForm(Integer categoryId) {
-        replaceFragment(CategoriesFormFragment::newInstance, CategoriesFormFragment.TAG, R.id.fragment_container, true);
+    public void editCategory(Long categoryId) {
+        replaceFragment(() -> CategoriesFormFragment.newInstance(categoryId), CategoriesFormFragment.TAG, R.id.fragment_container, true);
     }
 
     @Override

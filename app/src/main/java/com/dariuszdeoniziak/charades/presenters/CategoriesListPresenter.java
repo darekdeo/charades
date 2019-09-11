@@ -40,7 +40,7 @@ public class CategoriesListPresenter extends AbstractPresenter<CategoriesListVie
     }
 
     public void onEditCategory(Category category) {
-        // TODO implement on edit category, pass action to activity
+        view.ifPresent((action) -> action.editCategory(category.id));
     }
 
     public void onDeleteCategory(Category category) {

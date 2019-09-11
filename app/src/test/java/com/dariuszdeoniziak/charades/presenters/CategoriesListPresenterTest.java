@@ -76,4 +76,17 @@ public class CategoriesListPresenterTest {
         verify(view).showEmptyList();
         verify(view).hideProgressIndicator();
     }
+
+    @Test
+    public void editCategoryCallsRouteToForm() {
+        // given
+        Category category = new Category();
+        category.id = 5L;
+
+        // when
+        presenter.onEditCategory(category);
+
+        // then
+        verify(view).editCategory(category.id);
+    }
 }

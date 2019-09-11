@@ -1,16 +1,17 @@
 package com.dariuszdeoniziak.charades.views.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.presenters.CategoriesListPresenter;
+import com.dariuszdeoniziak.charades.utils.Optional;
 import com.dariuszdeoniziak.charades.views.CategoriesListView;
 import com.dariuszdeoniziak.charades.views.Layout;
+import com.dariuszdeoniziak.charades.views.ViewCall;
 import com.dariuszdeoniziak.charades.views.adapters.CategoriesListAdapter;
 import com.dariuszdeoniziak.charades.views.adapters.holders.CategoryViewHolder;
 
@@ -18,6 +19,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +35,8 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
     @Inject CategoriesListPresenter presenter;
     @Inject CategoriesListAdapter categoriesListAdapter;
 
+    private Optional<ViewCall.EditCategory> editCategory = Optional.empty();
+
     public static String TAG = CategoriesListFragment.class.getSimpleName();
 
     public static CategoriesListFragment newInstance() {
@@ -43,10 +47,15 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
         this.presenter = presenter;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        editCategory = Optional.of((ViewCall.EditCategory) context);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         categoriesRecyclerView.setAdapter(categoriesListAdapter);
         categoriesListAdapter.setCategoryClickListener(new CategoryViewHolder.CategoryClickListener() {
@@ -65,7 +74,6 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
                 presenter.onDeleteCategory(category);
             }
         });
-        return view;
     }
 
     @Override
@@ -99,5 +107,10 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
     @Override
     public void showEmptyList() {
         // TODO show no list items info
+    }
+
+    @Override
+    public void editCategory(Long categoryId) {
+        editCategory.ifPresent((action) -> action.editCategory(categoryId));
     }
 }
