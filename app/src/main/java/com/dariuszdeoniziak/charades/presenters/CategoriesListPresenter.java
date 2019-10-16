@@ -44,6 +44,10 @@ public class CategoriesListPresenter extends AbstractPresenter<CategoriesListVie
     }
 
     public void onDeleteCategory(Category category) {
+        view.ifPresent((action) -> action.showConfirmDeleteCategory(category));
+    }
+
+    public void onConfirmDeleteCategory(Category category) {
         run(() -> charadesRepository.deleteCategory(category)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

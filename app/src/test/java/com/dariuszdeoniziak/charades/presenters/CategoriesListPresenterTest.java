@@ -93,7 +93,19 @@ public class CategoriesListPresenterTest {
     }
 
     @Test
-    public void deleteCategoryCallsRefreshCategories() {
+    public void deleteCategoryCallsShowConfirmDialog() {
+        // given
+        Category category = new Category();
+
+        // when
+        presenter.onDeleteCategory(category);
+
+        // then
+        verify(view).showConfirmDeleteCategory(category);
+    }
+
+    @Test
+    public void confirmDeleteCategoryCallsDeleteCategoryAndLoadCategories() {
         // given
         Category category = new Category();
         when(presenter.charadesRepository.deleteCategory(category))
@@ -102,7 +114,7 @@ public class CategoriesListPresenterTest {
                 .thenReturn(Single.just(categories));
 
         // when
-        presenter.onDeleteCategory(category);
+        presenter.onConfirmDeleteCategory(category);
 
         // then
         verify(charadesRepository).deleteCategory(category);

@@ -10,4 +10,5 @@ public interface CategoriesListView extends ViewCall.EditCategory {
     void showProgressIndicator();
     void showCategories(List<Category> categories);
     void showEmptyList();
+    void showConfirmDeleteCategory(Category category);
 }

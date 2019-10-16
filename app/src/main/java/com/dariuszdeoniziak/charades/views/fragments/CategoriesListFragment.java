@@ -21,6 +21,7 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import trikita.knork.Knork;
@@ -112,5 +113,15 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
     @Override
     public void editCategory(Long categoryId) {
         editCategory.ifPresent((action) -> action.editCategory(categoryId));
+    }
+
+    @Override
+    public void showConfirmDeleteCategory(Category category) {
+        new AlertDialog.Builder(requireActivity())
+                .setTitle(R.string.categories_list_dialog_confirm_delete_title)
+                .setMessage(getResources().getString(R.string.categories_list_dialog_confirm_delete_message, category.name))
+                .setPositiveButton(R.string.yes, (dialog, which) -> presenter.onConfirmDeleteCategory(category))
+                .setNegativeButton(R.string.no, null)
+                .create().show();
     }
 }
