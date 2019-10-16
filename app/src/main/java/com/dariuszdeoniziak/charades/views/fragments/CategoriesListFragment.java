@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.presenters.CategoriesListPresenter;
+import com.dariuszdeoniziak.charades.utils.ComponentsFacade;
 import com.dariuszdeoniziak.charades.utils.Optional;
 import com.dariuszdeoniziak.charades.views.CategoriesListView;
 import com.dariuszdeoniziak.charades.views.Layout;
@@ -21,7 +22,6 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import trikita.knork.Knork;
@@ -117,11 +117,33 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
 
     @Override
     public void showConfirmDeleteCategory(Category category) {
-        new AlertDialog.Builder(requireActivity())
-                .setTitle(R.string.categories_list_dialog_confirm_delete_title)
-                .setMessage(getResources().getString(R.string.categories_list_dialog_confirm_delete_message, category.name))
-                .setPositiveButton(R.string.yes, (dialog, which) -> presenter.onConfirmDeleteCategory(category))
-                .setNegativeButton(R.string.no, null)
-                .create().show();
+        componentsFacade.showDialog(new ComponentsFacade.DialogTemplate() {
+            @Override
+            public String title() {
+                return getString(R.string.categories_list_dialog_confirm_delete_title);
+            }
+
+            @Override
+            public String message() {
+                return getString(R.string.categories_list_dialog_confirm_delete_message, category.name);
+            }
+
+            @Override
+            public String positiveButtonText() {
+                return getString(R.string.yes);
+            }
+
+            @Override
+            public String negativeButtonText() {
+                return getString(R.string.no);
+            }
+
+            @Override
+            public void callback(ComponentsFacade.DialogCallbackType type) {
+                if (type == ComponentsFacade.DialogCallbackType.POSITIVE) {
+                    presenter.onConfirmDeleteCategory(category);
+                }
+            }
+        });
     }
 }

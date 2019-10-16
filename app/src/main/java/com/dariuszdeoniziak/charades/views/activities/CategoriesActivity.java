@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.presenters.CategoriesPresenter;
-import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
+import com.dariuszdeoniziak.charades.utils.ComponentsFacade;
 import com.dariuszdeoniziak.charades.utils.Logger;
 import com.dariuszdeoniziak.charades.utils.Mapper;
 import com.dariuszdeoniziak.charades.views.CategoriesView;
@@ -32,11 +32,11 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
 
     void replace(
             CategoriesPresenter presenter,
-            AndroidStaticsWrapper androidWrapper,
+            ComponentsFacade componentsFacade,
             Mapper<BaseFragment, CategoryScreen> toCategoryScreenMapper
     ) {
         this.presenter = presenter;
-        this.androidWrapper = androidWrapper;
+        this.componentsFacade = componentsFacade;
         this.toCategoryScreenMapper = toCategoryScreenMapper;
     }
 
@@ -62,7 +62,7 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     @Override
     public void showTextInfo(String text) {
         log.info("text: " + text);
-        androidWrapper.showToast(this, text, Toast.LENGTH_SHORT);
+        componentsFacade.showToast(text, Toast.LENGTH_SHORT);
     }
 
     @Override

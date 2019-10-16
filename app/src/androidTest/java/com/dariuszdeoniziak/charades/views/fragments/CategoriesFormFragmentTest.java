@@ -2,7 +2,7 @@ package com.dariuszdeoniziak.charades.views.fragments;
 
 import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.presenters.CategoriesFormPresenter;
-import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
+import com.dariuszdeoniziak.charades.utils.ComponentsFacade;
 
 import org.junit.After;
 import org.junit.Before;
@@ -33,7 +33,7 @@ public class CategoriesFormFragmentTest {
     private FragmentScenario<CategoriesFormFragment> fragmentScenario;
 
     @Mock CategoriesFormPresenter presenter;
-    @Mock AndroidStaticsWrapper androidWrapper;
+    @Mock ComponentsFacade componentsFacade;
 
     @Before
     public void setUp() {
@@ -43,13 +43,13 @@ public class CategoriesFormFragmentTest {
         MockitoAnnotations.initMocks(this);
         fragmentScenario = FragmentScenario.launchInContainer(CategoriesFormFragment.class);
         fragmentScenario.onFragment((fragment) -> {
-            fragment.replace(presenter, androidWrapper); // replace injected presenter with mock
+            fragment.replace(presenter, componentsFacade); // replace injected presenter with mock
         });
     }
 
     @After
     public void tearDown() {
-        reset(presenter, androidWrapper);
+        reset(presenter, componentsFacade);
     }
 
     @Test

@@ -3,7 +3,7 @@ package com.dariuszdeoniziak.charades.views.activities;
 import android.os.Bundle;
 
 import com.dariuszdeoniziak.charades.modules.ActivityModule;
-import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
+import com.dariuszdeoniziak.charades.utils.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.Layout;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 
@@ -23,7 +23,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @LayoutRes private int layoutResId;
 
-    @Inject AndroidStaticsWrapper androidWrapper;
+    @Inject ComponentsFacade componentsFacade;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

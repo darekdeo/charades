@@ -1,7 +1,7 @@
 package com.dariuszdeoniziak.charades.views.activities;
 
 import com.dariuszdeoniziak.charades.presenters.CategoriesPresenter;
-import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
+import com.dariuszdeoniziak.charades.utils.ComponentsFacade;
 import com.dariuszdeoniziak.charades.utils.Mapper;
 import com.dariuszdeoniziak.charades.views.CategoryScreen;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
@@ -28,7 +28,7 @@ public class CategoriesActivityTest {
     @Mock
     CategoriesPresenter presenter;
     @Mock
-    AndroidStaticsWrapper androidStaticsWrapper;
+    ComponentsFacade componentsFacade;
     @Mock
     Mapper<BaseFragment, CategoryScreen> toCategoryScreenMapper;
 
@@ -39,13 +39,13 @@ public class CategoriesActivityTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         scenarioRule.getScenario().onActivity((activity -> {
-            activity.replace(presenter, androidStaticsWrapper, toCategoryScreenMapper);
+            activity.replace(presenter, componentsFacade, toCategoryScreenMapper);
         }));
     }
 
     @After
     public void tearDown() {
-        reset(presenter, androidStaticsWrapper, toCategoryScreenMapper);
+        reset(presenter, componentsFacade, toCategoryScreenMapper);
     }
 
     @Test

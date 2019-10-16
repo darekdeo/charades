@@ -9,6 +9,7 @@ import com.dariuszdeoniziak.charades.data.models.room.mapper.ToCategoryRoomModel
 import com.dariuszdeoniziak.charades.data.models.room.mapper.ToCharadeRoomModelMapper;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepositoryImpl;
+import com.dariuszdeoniziak.charades.utils.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 
 import org.codejargon.feather.Provides;
@@ -34,7 +35,7 @@ public class FragmentModule {
     public CharadesDataSource provideCharadesDataSource() {
         return new CharadesRoomDataSource(Room
                 .databaseBuilder(
-                        Objects.requireNonNull(fragmentRef.get().getActivity()).getApplicationContext(),
+                        Objects.requireNonNull(fragmentRef.get().getContext()).getApplicationContext(),
                         CharadesRoomDatabase.class,
                         "charades.db")
                 .allowMainThreadQueries()
@@ -51,5 +52,11 @@ public class FragmentModule {
                 new ToCharadeRoomModelMapper(),
                 new FromCharadeRoomModelMapper()
         );
+    }
+
+    @Provides
+    @Singleton
+    public ComponentsFacade provideComponentsFacade() {
+        return new ComponentsFacade(fragmentRef.get().getContext());
     }
 }

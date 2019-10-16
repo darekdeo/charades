@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dariuszdeoniziak.charades.modules.FragmentModule;
-import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
+import com.dariuszdeoniziak.charades.utils.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.Layout;
 
 import org.codejargon.feather.Feather;
@@ -23,7 +23,7 @@ public abstract class BaseFragment extends Fragment {
 
     @LayoutRes private int layoutResId;
 
-    @Inject AndroidStaticsWrapper androidWrapper;
+    @Inject ComponentsFacade componentsFacade;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

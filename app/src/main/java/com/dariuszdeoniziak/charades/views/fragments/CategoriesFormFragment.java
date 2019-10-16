@@ -8,7 +8,7 @@ import android.widget.Toast;
 import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.presenters.CategoriesFormPresenter;
-import com.dariuszdeoniziak.charades.utils.AndroidStaticsWrapper;
+import com.dariuszdeoniziak.charades.utils.ComponentsFacade;
 import com.dariuszdeoniziak.charades.utils.Optional;
 import com.dariuszdeoniziak.charades.views.CategoriesFormView;
 import com.dariuszdeoniziak.charades.views.Layout;
@@ -54,9 +54,9 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
         return fragment;
     }
 
-    void replace(CategoriesFormPresenter presenter, AndroidStaticsWrapper androidWrapper) {
+    void replace(CategoriesFormPresenter presenter, ComponentsFacade componentsFacade) {
         this.presenter = presenter;
-        this.androidWrapper = androidWrapper;
+        this.componentsFacade = componentsFacade;
     }
 
     @Override
@@ -95,7 +95,7 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
 
     @Override
     public void showTextInfo(final String text) {
-        androidWrapper.showToast(getActivity(), text, Toast.LENGTH_SHORT);
+        componentsFacade.showToast(text, Toast.LENGTH_SHORT);
     }
 
     @Override
