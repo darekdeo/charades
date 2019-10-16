@@ -36,7 +36,7 @@ public class CategoriesListPresenter extends AbstractPresenter<CategoriesListVie
     }
 
     public void onSelectCategory(Category category) {
-        // TODO implement on select category, pass action to activity
+        view.ifPresent((action) -> action.selectCategory(category.id));
     }
 
     public void onEditCategory(Category category) {

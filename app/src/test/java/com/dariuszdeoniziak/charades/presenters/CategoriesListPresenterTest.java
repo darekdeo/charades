@@ -80,6 +80,19 @@ public class CategoriesListPresenterTest {
     }
 
     @Test
+    public void selectCategoryCallsRouteToGame() {
+        // given
+        Category category = new Category();
+        category.id = 5L;
+
+        // when
+        presenter.onSelectCategory(category);
+
+        // then
+        verify(view).selectCategory(category.id);
+    }
+
+    @Test
     public void editCategoryCallsRouteToForm() {
         // given
         Category category = new Category();

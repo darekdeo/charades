@@ -12,7 +12,6 @@ import com.dariuszdeoniziak.charades.utils.ComponentsFacade;
 import com.dariuszdeoniziak.charades.utils.Optional;
 import com.dariuszdeoniziak.charades.views.CategoriesListView;
 import com.dariuszdeoniziak.charades.views.Layout;
-import com.dariuszdeoniziak.charades.views.ViewCall;
 import com.dariuszdeoniziak.charades.views.adapters.CategoriesListAdapter;
 import com.dariuszdeoniziak.charades.views.adapters.holders.CategoryViewHolder;
 
@@ -36,7 +35,7 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
     @Inject CategoriesListPresenter presenter;
     @Inject CategoriesListAdapter categoriesListAdapter;
 
-    private Optional<ViewCall.EditCategory> editCategory = Optional.empty();
+    private Optional<CategoriesListView.Callback> parentView = Optional.empty();
 
     public static String TAG = CategoriesListFragment.class.getSimpleName();
 
@@ -51,7 +50,7 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        editCategory = Optional.of((ViewCall.EditCategory) context);
+        parentView = Optional.of((CategoriesListView.Callback) context);
     }
 
     @Override
@@ -111,8 +110,13 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
     }
 
     @Override
+    public void selectCategory(Long categoryId) {
+        parentView.ifPresent((action) -> action.selectCategory(categoryId));
+    }
+
+    @Override
     public void editCategory(Long categoryId) {
-        editCategory.ifPresent((action) -> action.editCategory(categoryId));
+        parentView.ifPresent((action) -> action.editCategory(categoryId));
     }
 
     @Override

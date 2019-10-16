@@ -1,5 +1,6 @@
 package com.dariuszdeoniziak.charades.views.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,6 +74,12 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     @Override
     public void toForm() {
         replaceFragment(CategoriesFormFragment::newInstance, CategoriesFormFragment.TAG, R.id.fragment_container, true);
+    }
+
+    @Override
+    public void selectCategory(Long categoryId) {
+        Intent intent = new Intent(this, GameActivity.class);
+        startActivity(intent);
     }
 
     @Override
