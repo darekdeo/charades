@@ -50,7 +50,8 @@ public class CategoriesListPresenterTest {
     @Test
     public void loadCategoriesCallsShowCategories() {
         // given
-        when(presenter.charadesRepository.getCategories()).thenReturn(Single.just(categories));
+        when(presenter.charadesRepository.getCategories())
+                .thenReturn(Single.just(categories));
 
         // when
         presenter.onLoadCategories();
@@ -65,7 +66,8 @@ public class CategoriesListPresenterTest {
     @Test
     public void loadCategoriesCallsShowEmptyList() {
         // given
-        when(presenter.charadesRepository.getCategories()).thenReturn(Single.just(Collections.emptyList()));
+        when(presenter.charadesRepository.getCategories())
+                .thenReturn(Single.just(Collections.emptyList()));
 
         // when
         presenter.onLoadCategories();
@@ -88,5 +90,25 @@ public class CategoriesListPresenterTest {
 
         // then
         verify(view).editCategory(category.id);
+    }
+
+    @Test
+    public void deleteCategoryCallsRefreshCategories() {
+        // given
+        Category category = new Category();
+        when(presenter.charadesRepository.deleteCategory(category))
+                .thenReturn(Single.just(1L));
+        when(presenter.charadesRepository.getCategories())
+                .thenReturn(Single.just(categories));
+
+        // when
+        presenter.onDeleteCategory(category);
+
+        // then
+        verify(charadesRepository).deleteCategory(category);
+        verify(charadesRepository).getCategories();
+        verify(view).showProgressIndicator();
+        verify(view).showCategories(categories);
+        verify(view).hideProgressIndicator();
     }
 }

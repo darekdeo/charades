@@ -44,6 +44,19 @@ public class CategoriesListPresenter extends AbstractPresenter<CategoriesListVie
     }
 
     public void onDeleteCategory(Category category) {
-        // TODO implement on delete category, pass action to activity
+        run(() -> charadesRepository.deleteCategory(category)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> view.ifPresent(CategoriesListView::showProgressIndicator))
+                .flatMap(s -> charadesRepository.getCategories())
+                .doOnSuccess(categories -> view.ifPresent(action -> {
+                    if (categories.isEmpty())
+                        action.showEmptyList();
+                    else
+                        action.showCategories(categories);
+                }))
+                .doOnError(throwable -> view.ifPresent(CategoriesListView::showEmptyList))
+                .doFinally(() -> view.ifPresent(CategoriesListView::hideProgressIndicator))
+                .subscribe());
     }
 }
