@@ -68,7 +68,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         Fragment fragmentByTag = manager.findFragmentByTag(tag);
 
         if (fragmentByTag != null) {
-            manager.popBackStack(tag, 0);
+            if (!manager.popBackStackImmediate(tag, 0))
+                manager.popBackStack();
         } else {
             replaceFragment(createFragment, tag, containerResId, false);
         }
