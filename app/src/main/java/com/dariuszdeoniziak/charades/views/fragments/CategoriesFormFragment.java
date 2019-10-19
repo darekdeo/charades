@@ -76,7 +76,7 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     }
 
     private void setupViewActions() {
-        titleTextChangesDisposable = Optional.of(RxTextView
+        titleTextChangesDisposable = Optional.of(RxTextView // TODO move rx to presenter, view should not have such logic
                 .textChanges(editTextCategoryTitle)
                 .subscribeOn(Schedulers.io())
                 .debounce(TYPING_DELAY, TimeUnit.SECONDS)
