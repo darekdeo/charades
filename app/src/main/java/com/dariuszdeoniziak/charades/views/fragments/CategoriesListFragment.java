@@ -2,7 +2,6 @@ package com.dariuszdeoniziak.charades.views.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
 import com.dariuszdeoniziak.charades.R;
@@ -26,7 +25,7 @@ import trikita.knork.Knork;
 
 
 @Layout(R.layout.fragment_categories_list)
-public class CategoriesListFragment extends BaseFragment implements CategoriesListContract.CategoriesListView {
+public class CategoriesListFragment extends BaseFragment implements CategoriesListContract.View {
 
     @Knork.Id(R.id.categories_title) TextView categoriesTitleView;
     @Knork.Id(R.id.categories_recycler) RecyclerView categoriesRecyclerView;
@@ -53,7 +52,7 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull android.view.View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         categoriesRecyclerView.setAdapter(categoriesListAdapter);

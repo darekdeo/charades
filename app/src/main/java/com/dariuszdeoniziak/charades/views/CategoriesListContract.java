@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CategoriesListContract {
 
-    interface CategoriesListView {
+    interface View {
         void hideProgressIndicator();
 
         void showProgressIndicator();

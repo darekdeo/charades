@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
 public class CategoriesListPresenterTest {
 
     @Mock List<Category> categories;
-    @Mock CategoriesListContract.CategoriesListView view;
+    @Mock CategoriesListContract.View view;
     @Mock CharadesRepository charadesRepository;
     private CategoriesListPresenter presenter;
 

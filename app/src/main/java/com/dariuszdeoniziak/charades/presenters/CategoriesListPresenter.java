@@ -10,7 +10,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class CategoriesListPresenter extends AbstractPresenter<CategoriesListContract.CategoriesListView>
+public class CategoriesListPresenter extends AbstractPresenter<CategoriesListContract.View>
         implements CategoriesListContract.ListItemPresenter {
 
     final CharadesRepository charadesRepository;
@@ -24,15 +24,15 @@ public class CategoriesListPresenter extends AbstractPresenter<CategoriesListCon
         run(() -> charadesRepository.getCategories()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> view.ifPresent(CategoriesListContract.CategoriesListView::showProgressIndicator))
+                .doOnSubscribe(disposable -> view.ifPresent(CategoriesListContract.View::showProgressIndicator))
                 .doOnSuccess(categories -> view.ifPresent(action -> {
                     if (categories.isEmpty())
                         action.showEmptyList();
                     else
                         action.showCategories(categories);
                 }))
-                .doOnError(throwable -> view.ifPresent(CategoriesListContract.CategoriesListView::showEmptyList))
-                .doFinally(() -> view.ifPresent(CategoriesListContract.CategoriesListView::hideProgressIndicator))
+                .doOnError(throwable -> view.ifPresent(CategoriesListContract.View::showEmptyList))
+                .doFinally(() -> view.ifPresent(CategoriesListContract.View::hideProgressIndicator))
                 .subscribe());
     }
 
@@ -40,7 +40,7 @@ public class CategoriesListPresenter extends AbstractPresenter<CategoriesListCon
         run(() -> charadesRepository.deleteCategory(category)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> view.ifPresent(CategoriesListContract.CategoriesListView::showProgressIndicator))
+                .doOnSubscribe(disposable -> view.ifPresent(CategoriesListContract.View::showProgressIndicator))
                 .flatMap(s -> charadesRepository.getCategories())
                 .doOnSuccess(categories -> view.ifPresent(action -> {
                     if (categories.isEmpty())
@@ -48,8 +48,8 @@ public class CategoriesListPresenter extends AbstractPresenter<CategoriesListCon
                     else
                         action.showCategories(categories);
                 }))
-                .doOnError(throwable -> view.ifPresent(CategoriesListContract.CategoriesListView::showEmptyList))
-                .doFinally(() -> view.ifPresent(CategoriesListContract.CategoriesListView::hideProgressIndicator))
+                .doOnError(throwable -> view.ifPresent(CategoriesListContract.View::showEmptyList))
+                .doFinally(() -> view.ifPresent(CategoriesListContract.View::hideProgressIndicator))
                 .subscribe());
     }
 
