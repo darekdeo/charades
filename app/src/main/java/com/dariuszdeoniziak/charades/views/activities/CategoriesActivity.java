@@ -7,11 +7,11 @@ import android.widget.Toast;
 
 import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.presenters.CategoriesPresenter;
-import com.dariuszdeoniziak.charades.utils.ComponentsFacade;
 import com.dariuszdeoniziak.charades.utils.Logger;
 import com.dariuszdeoniziak.charades.utils.Mapper;
 import com.dariuszdeoniziak.charades.views.CategoriesView;
 import com.dariuszdeoniziak.charades.views.CategoryScreen;
+import com.dariuszdeoniziak.charades.views.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.Layout;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 import com.dariuszdeoniziak.charades.views.fragments.CategoriesFormFragment;

@@ -1,4 +1,4 @@
-package com.dariuszdeoniziak.charades.utils;
+package com.dariuszdeoniziak.charades.views;
 
 import android.content.Context;
 import android.widget.Toast;

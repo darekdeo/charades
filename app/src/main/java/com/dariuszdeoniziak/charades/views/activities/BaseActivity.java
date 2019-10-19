@@ -3,7 +3,7 @@ package com.dariuszdeoniziak.charades.views.activities;
 import android.os.Bundle;
 
 import com.dariuszdeoniziak.charades.modules.ActivityModule;
-import com.dariuszdeoniziak.charades.utils.ComponentsFacade;
+import com.dariuszdeoniziak.charades.views.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.Layout;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 

@@ -2,7 +2,7 @@ package com.dariuszdeoniziak.charades.views.fragments;
 
 import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.presenters.CategoriesFormPresenter;
-import com.dariuszdeoniziak.charades.utils.ComponentsFacade;
+import com.dariuszdeoniziak.charades.views.ComponentsFacade;
 
 import org.junit.After;
 import org.junit.Before;

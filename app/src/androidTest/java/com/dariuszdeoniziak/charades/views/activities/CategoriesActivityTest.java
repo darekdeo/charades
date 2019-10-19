@@ -1,9 +1,9 @@
 package com.dariuszdeoniziak.charades.views.activities;
 
 import com.dariuszdeoniziak.charades.presenters.CategoriesPresenter;
-import com.dariuszdeoniziak.charades.utils.ComponentsFacade;
 import com.dariuszdeoniziak.charades.utils.Mapper;
 import com.dariuszdeoniziak.charades.views.CategoryScreen;
+import com.dariuszdeoniziak.charades.views.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 
 import org.junit.After;
@@ -38,9 +38,8 @@ public class CategoriesActivityTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        scenarioRule.getScenario().onActivity((activity -> {
-            activity.replace(presenter, componentsFacade, toCategoryScreenMapper);
-        }));
+        scenarioRule.getScenario().onActivity((activity ->
+                activity.replace(presenter, componentsFacade, toCategoryScreenMapper)));
     }
 
     @After

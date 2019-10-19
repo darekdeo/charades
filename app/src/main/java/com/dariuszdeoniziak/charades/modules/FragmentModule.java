@@ -9,7 +9,7 @@ import com.dariuszdeoniziak.charades.data.models.room.mapper.ToCategoryRoomModel
 import com.dariuszdeoniziak.charades.data.models.room.mapper.ToCharadeRoomModelMapper;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepositoryImpl;
-import com.dariuszdeoniziak.charades.utils.ComponentsFacade;
+import com.dariuszdeoniziak.charades.views.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 
 import org.codejargon.feather.Provides;

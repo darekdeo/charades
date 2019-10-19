@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dariuszdeoniziak.charades.modules.FragmentModule;
-import com.dariuszdeoniziak.charades.utils.ComponentsFacade;
+import com.dariuszdeoniziak.charades.views.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.Layout;
 
 import org.codejargon.feather.Feather;
