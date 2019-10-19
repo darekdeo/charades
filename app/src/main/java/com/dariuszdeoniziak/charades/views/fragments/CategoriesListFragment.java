@@ -143,10 +143,8 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
             }
 
             @Override
-            public void callback(ComponentsFacade.DialogCallbackType type) {
-                if (type == ComponentsFacade.DialogCallbackType.POSITIVE) {
-                    presenter.onConfirmDeleteCategory(category);
-                }
+            public void positiveCallback() {
+                presenter.onConfirmDeleteCategory(category);
             }
         });
     }

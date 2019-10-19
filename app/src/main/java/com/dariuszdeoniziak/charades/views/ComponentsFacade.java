@@ -31,14 +31,14 @@ public class ComponentsFacade {
         if (!template.positiveButtonText().isEmpty()) {
             builder.setPositiveButton(
                     template.positiveButtonText(),
-                    (dialog, which) -> template.callback(DialogCallbackType.POSITIVE)
+                    (dialog, which) -> template.positiveCallback()
             );
         }
 
         if (!template.negativeButtonText().isEmpty()) {
             builder.setNegativeButton(
                     template.negativeButtonText(),
-                    (dialog, which) -> template.callback(DialogCallbackType.NEGATIVE)
+                    (dialog, which) -> template.negativeCallback()
             );
         }
 
@@ -52,13 +52,14 @@ public class ComponentsFacade {
 
         String positiveButtonText();
 
-        String negativeButtonText();
+        default String negativeButtonText() {
+            return "";
+        }
 
-        void callback(DialogCallbackType type);
-    }
+        default void positiveCallback() {
+        }
 
-    public enum DialogCallbackType {
-        POSITIVE,
-        NEGATIVE
+        default void negativeCallback() {
+        }
     }
 }
