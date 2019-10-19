@@ -3,7 +3,7 @@ package com.dariuszdeoniziak.charades.presenters;
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.utils.RxJavaTestRunner;
-import com.dariuszdeoniziak.charades.views.CategoriesListView;
+import com.dariuszdeoniziak.charades.views.CategoriesListContract;
 
 import org.junit.After;
 import org.junit.Before;
@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
 public class CategoriesListPresenterTest {
 
     @Mock List<Category> categories;
-    @Mock CategoriesListView view;
+    @Mock CategoriesListContract.CategoriesListView view;
     @Mock CharadesRepository charadesRepository;
     private CategoriesListPresenter presenter;
 
@@ -86,7 +86,7 @@ public class CategoriesListPresenterTest {
         category.id = 5L;
 
         // when
-        presenter.onSelectCategory(category);
+        presenter.onSelect(category);
 
         // then
         verify(view).selectCategory(category.id);
@@ -99,7 +99,7 @@ public class CategoriesListPresenterTest {
         category.id = 5L;
 
         // when
-        presenter.onEditCategory(category);
+        presenter.onEdit(category);
 
         // then
         verify(view).editCategory(category.id);
@@ -111,7 +111,7 @@ public class CategoriesListPresenterTest {
         Category category = new Category();
 
         // when
-        presenter.onDeleteCategory(category);
+        presenter.onDelete(category);
 
         // then
         verify(view).showConfirmDeleteCategory(category);

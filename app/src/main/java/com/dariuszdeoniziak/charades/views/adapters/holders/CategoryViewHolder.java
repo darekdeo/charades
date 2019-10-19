@@ -6,6 +6,7 @@ import android.widget.TextView;
 import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.utils.Optional;
+import com.dariuszdeoniziak.charades.views.CategoriesListContract;
 import com.dariuszdeoniziak.charades.views.widgets.FontAwesomeView;
 
 import androidx.annotation.NonNull;
@@ -18,7 +19,7 @@ public class CategoryViewHolder extends BaseViewHolder<Category> {
     private TextView descriptionView;
     private FontAwesomeView editView;
     private FontAwesomeView deleteView;
-    private Optional<CategoryClickListener> categoryClickListener = Optional.empty();
+    private Optional<CategoriesListContract.ListItemPresenter> presenter = Optional.empty();
 
     public CategoryViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -32,21 +33,12 @@ public class CategoryViewHolder extends BaseViewHolder<Category> {
     public void bind(Category category) {
         nameView.setText(category.name);
         descriptionView.setText(category.description);
-        itemView.setOnClickListener(v -> categoryClickListener.ifPresent(l -> l.select(category)));
-        editView.setOnClickListener(v -> categoryClickListener.ifPresent(l -> l.edit(category)));
-        deleteView.setOnClickListener(v -> categoryClickListener.ifPresent(l -> l.delete(category)));
+        itemView.setOnClickListener(v -> presenter.ifPresent(l -> l.onSelect(category)));
+        editView.setOnClickListener(v -> presenter.ifPresent(l -> l.onEdit(category)));
+        deleteView.setOnClickListener(v -> presenter.ifPresent(l -> l.onDelete(category)));
     }
 
-    public void setCategoryClickListener(CategoryClickListener listener) {
-        categoryClickListener = Optional.of(listener);
-    }
-
-    public interface CategoryClickListener {
-
-        void select(Category category);
-
-        void edit(Category category);
-
-        void delete(Category category);
+    public void setPresenter(CategoriesListContract.ListItemPresenter presenter) {
+        this.presenter = Optional.of(presenter);
     }
 }

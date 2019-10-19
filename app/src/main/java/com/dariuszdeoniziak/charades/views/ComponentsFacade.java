@@ -45,7 +45,7 @@ public class ComponentsFacade {
         builder.create().show();
     }
 
-    public interface DialogTemplate {
+    public interface DialogTemplate { // TODO move to BaseContract.DialogPresenter
         String title();
 
         String message();

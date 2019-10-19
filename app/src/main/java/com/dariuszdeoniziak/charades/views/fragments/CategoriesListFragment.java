@@ -9,11 +9,10 @@ import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.presenters.CategoriesListPresenter;
 import com.dariuszdeoniziak.charades.utils.Optional;
-import com.dariuszdeoniziak.charades.views.CategoriesListView;
+import com.dariuszdeoniziak.charades.views.CategoriesListContract;
 import com.dariuszdeoniziak.charades.views.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.Layout;
 import com.dariuszdeoniziak.charades.views.adapters.CategoriesListAdapter;
-import com.dariuszdeoniziak.charades.views.adapters.holders.CategoryViewHolder;
 
 import java.util.List;
 
@@ -27,7 +26,7 @@ import trikita.knork.Knork;
 
 
 @Layout(R.layout.fragment_categories_list)
-public class CategoriesListFragment extends BaseFragment implements CategoriesListView {
+public class CategoriesListFragment extends BaseFragment implements CategoriesListContract.CategoriesListView {
 
     @Knork.Id(R.id.categories_title) TextView categoriesTitleView;
     @Knork.Id(R.id.categories_recycler) RecyclerView categoriesRecyclerView;
@@ -35,7 +34,7 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
     @Inject CategoriesListPresenter presenter;
     @Inject CategoriesListAdapter categoriesListAdapter;
 
-    private Optional<CategoriesListView.Callback> parentView = Optional.empty();
+    private Optional<CategoriesListContract.ParentView> parentView = Optional.empty();
 
     public static String TAG = CategoriesListFragment.class.getSimpleName();
 
@@ -50,7 +49,7 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        parentView = Optional.of((CategoriesListView.Callback) context);
+        parentView = Optional.of((CategoriesListContract.ParentView) context);
     }
 
     @Override
@@ -58,22 +57,7 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
         super.onViewCreated(view, savedInstanceState);
         categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         categoriesRecyclerView.setAdapter(categoriesListAdapter);
-        categoriesListAdapter.setCategoryClickListener(new CategoryViewHolder.CategoryClickListener() {
-            @Override
-            public void select(Category category) {
-                presenter.onSelectCategory(category);
-            }
-
-            @Override
-            public void edit(Category category) {
-                presenter.onEditCategory(category);
-            }
-
-            @Override
-            public void delete(Category category) {
-                presenter.onDeleteCategory(category);
-            }
-        });
+        categoriesListAdapter.setPresenter(presenter);
     }
 
     @Override
@@ -124,7 +108,7 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
         componentsFacade.showDialog(new ComponentsFacade.DialogTemplate() {
             @Override
             public String title() {
-                return getString(R.string.categories_list_dialog_confirm_delete_title);
+                return getString(R.string.categories_list_dialog_confirm_delete_title); // TODO create labels repository and data source instead of directly accessing labels from android resources
             }
 
             @Override
