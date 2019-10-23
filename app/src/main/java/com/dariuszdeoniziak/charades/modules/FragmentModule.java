@@ -1,6 +1,8 @@
 package com.dariuszdeoniziak.charades.modules;
 
 import com.dariuszdeoniziak.charades.data.datasources.CharadesDataSource;
+import com.dariuszdeoniziak.charades.data.datasources.LabelsDataSource;
+import com.dariuszdeoniziak.charades.data.datasources.resourcelabels.ResourcesLabelsDataSource;
 import com.dariuszdeoniziak.charades.data.datasources.room.CharadesRoomDataSource;
 import com.dariuszdeoniziak.charades.data.datasources.room.CharadesRoomDatabase;
 import com.dariuszdeoniziak.charades.data.models.room.mapper.FromCategoryRoomModelMapper;
@@ -9,6 +11,8 @@ import com.dariuszdeoniziak.charades.data.models.room.mapper.ToCategoryRoomModel
 import com.dariuszdeoniziak.charades.data.models.room.mapper.ToCharadeRoomModelMapper;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepositoryImpl;
+import com.dariuszdeoniziak.charades.data.repositories.LabelsRepository;
+import com.dariuszdeoniziak.charades.data.repositories.LabelsRepositoryImpl;
 import com.dariuszdeoniziak.charades.views.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 
@@ -52,6 +56,18 @@ public class FragmentModule {
                 new ToCharadeRoomModelMapper(),
                 new FromCharadeRoomModelMapper()
         );
+    }
+
+    @Provides
+    @Singleton
+    public LabelsDataSource provideResourcesLabelsDataSource() {
+        return new ResourcesLabelsDataSource(Objects.requireNonNull(fragmentRef.get().getContext()));
+    }
+
+    @Provides
+    @Singleton
+    public LabelsRepository provideLabelsRepository() {
+        return new LabelsRepositoryImpl(provideResourcesLabelsDataSource());
     }
 
     @Provides
