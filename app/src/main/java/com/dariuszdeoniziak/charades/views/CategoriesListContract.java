@@ -16,7 +16,7 @@ public interface CategoriesListContract {
 
         void showEmptyList();
 
-        void showConfirmDeleteCategory(Category category);
+        void showConfirmDeleteCategory(Category category, String title, String message, String positiveText, String negativeText);
 
         void selectCategory(Long categoryId);
 
@@ -24,6 +24,7 @@ public interface CategoriesListContract {
     }
 
     interface ParentView {
+
         void selectCategory(Long categoryId);
 
         void editCategory(Long categoryId);

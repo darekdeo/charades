@@ -1,7 +1,9 @@
 package com.dariuszdeoniziak.charades.presenters;
 
 import com.dariuszdeoniziak.charades.data.models.Category;
+import com.dariuszdeoniziak.charades.data.models.Label;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
+import com.dariuszdeoniziak.charades.data.repositories.LabelsRepository;
 import com.dariuszdeoniziak.charades.utils.RxJavaTestRunner;
 import com.dariuszdeoniziak.charades.views.CategoriesListContract;
 
@@ -30,6 +32,7 @@ public class CategoriesListPresenterTest {
     @Mock List<Category> categories;
     @Mock CategoriesListContract.View view;
     @Mock CharadesRepository charadesRepository;
+    @Mock LabelsRepository labelsRepository;
     private CategoriesListPresenter presenter;
 
     @Before
@@ -37,20 +40,20 @@ public class CategoriesListPresenterTest {
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
 
         MockitoAnnotations.initMocks(this);
-        presenter = new CategoriesListPresenter(charadesRepository);
+        presenter = new CategoriesListPresenter(charadesRepository, labelsRepository);
         presenter.onTakeView(view);
     }
 
     @After
     public void tearDown() {
         RxJavaPlugins.reset();
-        reset(categories, view, charadesRepository);
+        reset(categories, view, charadesRepository, labelsRepository);
     }
 
     @Test
     public void loadCategoriesCallsShowCategories() {
         // given
-        when(presenter.charadesRepository.getCategories())
+        when(charadesRepository.getCategories())
                 .thenReturn(Single.just(categories));
 
         // when
@@ -66,7 +69,7 @@ public class CategoriesListPresenterTest {
     @Test
     public void loadCategoriesCallsShowEmptyList() {
         // given
-        when(presenter.charadesRepository.getCategories())
+        when(charadesRepository.getCategories())
                 .thenReturn(Single.just(Collections.emptyList()));
 
         // when
@@ -109,21 +112,31 @@ public class CategoriesListPresenterTest {
     public void deleteCategoryCallsShowConfirmDialog() {
         // given
         Category category = new Category();
+        when(labelsRepository.getLabel(Label.categories_list_dialog_confirm_delete_title)).thenReturn("title");
+        when(labelsRepository.getLabel(Label.categories_list_dialog_confirm_delete_message)).thenReturn("message");
+        when(labelsRepository.getLabel(Label.yes)).thenReturn("yes");
+        when(labelsRepository.getLabel(Label.no)).thenReturn("no");
 
         // when
         presenter.onDelete(category);
 
         // then
-        verify(view).showConfirmDeleteCategory(category);
+        verify(view).showConfirmDeleteCategory(
+                category,
+                labelsRepository.getLabel(Label.categories_list_dialog_confirm_delete_title),
+                labelsRepository.getLabel(Label.categories_list_dialog_confirm_delete_message, category.name),
+                labelsRepository.getLabel(Label.yes),
+                labelsRepository.getLabel(Label.no)
+        );
     }
 
     @Test
     public void confirmDeleteCategoryCallsDeleteCategoryAndLoadCategories() {
         // given
         Category category = new Category();
-        when(presenter.charadesRepository.deleteCategory(category))
+        when(charadesRepository.deleteCategory(category))
                 .thenReturn(Single.just(1L));
-        when(presenter.charadesRepository.getCategories())
+        when(charadesRepository.getCategories())
                 .thenReturn(Single.just(categories));
 
         // when

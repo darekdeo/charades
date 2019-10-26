@@ -103,26 +103,26 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
     }
 
     @Override
-    public void showConfirmDeleteCategory(Category category) {
+    public void showConfirmDeleteCategory(Category category, String title, String message, String positiveButton, String negativeButton) {
         componentsFacade.showDialog(new ComponentsFacade.DialogTemplate() {
             @Override
             public String title() {
-                return getString(R.string.categories_list_dialog_confirm_delete_title); // TODO create labels repository and data source instead of directly accessing labels from android resources
+                return title;
             }
 
             @Override
             public String message() {
-                return getString(R.string.categories_list_dialog_confirm_delete_message, category.name);
+                return message;
             }
 
             @Override
             public String positiveButtonText() {
-                return getString(R.string.yes);
+                return positiveButton;
             }
 
             @Override
             public String negativeButtonText() {
-                return getString(R.string.no);
+                return negativeButton;
             }
 
             @Override

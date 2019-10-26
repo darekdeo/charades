@@ -1,7 +1,9 @@
 package com.dariuszdeoniziak.charades.presenters;
 
 import com.dariuszdeoniziak.charades.data.models.Category;
+import com.dariuszdeoniziak.charades.data.models.Label;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
+import com.dariuszdeoniziak.charades.data.repositories.LabelsRepository;
 import com.dariuszdeoniziak.charades.views.CategoriesListContract;
 
 import javax.inject.Inject;
@@ -13,11 +15,13 @@ import io.reactivex.schedulers.Schedulers;
 public class CategoriesListPresenter extends AbstractPresenter<CategoriesListContract.View>
         implements CategoriesListContract.ListItemPresenter {
 
-    final CharadesRepository charadesRepository;
+    private final CharadesRepository charadesRepository;
+    private final LabelsRepository labelsRepository;
 
     @Inject
-    CategoriesListPresenter(CharadesRepository charadesRepository) {
+    CategoriesListPresenter(CharadesRepository charadesRepository, LabelsRepository labelsRepository) {
         this.charadesRepository = charadesRepository;
+        this.labelsRepository = labelsRepository;
     }
 
     public void onLoadCategories() {
@@ -65,6 +69,12 @@ public class CategoriesListPresenter extends AbstractPresenter<CategoriesListCon
 
     @Override
     public void onDelete(Category category) {
-        view.ifPresent((action) -> action.showConfirmDeleteCategory(category));
+        view.ifPresent((action) -> action.showConfirmDeleteCategory(
+                category,
+                labelsRepository.getLabel(Label.categories_list_dialog_confirm_delete_title),
+                labelsRepository.getLabel(Label.categories_list_dialog_confirm_delete_message, category.name),
+                labelsRepository.getLabel(Label.yes),
+                labelsRepository.getLabel(Label.no)
+        ));
     }
 }

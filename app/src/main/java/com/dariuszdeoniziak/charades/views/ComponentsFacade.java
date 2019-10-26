@@ -28,24 +28,20 @@ public class ComponentsFacade {
                 .setTitle(template.title())
                 .setMessage(template.message());
 
-        if (!template.positiveButtonText().isEmpty()) {
-            builder.setPositiveButton(
-                    template.positiveButtonText(),
-                    (dialog, which) -> template.positiveCallback()
-            );
-        }
+        builder.setPositiveButton(
+                template.positiveButtonText(),
+                (dialog, which) -> template.positiveCallback()
+        );
 
-        if (!template.negativeButtonText().isEmpty()) {
-            builder.setNegativeButton(
-                    template.negativeButtonText(),
-                    (dialog, which) -> template.negativeCallback()
-            );
-        }
+        builder.setNegativeButton(
+                template.negativeButtonText(),
+                (dialog, which) -> template.negativeCallback()
+        );
 
         builder.create().show();
     }
 
-    public interface DialogTemplate { // TODO move to BaseContract.DialogPresenter
+    public interface DialogTemplate {
         String title();
 
         String message();
