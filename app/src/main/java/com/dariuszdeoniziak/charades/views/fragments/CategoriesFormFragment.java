@@ -71,7 +71,7 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     public void onStart() {
         super.onStart();
         presenter.onTakeView(this);
-        presenter.onLoadCategory(categoryId); // TODO move to presenter
+        presenter.onLoadCategory(categoryId);
         setupViewActions();
     }
 
