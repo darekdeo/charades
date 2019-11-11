@@ -2,6 +2,7 @@ package com.dariuszdeoniziak.charades.presenters;
 
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
+import com.dariuszdeoniziak.charades.schedulers.TestSchedulerFactory;
 import com.dariuszdeoniziak.charades.utils.RxJavaTestRunner;
 import com.dariuszdeoniziak.charades.views.CategoriesFormView;
 
@@ -12,12 +13,14 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.Single;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.schedulers.TestScheduler;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
@@ -30,20 +33,19 @@ public class CategoriesFormPresenterTest {
 
     @Mock CategoriesFormView view;
     @Mock CharadesRepository charadesRepository;
+    private TestSchedulerFactory testSchedulerFactory = new TestSchedulerFactory();
     private CategoriesFormPresenter presenter;
 
     @Before
     public void setUp() {
-        RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
-
         MockitoAnnotations.initMocks(this);
-        presenter = new CategoriesFormPresenter(charadesRepository);
+        presenter = new CategoriesFormPresenter(charadesRepository, testSchedulerFactory);
         presenter.onTakeView(view);
     }
 
     @After
     public void tearDown() {
-        RxJavaPlugins.reset();
+        testSchedulerFactory.reset();
         reset(view, charadesRepository);
     }
 
@@ -74,6 +76,28 @@ public class CategoriesFormPresenterTest {
         verify(charadesRepository, never()).getCategory(anyLong());
         assertNotNull(presenter.category);
         verify(view, never()).showCategory(presenter.category);
+    }
+
+    @Test
+    public void titleChangeShouldTriggerSaveCategoryTitleAfterTypingDelay() {
+        // given
+        Long categoryId = 1L;
+        Category category = new Category();
+        presenter.category = category;
+        when(charadesRepository.saveCategory(category)).thenReturn(Single.just(categoryId));
+
+        String testString = "test";
+        int typingDelay = CategoriesFormPresenter.TYPING_DELAY;
+        TestScheduler testScheduler = new TestScheduler();
+        testSchedulerFactory.replaceComputationScheduler(testScheduler);
+
+        // when
+        presenter.onEditedCategoryTitle(testString);
+
+        // then
+        verify(charadesRepository, never()).saveCategory(any());
+        testScheduler.advanceTimeBy(typingDelay, TimeUnit.SECONDS);
+        verify(charadesRepository).saveCategory(presenter.category);
     }
 
     @Test

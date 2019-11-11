@@ -4,12 +4,10 @@ import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.data.models.Label;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.data.repositories.LabelsRepository;
+import com.dariuszdeoniziak.charades.schedulers.SchedulerFactory;
 import com.dariuszdeoniziak.charades.views.CategoriesListContract;
 
 import javax.inject.Inject;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 
 public class CategoriesListPresenter extends AbstractPresenter<CategoriesListContract.View>
@@ -17,17 +15,23 @@ public class CategoriesListPresenter extends AbstractPresenter<CategoriesListCon
 
     private final CharadesRepository charadesRepository;
     private final LabelsRepository labelsRepository;
+    private final SchedulerFactory schedulerFactory;
 
     @Inject
-    CategoriesListPresenter(CharadesRepository charadesRepository, LabelsRepository labelsRepository) {
+    CategoriesListPresenter(
+            CharadesRepository charadesRepository,
+            LabelsRepository labelsRepository,
+            SchedulerFactory schedulerFactory
+    ) {
         this.charadesRepository = charadesRepository;
         this.labelsRepository = labelsRepository;
+        this.schedulerFactory = schedulerFactory;
     }
 
     public void onLoadCategories() {
         run(() -> charadesRepository.getCategories()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerFactory.io())
+                .observeOn(schedulerFactory.ui())
                 .doOnSubscribe(disposable -> view.ifPresent(CategoriesListContract.View::showProgressIndicator))
                 .doOnSuccess(categories -> view.ifPresent(action -> {
                     if (categories.isEmpty())
@@ -42,8 +46,8 @@ public class CategoriesListPresenter extends AbstractPresenter<CategoriesListCon
 
     public void onConfirmDeleteCategory(Category category) {
         run(() -> charadesRepository.deleteCategory(category)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerFactory.io())
+                .observeOn(schedulerFactory.ui())
                 .doOnSubscribe(disposable -> view.ifPresent(CategoriesListContract.View::showProgressIndicator))
                 .flatMap(s -> charadesRepository.getCategories())
                 .doOnSuccess(categories -> view.ifPresent(action -> {

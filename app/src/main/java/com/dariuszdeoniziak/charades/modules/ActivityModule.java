@@ -7,6 +7,8 @@ import com.dariuszdeoniziak.charades.data.datasources.PreferencesDataSource;
 import com.dariuszdeoniziak.charades.data.datasources.sharedpreferences.SharedPreferencesDataSource;
 import com.dariuszdeoniziak.charades.data.repositories.PreferencesRepository;
 import com.dariuszdeoniziak.charades.data.repositories.PreferencesRepositoryImpl;
+import com.dariuszdeoniziak.charades.schedulers.DefaultSchedulerFactory;
+import com.dariuszdeoniziak.charades.schedulers.SchedulerFactory;
 import com.dariuszdeoniziak.charades.utils.Mapper;
 import com.dariuszdeoniziak.charades.views.CategoryScreen;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
@@ -55,5 +57,11 @@ public class ActivityModule {
     @Singleton
     public Mapper<BaseFragment, CategoryScreen> provideToCategoryScreenMapper() {
         return new ToCategoryScreenMapper();
+    }
+
+    @Provides
+    @Singleton
+    public SchedulerFactory provideSchedulerProvider() {
+        return new DefaultSchedulerFactory();
     }
 }

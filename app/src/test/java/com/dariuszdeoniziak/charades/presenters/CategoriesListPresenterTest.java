@@ -4,6 +4,7 @@ import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.data.models.Label;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.data.repositories.LabelsRepository;
+import com.dariuszdeoniziak.charades.schedulers.TestSchedulerFactory;
 import com.dariuszdeoniziak.charades.utils.RxJavaTestRunner;
 import com.dariuszdeoniziak.charades.views.CategoriesListContract;
 
@@ -18,8 +19,6 @@ import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Single;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
 
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
@@ -33,20 +32,19 @@ public class CategoriesListPresenterTest {
     @Mock CategoriesListContract.View view;
     @Mock CharadesRepository charadesRepository;
     @Mock LabelsRepository labelsRepository;
+    private TestSchedulerFactory testSchedulerFactory = new TestSchedulerFactory();
     private CategoriesListPresenter presenter;
 
     @Before
     public void setUp() {
-        RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
-
         MockitoAnnotations.initMocks(this);
-        presenter = new CategoriesListPresenter(charadesRepository, labelsRepository);
+        presenter = new CategoriesListPresenter(charadesRepository, labelsRepository, testSchedulerFactory);
         presenter.onTakeView(view);
     }
 
     @After
     public void tearDown() {
-        RxJavaPlugins.reset();
+        testSchedulerFactory.reset();
         reset(categories, view, charadesRepository, labelsRepository);
     }
 

@@ -2,59 +2,81 @@ package com.dariuszdeoniziak.charades.presenters;
 
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
-import com.dariuszdeoniziak.charades.utils.Optional;
+import com.dariuszdeoniziak.charades.schedulers.SchedulerFactory;
 import com.dariuszdeoniziak.charades.views.CategoriesFormView;
+
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.disposables.Disposables;
+import io.reactivex.subjects.PublishSubject;
 
 
 public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormView> {
 
+    static final int TYPING_DELAY = 1;
+
     private final CharadesRepository charadesRepository;
-    private Optional<Disposable> loadCategoryDisposable = Optional.empty();
-    private Optional<Disposable> saveCategoryDisposable = Optional.empty();
+    private final SchedulerFactory schedulerFactory;
+    private PublishSubject<String> titleEditedSubject = PublishSubject.create();
+    private Disposable titleEditedDisposable = null;
+    private Disposable loadCategoryDisposable = Disposables.empty();
+    private Disposable saveCategoryDisposable = Disposables.empty();
 
     public Category category = new Category();
 
     @Inject
-    CategoriesFormPresenter(CharadesRepository charadesRepository) {
+    CategoriesFormPresenter(CharadesRepository charadesRepository, SchedulerFactory schedulerFactory) {
         this.charadesRepository = charadesRepository;
+        this.schedulerFactory = schedulerFactory;
     }
 
     @Override
     public void onDropView() {
-        saveCategoryDisposable.ifPresent(Disposable::dispose);
+        titleEditedDisposable.dispose();
+        loadCategoryDisposable.dispose();
+        saveCategoryDisposable.dispose();
         super.onDropView();
     }
 
     public void onLoadCategory(Long categoryId) {
         if (categoryId > 0L) {
-            loadCategoryDisposable.ifPresent(Disposable::dispose);
-            loadCategoryDisposable = Optional.of(charadesRepository.getCategory(categoryId)
+            loadCategoryDisposable.dispose();
+            loadCategoryDisposable = charadesRepository.getCategory(categoryId)
                     .doOnSuccess((category) -> this.category = category)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(category -> view.ifPresent(action -> action.showCategory(category))));
+                    .observeOn(schedulerFactory.ui())
+                    .subscribeOn(schedulerFactory.io())
+                    .subscribe(category -> view.ifPresent(action -> action.showCategory(category)));
         }
     }
 
-    public void onSaveCategoryTitle(CharSequence title) {
-        saveCategoryDisposable.ifPresent(Disposable::dispose);
-        saveCategoryDisposable = Optional.of(Single.just(category)
+    public void onEditedCategoryTitle(String title) {
+        if (titleEditedDisposable == null) {
+            titleEditedDisposable = titleEditedSubject
+                    .debounce(TYPING_DELAY, TimeUnit.SECONDS, schedulerFactory.computation())
+                    .filter(charSequence -> charSequence.length() > 0)
+                    .map(CharSequence::toString)
+                    .observeOn(schedulerFactory.ui())
+                    .subscribe(this::onSaveCategoryTitle);
+        }
+        titleEditedSubject.onNext(title);
+    }
+
+    public void onSaveCategoryTitle(String title) {
+        saveCategoryDisposable.dispose();
+        saveCategoryDisposable = Single.just(category)
                 .map((category) -> {
-                    category.name = title.toString();
+                    category.name = title;
                     return category;
                 })
                 .flatMap(charadesRepository::saveCategory)
                 .doOnSuccess((categoryId) -> category.id = categoryId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
+                .observeOn(schedulerFactory.ui())
+                .subscribeOn(schedulerFactory.io())
                 .subscribe(categoryId -> view.ifPresent(action -> action.showTextInfo(
-                        "Title edited for category: " + categoryId))));
+                        "Title edited for category: " + categoryId)));
     }
 }

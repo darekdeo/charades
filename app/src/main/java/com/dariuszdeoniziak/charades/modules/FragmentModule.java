@@ -13,6 +13,8 @@ import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepositoryImpl;
 import com.dariuszdeoniziak.charades.data.repositories.LabelsRepository;
 import com.dariuszdeoniziak.charades.data.repositories.LabelsRepositoryImpl;
+import com.dariuszdeoniziak.charades.schedulers.DefaultSchedulerFactory;
+import com.dariuszdeoniziak.charades.schedulers.SchedulerFactory;
 import com.dariuszdeoniziak.charades.views.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 
@@ -74,5 +76,11 @@ public class FragmentModule {
     @Singleton
     public ComponentsFacade provideComponentsFacade() {
         return new ComponentsFacade(fragmentRef.get().getContext());
+    }
+
+    @Provides
+    @Singleton
+    public SchedulerFactory provideSchedulerProvider() {
+        return new DefaultSchedulerFactory();
     }
 }

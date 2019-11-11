@@ -2,6 +2,8 @@ package com.dariuszdeoniziak.charades.views.fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -12,15 +14,10 @@ import com.dariuszdeoniziak.charades.utils.Optional;
 import com.dariuszdeoniziak.charades.views.CategoriesFormView;
 import com.dariuszdeoniziak.charades.views.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.Layout;
-import com.jakewharton.rxbinding2.widget.RxTextView;
-
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import trikita.knork.Knork;
 
 
@@ -35,7 +32,6 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     long categoryId = 0;
 
     private final static String KEY_CATEGORY_ID = "key_category_id";
-    private static final int TYPING_DELAY = 1;
 
     private Optional<Disposable> titleTextChangesDisposable = Optional.empty();
 
@@ -76,14 +72,20 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     }
 
     private void setupViewActions() {
-        titleTextChangesDisposable = Optional.of(RxTextView // TODO move rx to presenter, view should not have such logic
-                .textChanges(editTextCategoryTitle)
-                .subscribeOn(Schedulers.io())
-                .debounce(TYPING_DELAY, TimeUnit.SECONDS)
-                .filter(charSequence -> charSequence.length() > 0)
-                .observeOn(AndroidSchedulers.mainThread())
-                .map(CharSequence::toString)
-                .subscribe(title -> presenter.onSaveCategoryTitle(title)));
+        editTextCategoryTitle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                presenter.onEditedCategoryTitle(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     @Override
