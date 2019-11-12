@@ -10,7 +10,6 @@ import android.widget.Toast;
 import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.presenters.CategoriesFormPresenter;
-import com.dariuszdeoniziak.charades.utils.Optional;
 import com.dariuszdeoniziak.charades.views.CategoriesFormView;
 import com.dariuszdeoniziak.charades.views.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.Layout;
@@ -18,6 +17,7 @@ import com.dariuszdeoniziak.charades.views.Layout;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.Disposables;
 import trikita.knork.Knork;
 
 
@@ -33,7 +33,7 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
 
     private final static String KEY_CATEGORY_ID = "key_category_id";
 
-    private Optional<Disposable> titleTextChangesDisposable = Optional.empty();
+    private Disposable titleTextChangesDisposable = Disposables.empty();
 
     public static String TAG = CategoriesFormFragment.class.getSimpleName();
 
@@ -91,7 +91,7 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     @Override
     public void onStop() {
         super.onStop();
-        titleTextChangesDisposable.ifPresent(Disposable::dispose);
+        titleTextChangesDisposable.dispose();
         presenter.onDropView();
     }
 

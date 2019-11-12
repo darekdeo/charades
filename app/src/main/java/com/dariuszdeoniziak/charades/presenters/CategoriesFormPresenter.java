@@ -22,7 +22,7 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormVie
     private final CharadesRepository charadesRepository;
     private final SchedulerFactory schedulerFactory;
     private PublishSubject<String> titleEditedSubject = PublishSubject.create();
-    private Disposable titleEditedDisposable = null;
+    private Disposable titleEditedDisposable = Disposables.empty();
     private Disposable loadCategoryDisposable = Disposables.empty();
     private Disposable saveCategoryDisposable = Disposables.empty();
 
