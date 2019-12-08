@@ -4,7 +4,7 @@ import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.schedulers.TestSchedulerFactory;
 import com.dariuszdeoniziak.charades.utils.RxJavaTestRunner;
-import com.dariuszdeoniziak.charades.views.CategoriesFormView;
+import com.dariuszdeoniziak.charades.views.CategoriesFormContract;
 
 import org.junit.After;
 import org.junit.Before;
@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
 @RunWith(RxJavaTestRunner.class)
 public class CategoriesFormPresenterTest {
 
-    @Mock CategoriesFormView view;
+    @Mock CategoriesFormContract.View view;
     @Mock CharadesRepository charadesRepository;
     private TestSchedulerFactory testSchedulerFactory = new TestSchedulerFactory();
     private CategoriesFormPresenter presenter;
@@ -90,6 +90,7 @@ public class CategoriesFormPresenterTest {
         int typingDelay = CategoriesFormPresenter.TYPING_DELAY;
         TestScheduler testScheduler = new TestScheduler();
         testSchedulerFactory.replaceComputationScheduler(testScheduler);
+        presenter = new CategoriesFormPresenter(charadesRepository, testSchedulerFactory);
 
         // when
         presenter.onEditedCategoryTitle(testString);

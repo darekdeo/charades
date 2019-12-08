@@ -9,13 +9,21 @@ import android.widget.Toast;
 
 import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.data.models.Category;
+import com.dariuszdeoniziak.charades.data.models.Charade;
 import com.dariuszdeoniziak.charades.presenters.CategoriesFormPresenter;
-import com.dariuszdeoniziak.charades.views.CategoriesFormView;
+import com.dariuszdeoniziak.charades.views.CategoriesFormContract;
 import com.dariuszdeoniziak.charades.views.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.Layout;
+import com.dariuszdeoniziak.charades.views.adapters.CharadesListAdapter;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
 import trikita.knork.Knork;
@@ -23,11 +31,13 @@ import trikita.knork.Knork;
 
 @SuppressLint("CheckResult")
 @Layout(R.layout.fragment_categories_form)
-public class CategoriesFormFragment extends BaseFragment implements CategoriesFormView {
+public class CategoriesFormFragment extends BaseFragment implements CategoriesFormContract.View {
 
     @Knork.Id(R.id.form_category_title) EditText editTextCategoryTitle;
+    @Knork.Id(R.id.form_charades_recycler) RecyclerView charadesRecyclerView;
 
     @Inject CategoriesFormPresenter presenter;
+    @Inject CharadesListAdapter charadesListAdapter;
 
     long categoryId = 0;
 
@@ -61,6 +71,14 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
         if (getArguments() != null) {
             categoryId = getArguments().getLong(KEY_CATEGORY_ID, 0);
         }
+    }
+
+    @Override
+    public void onViewCreated(@NonNull android.view.View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        charadesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        charadesRecyclerView.setAdapter(charadesListAdapter);
+        charadesListAdapter.setPresenter(presenter);
     }
 
     @Override
@@ -103,5 +121,10 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     @Override
     public void showCategory(Category category) {
         // TODO show category and write test
+    }
+
+    @Override
+    public void showCharades(List<Charade> charades) {
+        charadesListAdapter.adapt(charades);
     }
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <EditText
+        android:id="@+id/charade_name"
+        style="@style/Text.Header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:inputType="text"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/button_delete"
+        android:layout_toLeftOf="@+id/button_delete"
+        android:hint="@string/category_form_charade_hint_title"
+        tools:hint="@string/category_form_charade_hint_title" />
+
+    <com.dariuszdeoniziak.charades.views.widgets.FontAwesomeView
+        android:id="@+id/button_delete"
+        android:layout_width="@dimen/icon_button_size"
+        android:layout_height="@dimen/icon_button_size"
+        android:gravity="center"
+        android:text="@string/icon_trash"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/icon_text_size"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        tools:ignore="SpUsage" />
+</RelativeLayout>

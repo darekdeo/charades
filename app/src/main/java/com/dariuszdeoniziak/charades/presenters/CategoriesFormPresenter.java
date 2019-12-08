@@ -1,9 +1,10 @@
 package com.dariuszdeoniziak.charades.presenters;
 
 import com.dariuszdeoniziak.charades.data.models.Category;
+import com.dariuszdeoniziak.charades.data.models.Charade;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.schedulers.SchedulerFactory;
-import com.dariuszdeoniziak.charades.views.CategoriesFormView;
+import com.dariuszdeoniziak.charades.views.CategoriesFormContract;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,14 +16,14 @@ import io.reactivex.disposables.Disposables;
 import io.reactivex.subjects.PublishSubject;
 
 
-public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormView> {
+public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormContract.View> implements CategoriesFormContract.ListItemPresenter {
 
     static final int TYPING_DELAY = 1;
 
     private final CharadesRepository charadesRepository;
     private final SchedulerFactory schedulerFactory;
     private PublishSubject<String> titleEditedSubject = PublishSubject.create();
-    private Disposable titleEditedDisposable = Disposables.empty();
+    private final Disposable titleEditedDisposable;
     private Disposable loadCategoryDisposable = Disposables.empty();
     private Disposable saveCategoryDisposable = Disposables.empty();
 
@@ -32,6 +33,13 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormVie
     CategoriesFormPresenter(CharadesRepository charadesRepository, SchedulerFactory schedulerFactory) {
         this.charadesRepository = charadesRepository;
         this.schedulerFactory = schedulerFactory;
+
+        titleEditedDisposable = titleEditedSubject
+                .debounce(TYPING_DELAY, TimeUnit.SECONDS, schedulerFactory.computation())
+                .filter(charSequence -> charSequence.length() > 0)
+                .map(CharSequence::toString)
+                .observeOn(schedulerFactory.ui())
+                .subscribe(this::onSaveCategoryTitle);
     }
 
     @Override
@@ -54,14 +62,6 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormVie
     }
 
     public void onEditedCategoryTitle(String title) {
-        if (titleEditedDisposable == null) {
-            titleEditedDisposable = titleEditedSubject
-                    .debounce(TYPING_DELAY, TimeUnit.SECONDS, schedulerFactory.computation())
-                    .filter(charSequence -> charSequence.length() > 0)
-                    .map(CharSequence::toString)
-                    .observeOn(schedulerFactory.ui())
-                    .subscribe(this::onSaveCategoryTitle);
-        }
         titleEditedSubject.onNext(title);
     }
 
@@ -78,5 +78,15 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormVie
                 .subscribeOn(schedulerFactory.io())
                 .subscribe(categoryId -> view.ifPresent(action -> action.showTextInfo(
                         "Title edited for category: " + categoryId)));
+    }
+
+    @Override
+    public void onEdited(Charade category, String editedText) {
+
+    }
+
+    @Override
+    public void onDelete(Charade category) {
+
     }
 }

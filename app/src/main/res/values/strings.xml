@@ -7,8 +7,9 @@
     <string name="categories_list_dialog_confirm_delete_title">Confirm</string>
     <string name="categories_list_dialog_confirm_delete_message">Are you sure you want to remove category %1$s?</string>
 
-    <string name="categories_form_header">Edit category</string>
-    <string name="categories_form_hint_title">Enter category title</string>
+    <string name="category_form_header">Edit category</string>
+    <string name="category_form_hint_title">Enter category title</string>
+    <string name="category_form_charade_hint_title">Enter list element</string>
 
     <string name="icon_plus" translatable="false">&#xf067;</string>
     <string name="icon_trash" translatable="false">&#xf1f8;</string>
