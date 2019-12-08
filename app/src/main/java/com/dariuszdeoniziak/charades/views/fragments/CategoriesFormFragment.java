@@ -120,7 +120,7 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
 
     @Override
     public void showCategory(Category category) {
-        // TODO show category and write test
+        editTextCategoryTitle.setText(category.name);
     }
 
     @Override

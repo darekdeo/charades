@@ -102,6 +102,30 @@ public class CategoriesFormPresenterTest {
     }
 
     @Test
+    public void titleChangeShouldTriggerSaveCategoryTitleAfterTypingDelayIfTitleHasNotChanged() {
+        // given
+        Long categoryId = 1L;
+        String testString = "test";
+        Category category = new Category();
+        category.name = testString;
+        when(charadesRepository.saveCategory(category)).thenReturn(Single.just(categoryId));
+
+        int typingDelay = CategoriesFormPresenter.TYPING_DELAY;
+        TestScheduler testScheduler = new TestScheduler();
+        testSchedulerFactory.replaceComputationScheduler(testScheduler);
+        presenter = new CategoriesFormPresenter(charadesRepository, testSchedulerFactory);
+        presenter.category = category;
+
+        // when
+        presenter.onEditedCategoryTitle(testString);
+
+        // then
+        verify(charadesRepository, never()).saveCategory(any());
+        testScheduler.advanceTimeBy(typingDelay, TimeUnit.SECONDS);
+        verify(charadesRepository, never()).saveCategory(any());
+    }
+
+    @Test
     public void saveCategoryTitle() {
         // given
         Long categoryId = 1L;

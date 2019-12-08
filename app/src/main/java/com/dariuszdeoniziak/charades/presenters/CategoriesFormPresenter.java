@@ -37,6 +37,7 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormCon
         titleEditedDisposable = titleEditedSubject
                 .debounce(TYPING_DELAY, TimeUnit.SECONDS, schedulerFactory.computation())
                 .filter(charSequence -> charSequence.length() > 0)
+                .filter(charSequence -> !charSequence.equals(category.name))
                 .map(CharSequence::toString)
                 .observeOn(schedulerFactory.ui())
                 .subscribe(this::onSaveCategoryTitle);
