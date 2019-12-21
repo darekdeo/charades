@@ -6,19 +6,16 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.dariuszdeoniziak.charades.R;
-import com.dariuszdeoniziak.charades.data.models.Charade;
-import com.dariuszdeoniziak.charades.utils.Optional;
-import com.dariuszdeoniziak.charades.views.CategoriesFormContract;
+import com.dariuszdeoniziak.charades.views.models.CharadeListItemModel;
 import com.dariuszdeoniziak.charades.views.widgets.FontAwesomeView;
 
 import androidx.annotation.NonNull;
 
 
-public class CharadeViewHolder extends BaseViewHolder<Charade> {
+public class CharadeViewHolder extends CharadeBaseViewHolder<CharadeListItemModel> {
 
     private EditText nameView;
     private FontAwesomeView deleteView;
-    private Optional<CategoriesFormContract.ListItemPresenter> presenter = Optional.empty();
 
     public CharadeViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -27,7 +24,7 @@ public class CharadeViewHolder extends BaseViewHolder<Charade> {
     }
 
     @Override
-    public void bind(Charade charade) {
+    public void bind(CharadeListItemModel charade) {
         nameView.setText(charade.name);
         nameView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -44,12 +41,6 @@ public class CharadeViewHolder extends BaseViewHolder<Charade> {
                 deleteView.setVisibility(s.toString().isEmpty() ? View.INVISIBLE : View.GONE);
             }
         });
-
-        deleteView.setVisibility(charade.name.isEmpty() ? View.INVISIBLE : View.GONE); // TODO probably full view model with boolean for this field should be given?
         deleteView.setOnClickListener(v -> presenter.ifPresent(l -> l.onDelete(charade)));
-    }
-
-    public void setPresenter(CategoriesFormContract.ListItemPresenter presenter) {
-        this.presenter = Optional.of(presenter);
     }
 }

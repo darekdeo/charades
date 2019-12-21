@@ -1,4 +1,4 @@
-package com.dariuszdeoniziak.charades.views.mappers;
+package com.dariuszdeoniziak.charades.views.models.mappers;
 
 import com.dariuszdeoniziak.charades.utils.Mapper;
 import com.dariuszdeoniziak.charades.views.CategoryScreen;

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dariuszdeoniziak.charades.modules.FragmentModule;
+import com.dariuszdeoniziak.charades.modules.MappersModule;
 import com.dariuszdeoniziak.charades.views.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.Layout;
 
@@ -28,7 +29,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Feather feather = Feather.with(new FragmentModule(this));
+        Feather feather = Feather.with(new FragmentModule(this), new MappersModule());
         feather.injectFields(this);
     }
 

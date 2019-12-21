@@ -1,4 +1,4 @@
-package com.dariuszdeoniziak.charades.data.models.room.mapper;
+package com.dariuszdeoniziak.charades.data.models.room.mappers;
 
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.data.models.room.CategoryRoomModel;

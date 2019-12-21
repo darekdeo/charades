@@ -4,11 +4,15 @@ import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.data.models.Charade;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.schedulers.SchedulerFactory;
+import com.dariuszdeoniziak.charades.utils.Mapper;
+import com.dariuszdeoniziak.charades.utils.Pair;
 import com.dariuszdeoniziak.charades.views.CategoriesFormContract;
+import com.dariuszdeoniziak.charades.views.models.CharadeListItemModel;
 
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
@@ -16,12 +20,14 @@ import io.reactivex.disposables.Disposables;
 import io.reactivex.subjects.PublishSubject;
 
 
-public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormContract.View> implements CategoriesFormContract.ListItemPresenter {
+public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormContract.View> implements CategoriesFormContract.CharadeListItemPresenter {
 
     static final int TYPING_DELAY = 1;
 
     private final CharadesRepository charadesRepository;
     private final SchedulerFactory schedulerFactory;
+    private final Mapper<Charade, CharadeListItemModel> toCharadeListItemModelMapper;
+
     private PublishSubject<String> titleEditedSubject = PublishSubject.create();
     private final Disposable titleEditedDisposable;
     private Disposable loadCategoryDisposable = Disposables.empty();
@@ -30,9 +36,15 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormCon
     public Category category = new Category();
 
     @Inject
-    CategoriesFormPresenter(CharadesRepository charadesRepository, SchedulerFactory schedulerFactory) {
+    CategoriesFormPresenter(
+            CharadesRepository charadesRepository,
+            SchedulerFactory schedulerFactory,
+            @Named("to_charade_list_item_model_mapper")
+            Mapper<Charade, CharadeListItemModel> toCharadeListItemModelMapper
+    ) {
         this.charadesRepository = charadesRepository;
         this.schedulerFactory = schedulerFactory;
+        this.toCharadeListItemModelMapper = toCharadeListItemModelMapper;
 
         titleEditedDisposable = titleEditedSubject
                 .debounce(TYPING_DELAY, TimeUnit.SECONDS, schedulerFactory.computation())
@@ -54,11 +66,21 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormCon
     public void onLoadCategory(Long categoryId) {
         if (categoryId > 0L) {
             loadCategoryDisposable.dispose();
-            loadCategoryDisposable = charadesRepository.getCategory(categoryId)
-                    .doOnSuccess((category) -> this.category = category)
+            loadCategoryDisposable = Single.zip(
+                    charadesRepository.getCategory(categoryId),
+                    charadesRepository.getCharades(categoryId)
+                            .toObservable()
+                            .flatMapIterable(list -> list)
+                            .map(toCharadeListItemModelMapper::map)
+                            .toList(),
+                    Pair::new)
+                    .doOnSuccess((pair) -> this.category = pair.getFirst())
                     .observeOn(schedulerFactory.ui())
                     .subscribeOn(schedulerFactory.io())
-                    .subscribe(category -> view.ifPresent(action -> action.showCategory(category)));
+                    .subscribe(category -> view.ifPresent(action -> {
+                        action.showCategory(category.getFirst());
+                        action.showCharades(category.getSecond());
+                    }));
         }
     }
 
@@ -82,12 +104,17 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormCon
     }
 
     @Override
-    public void onEdited(Charade category, String editedText) {
+    public void onEdited(CharadeListItemModel charade, String editedText) {
 
     }
 
     @Override
-    public void onDelete(Charade category) {
+    public void onDelete(CharadeListItemModel charade) {
+
+    }
+
+    @Override
+    public void onNew() {
 
     }
 }

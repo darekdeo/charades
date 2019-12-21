@@ -18,6 +18,7 @@ import com.dariuszdeoniziak.charades.views.fragments.CategoriesFormFragment;
 import com.dariuszdeoniziak.charades.views.fragments.CategoriesListFragment;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import trikita.knork.Knork;
 
@@ -27,7 +28,9 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
 
     @Inject CategoriesPresenter presenter;
     @Inject Logger log;
-    @Inject Mapper<BaseFragment, CategoryScreen> toCategoryScreenMapper;
+    @Inject
+    @Named("to_category_screen_mapper")
+    Mapper<BaseFragment, CategoryScreen> toCategoryScreenMapper;
 
     @Knork.Id(R.id.button_plus) TextView buttonPlus;
 

@@ -1,7 +1,7 @@
 package com.dariuszdeoniziak.charades.views;
 
 import com.dariuszdeoniziak.charades.data.models.Category;
-import com.dariuszdeoniziak.charades.data.models.Charade;
+import com.dariuszdeoniziak.charades.views.models.CharadeListItemModel;
 
 import java.util.List;
 
@@ -13,13 +13,15 @@ public interface CategoriesFormContract {
 
         void showCategory(Category category);
 
-        void showCharades(List<Charade>charades);
+        void showCharades(List<CharadeListItemModel>charades);
     }
 
-    interface ListItemPresenter {
+    interface CharadeListItemPresenter {
 
-        void onEdited(Charade category, String editedText);
+        void onEdited(CharadeListItemModel charade, String editedText);
 
-        void onDelete(Charade category);
+        void onDelete(CharadeListItemModel charade);
+
+        void onNew();
     }
 }

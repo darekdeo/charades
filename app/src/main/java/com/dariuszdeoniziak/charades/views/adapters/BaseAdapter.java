@@ -30,4 +30,8 @@ abstract public class BaseAdapter<T, VH extends BaseViewHolder<T>> extends Recyc
         this.items = items;
         notifyDataSetChanged();
     }
+
+    T getItem(int position) {
+        return items.get(position);
+    }
 }

@@ -3,6 +3,7 @@ package com.dariuszdeoniziak.charades.views.activities;
 import android.os.Bundle;
 
 import com.dariuszdeoniziak.charades.modules.ActivityModule;
+import com.dariuszdeoniziak.charades.modules.MappersModule;
 import com.dariuszdeoniziak.charades.views.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.Layout;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
@@ -29,7 +30,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Feather feather = Feather.with(new ActivityModule(this));
+        Feather feather = Feather.with(new ActivityModule(this), new MappersModule());
         feather.injectFields(this);
 
         getAnnotations();

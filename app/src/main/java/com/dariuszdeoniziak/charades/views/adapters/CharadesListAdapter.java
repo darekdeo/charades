@@ -5,26 +5,45 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dariuszdeoniziak.charades.R;
-import com.dariuszdeoniziak.charades.data.models.Charade;
 import com.dariuszdeoniziak.charades.views.CategoriesFormContract;
+import com.dariuszdeoniziak.charades.views.adapters.holders.CharadeBaseViewHolder;
 import com.dariuszdeoniziak.charades.views.adapters.holders.CharadeViewHolder;
+import com.dariuszdeoniziak.charades.views.adapters.holders.NewCharadeViewHolder;
+import com.dariuszdeoniziak.charades.views.models.CharadeListItemModel;
 
 import androidx.annotation.NonNull;
 
-public class CharadesListAdapter extends BaseAdapter<Charade, CharadeViewHolder> {
+public class CharadesListAdapter extends BaseAdapter<CharadeListItemModel, CharadeBaseViewHolder<CharadeListItemModel>> {
 
-    private CategoriesFormContract.ListItemPresenter presenter;
+    private CategoriesFormContract.CharadeListItemPresenter presenter;
 
     @NonNull
     @Override
-    public CharadeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.holder_category, parent, false);
-        CharadeViewHolder holder = new CharadeViewHolder(view);
+    public CharadeBaseViewHolder<CharadeListItemModel> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        CharadeListItemModel.Type type = CharadeListItemModel.Type.values()[viewType];
+        CharadeBaseViewHolder<CharadeListItemModel> holder;
+        switch (type) {
+            case CHARADE_ITEM:
+                View charadeView = LayoutInflater.from(parent.getContext()).inflate(R.layout.holder_charade, parent, false);
+                holder = new CharadeViewHolder(charadeView);
+                break;
+            case NEW_ITEM:
+                View newCharadeView = LayoutInflater.from(parent.getContext()).inflate(R.layout.holder_new_charade, parent, false);
+                holder = new NewCharadeViewHolder(newCharadeView);
+                break;
+            default:
+                throw new IllegalArgumentException("Case not specified");
+        }
         holder.setPresenter(presenter);
         return holder;
     }
 
-    public void setPresenter(CategoriesFormContract.ListItemPresenter presenter) {
+    @Override
+    public int getItemViewType(int position) {
+        return getItem(position).type.ordinal();
+    }
+
+    public void setPresenter(CategoriesFormContract.CharadeListItemPresenter presenter) {
         this.presenter = presenter;
     }
 }

@@ -9,12 +9,12 @@ import android.widget.Toast;
 
 import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.data.models.Category;
-import com.dariuszdeoniziak.charades.data.models.Charade;
 import com.dariuszdeoniziak.charades.presenters.CategoriesFormPresenter;
 import com.dariuszdeoniziak.charades.views.CategoriesFormContract;
 import com.dariuszdeoniziak.charades.views.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.Layout;
 import com.dariuszdeoniziak.charades.views.adapters.CharadesListAdapter;
+import com.dariuszdeoniziak.charades.views.models.CharadeListItemModel;
 
 import java.util.List;
 
@@ -124,7 +124,7 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     }
 
     @Override
-    public void showCharades(List<Charade> charades) {
+    public void showCharades(List<CharadeListItemModel> charades) {
         charadesListAdapter.adapt(charades);
     }
 }
