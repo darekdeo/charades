@@ -41,10 +41,6 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
         return new CategoriesListFragment();
     }
 
-    void replace(CategoriesListPresenter presenter) {
-        this.presenter = presenter;
-    }
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);

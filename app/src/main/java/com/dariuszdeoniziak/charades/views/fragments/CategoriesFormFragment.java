@@ -11,7 +11,6 @@ import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.presenters.CategoriesFormPresenter;
 import com.dariuszdeoniziak.charades.views.CategoriesFormContract;
-import com.dariuszdeoniziak.charades.views.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.Layout;
 import com.dariuszdeoniziak.charades.views.adapters.CharadesListAdapter;
 import com.dariuszdeoniziak.charades.views.models.CharadeListItemModel;
@@ -58,11 +57,6 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
         CategoriesFormFragment fragment = new CategoriesFormFragment();
         fragment.setArguments(bundle);
         return fragment;
-    }
-
-    void replace(CategoriesFormPresenter presenter, ComponentsFacade componentsFacade) {
-        this.presenter = presenter;
-        this.componentsFacade = componentsFacade;
     }
 
     @Override

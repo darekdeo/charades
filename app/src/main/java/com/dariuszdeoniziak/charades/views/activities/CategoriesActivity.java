@@ -11,7 +11,6 @@ import com.dariuszdeoniziak.charades.utils.Logger;
 import com.dariuszdeoniziak.charades.utils.Mapper;
 import com.dariuszdeoniziak.charades.views.CategoriesView;
 import com.dariuszdeoniziak.charades.views.CategoryScreen;
-import com.dariuszdeoniziak.charades.views.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.Layout;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 import com.dariuszdeoniziak.charades.views.fragments.CategoriesFormFragment;
@@ -33,16 +32,6 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     Mapper<BaseFragment, CategoryScreen> toCategoryScreenMapper;
 
     @Knork.Id(R.id.button_plus) TextView buttonPlus;
-
-    void replace(
-            CategoriesPresenter presenter,
-            ComponentsFacade componentsFacade,
-            Mapper<BaseFragment, CategoryScreen> toCategoryScreenMapper
-    ) {
-        this.presenter = presenter;
-        this.componentsFacade = componentsFacade;
-        this.toCategoryScreenMapper = toCategoryScreenMapper;
-    }
 
     @Override
     protected void onStart() {
