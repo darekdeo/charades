@@ -5,24 +5,19 @@ import android.os.Bundle;
 import com.dariuszdeoniziak.charades.modules.ActivityModule;
 import com.dariuszdeoniziak.charades.modules.MappersModule;
 import com.dariuszdeoniziak.charades.views.ComponentsFacade;
-import com.dariuszdeoniziak.charades.views.Layout;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 
 import org.codejargon.feather.Feather;
 
 import javax.inject.Inject;
 
-import androidx.annotation.LayoutRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import trikita.knork.Knork;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
-
-    @LayoutRes private int layoutResId;
 
     @Inject ComponentsFacade componentsFacade;
 
@@ -32,23 +27,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         Feather feather = Feather.with(new ActivityModule(this), new MappersModule());
         feather.injectFields(this);
-
-        getAnnotations();
-        setContentView(layoutResId);
-        Knork.inject(getWindow().getDecorView(), this);
-    }
-
-    private void getAnnotations() {
-        Layout layout;
-        if ((layout = getClass().getAnnotation(Layout.class)) != null) {
-            layoutResId = layout.value();
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        Knork.reset(this);
-        super.onDestroy();
     }
 
     public void replaceFragment(CreateFragment createFragment, String tag, int containerResId, boolean backstack) {

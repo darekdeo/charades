@@ -1,19 +1,32 @@
 package com.dariuszdeoniziak.charades.views;
 
 import com.dariuszdeoniziak.charades.data.models.Category;
+import com.dariuszdeoniziak.charades.views.models.CategoriesFormModel;
 import com.dariuszdeoniziak.charades.views.models.CharadeListItemModel;
 
 import java.util.List;
+
+import androidx.databinding.ObservableField;
 
 
 public interface CategoriesFormContract {
 
     interface View {
+        void setup(CategoriesFormModel model);
+
         void showTextInfo(String text);
 
         void showCategory(Category category);
 
-        void showCharades(List<CharadeListItemModel>charades);
+        void showCharades(List<CharadeListItemModel> charades);
+    }
+
+    interface Presenter {
+        ObservableField<String> title = new ObservableField<>();
+
+        void onLoadCategory(Long categoryId);
+
+        void onSaveCategoryTitle(String title);
     }
 
     interface CharadeListItemPresenter {

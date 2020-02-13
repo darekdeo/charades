@@ -2,16 +2,15 @@ package com.dariuszdeoniziak.charades.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dariuszdeoniziak.charades.R;
+import com.dariuszdeoniziak.charades.databinding.ActivityCategoriesBinding;
 import com.dariuszdeoniziak.charades.presenters.CategoriesPresenter;
 import com.dariuszdeoniziak.charades.utils.Logger;
 import com.dariuszdeoniziak.charades.utils.Mapper;
 import com.dariuszdeoniziak.charades.views.CategoriesView;
 import com.dariuszdeoniziak.charades.views.CategoryScreen;
-import com.dariuszdeoniziak.charades.views.Layout;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 import com.dariuszdeoniziak.charades.views.fragments.CategoriesFormFragment;
 import com.dariuszdeoniziak.charades.views.fragments.CategoriesListFragment;
@@ -19,10 +18,10 @@ import com.dariuszdeoniziak.charades.views.fragments.CategoriesListFragment;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import trikita.knork.Knork;
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 
 
-@Layout(R.layout.activity_categories)
 public class CategoriesActivity extends BaseActivity implements CategoriesView {
 
     @Inject CategoriesPresenter presenter;
@@ -31,17 +30,23 @@ public class CategoriesActivity extends BaseActivity implements CategoriesView {
     @Named("to_category_screen_mapper")
     Mapper<BaseFragment, CategoryScreen> toCategoryScreenMapper;
 
-    @Knork.Id(R.id.button_plus) TextView buttonPlus;
+    ActivityCategoriesBinding binding;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_categories);
+    }
 
     @Override
     protected void onStart() {
         super.onStart();
         presenter.onTakeView(this);
-        buttonPlus.setOnClickListener(v -> presenter.onToggleViewMode());
+        binding.buttonPlus.setOnClickListener(v -> presenter.onToggleViewMode());
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         presenter.onSave();
     }

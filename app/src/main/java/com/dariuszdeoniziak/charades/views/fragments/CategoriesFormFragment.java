@@ -1,18 +1,17 @@
 package com.dariuszdeoniziak.charades.views.fragments;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.widget.EditText;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.data.models.Category;
+import com.dariuszdeoniziak.charades.databinding.FragmentCategoriesFormBinding;
 import com.dariuszdeoniziak.charades.presenters.CategoriesFormPresenter;
 import com.dariuszdeoniziak.charades.views.CategoriesFormContract;
-import com.dariuszdeoniziak.charades.views.Layout;
 import com.dariuszdeoniziak.charades.views.adapters.CharadesListAdapter;
+import com.dariuszdeoniziak.charades.views.models.CategoriesFormModel;
 import com.dariuszdeoniziak.charades.views.models.CharadeListItemModel;
 
 import java.util.List;
@@ -22,26 +21,18 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
-import trikita.knork.Knork;
 
 
-@SuppressLint("CheckResult")
-@Layout(R.layout.fragment_categories_form)
 public class CategoriesFormFragment extends BaseFragment implements CategoriesFormContract.View {
-
-    @Knork.Id(R.id.form_category_title) EditText editTextCategoryTitle;
-    @Knork.Id(R.id.form_charades_recycler) RecyclerView charadesRecyclerView;
 
     @Inject CategoriesFormPresenter presenter;
     @Inject CharadesListAdapter charadesListAdapter;
 
-    long categoryId = 0;
-
+    private long categoryId = 0;
+    private FragmentCategoriesFormBinding binding;
     private final static String KEY_CATEGORY_ID = "key_category_id";
-
     private Disposable titleTextChangesDisposable = Disposables.empty();
 
     public static String TAG = CategoriesFormFragment.class.getSimpleName();
@@ -67,11 +58,18 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
         }
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentCategoriesFormBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
     @Override
     public void onViewCreated(@NonNull android.view.View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        charadesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        charadesRecyclerView.setAdapter(charadesListAdapter);
+        binding.formCharadesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.formCharadesRecycler.setAdapter(charadesListAdapter);
         charadesListAdapter.setPresenter(presenter);
     }
 
@@ -80,24 +78,6 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
         super.onStart();
         presenter.onTakeView(this);
         presenter.onLoadCategory(categoryId);
-        setupViewActions();
-    }
-
-    private void setupViewActions() {
-        editTextCategoryTitle.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                presenter.onEditedCategoryTitle(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
     }
 
     @Override
@@ -108,13 +88,20 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     }
 
     @Override
+    public void setup(CategoriesFormModel model) {
+        binding.setModel(model);
+        binding.setPresenter(presenter);
+        binding.invalidateAll();
+    }
+
+    @Override
     public void showTextInfo(final String text) {
         componentsFacade.showToast(text, Toast.LENGTH_SHORT);
     }
 
     @Override
     public void showCategory(Category category) {
-        editTextCategoryTitle.setText(category.name);
+        binding.formCategoryTitle.setText(category.name);
     }
 
     @Override

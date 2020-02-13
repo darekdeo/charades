@@ -2,16 +2,18 @@ package com.dariuszdeoniziak.charades.views.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import com.dariuszdeoniziak.charades.R;
 import com.dariuszdeoniziak.charades.data.models.Category;
+import com.dariuszdeoniziak.charades.databinding.FragmentCategoriesListBinding;
 import com.dariuszdeoniziak.charades.presenters.CategoriesListPresenter;
 import com.dariuszdeoniziak.charades.utils.Optional;
 import com.dariuszdeoniziak.charades.views.CategoriesListContract;
 import com.dariuszdeoniziak.charades.views.ComponentsFacade;
-import com.dariuszdeoniziak.charades.views.Layout;
 import com.dariuszdeoniziak.charades.views.adapters.CategoriesListAdapter;
+import com.dariuszdeoniziak.charades.views.models.CategoriesListModel;
 
 import java.util.List;
 
@@ -20,19 +22,14 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import trikita.knork.Knork;
 
 
-@Layout(R.layout.fragment_categories_list)
 public class CategoriesListFragment extends BaseFragment implements CategoriesListContract.View {
-
-    @Knork.Id(R.id.categories_title) TextView categoriesTitleView;
-    @Knork.Id(R.id.categories_recycler) RecyclerView categoriesRecyclerView;
 
     @Inject CategoriesListPresenter presenter;
     @Inject CategoriesListAdapter categoriesListAdapter;
 
+    private FragmentCategoriesListBinding binding;
     private Optional<CategoriesListContract.ParentView> parentView = Optional.empty();
 
     public static String TAG = CategoriesListFragment.class.getSimpleName();
@@ -47,11 +44,18 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
         parentView = Optional.of((CategoriesListContract.ParentView) context);
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = FragmentCategoriesListBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
     @Override
     public void onViewCreated(@NonNull android.view.View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        categoriesRecyclerView.setAdapter(categoriesListAdapter);
+        binding.categoriesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.categoriesRecycler.setAdapter(categoriesListAdapter);
         categoriesListAdapter.setPresenter(presenter);
     }
 
@@ -66,6 +70,12 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
     public void onStop() {
         super.onStop();
         presenter.onDropView();
+    }
+
+    @Override
+    public void setup(CategoriesListModel model) {
+        binding.setModel(model);
+        binding.invalidateAll();
     }
 
     @Override

@@ -2,11 +2,14 @@ package com.dariuszdeoniziak.charades.presenters;
 
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.data.models.Charade;
+import com.dariuszdeoniziak.charades.data.models.Label;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
+import com.dariuszdeoniziak.charades.data.repositories.LabelsRepository;
 import com.dariuszdeoniziak.charades.schedulers.SchedulerFactory;
 import com.dariuszdeoniziak.charades.utils.Mapper;
 import com.dariuszdeoniziak.charades.utils.Pair;
 import com.dariuszdeoniziak.charades.views.CategoriesFormContract;
+import com.dariuszdeoniziak.charades.views.models.CategoriesFormModel;
 import com.dariuszdeoniziak.charades.views.models.CharadeListItemModel;
 
 import java.util.concurrent.TimeUnit;
@@ -14,16 +17,21 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import androidx.databinding.Observable;
 import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
 import io.reactivex.subjects.PublishSubject;
 
 
-public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormContract.View> implements CategoriesFormContract.CharadeListItemPresenter {
+public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormContract.View>
+        implements
+        CategoriesFormContract.Presenter,
+        CategoriesFormContract.CharadeListItemPresenter {
 
     static final int TYPING_DELAY = 1;
 
+    private final LabelsRepository labelsRepository;
     private final CharadesRepository charadesRepository;
     private final SchedulerFactory schedulerFactory;
     private final Mapper<Charade, CharadeListItemModel> toCharadeListItemModelMapper;
@@ -37,11 +45,12 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormCon
 
     @Inject
     CategoriesFormPresenter(
+            LabelsRepository labelsRepository,
             CharadesRepository charadesRepository,
             SchedulerFactory schedulerFactory,
-            @Named("to_charade_list_item_model_mapper")
-            Mapper<Charade, CharadeListItemModel> toCharadeListItemModelMapper
+            @Named("to_charade_list_item_model_mapper") Mapper<Charade, CharadeListItemModel> toCharadeListItemModelMapper
     ) {
+        this.labelsRepository = labelsRepository;
         this.charadesRepository = charadesRepository;
         this.schedulerFactory = schedulerFactory;
         this.toCharadeListItemModelMapper = toCharadeListItemModelMapper;
@@ -53,6 +62,24 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormCon
                 .map(CharSequence::toString)
                 .observeOn(schedulerFactory.ui())
                 .subscribe(this::onSaveCategoryTitle);
+
+        title.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                String value = title.get();
+                if (value != null) {
+                    titleEditedSubject.onNext(value);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onTakeView(CategoriesFormContract.View view) {
+        super.onTakeView(view);
+        CategoriesFormModel model = new CategoriesFormModel();
+        model.title = labelsRepository.getLabel(Label.category_form_header);
+        view.setup(model);
     }
 
     @Override
@@ -63,6 +90,7 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormCon
         super.onDropView();
     }
 
+    @Override
     public void onLoadCategory(Long categoryId) {
         if (categoryId > 0L) {
             loadCategoryDisposable.dispose();
@@ -84,10 +112,7 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormCon
         }
     }
 
-    public void onEditedCategoryTitle(String title) {
-        titleEditedSubject.onNext(title);
-    }
-
+    @Override
     public void onSaveCategoryTitle(String title) {
         saveCategoryDisposable.dispose();
         saveCategoryDisposable = Single.just(category)

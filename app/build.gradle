@@ -38,6 +38,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 def getInstrumentation() {
@@ -80,9 +83,7 @@ dependencies {
 
     implementation "io.reactivex.rxjava2:rxandroid:$rxLibVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxLibVersion"
-    implementation 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
 
-    implementation 'co.trikita:knork:1.2.0'
     implementation 'org.codejargon.feather:feather:1.0'
 }
 

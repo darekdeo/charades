@@ -6,12 +6,15 @@ import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.data.repositories.LabelsRepository;
 import com.dariuszdeoniziak.charades.schedulers.SchedulerFactory;
 import com.dariuszdeoniziak.charades.views.CategoriesListContract;
+import com.dariuszdeoniziak.charades.views.models.CategoriesListModel;
 
 import javax.inject.Inject;
 
 
 public class CategoriesListPresenter extends AbstractPresenter<CategoriesListContract.View>
-        implements CategoriesListContract.ListItemPresenter {
+        implements
+        CategoriesListContract.Presenter,
+        CategoriesListContract.ListItemPresenter {
 
     private final CharadesRepository charadesRepository;
     private final LabelsRepository labelsRepository;
@@ -28,6 +31,15 @@ public class CategoriesListPresenter extends AbstractPresenter<CategoriesListCon
         this.schedulerFactory = schedulerFactory;
     }
 
+    @Override
+    public void onTakeView(CategoriesListContract.View view) {
+        super.onTakeView(view);
+        CategoriesListModel model = new CategoriesListModel();
+        model.title = labelsRepository.getLabel(Label.categories_list_header);
+        view.setup(model);
+    }
+
+    @Override
     public void onLoadCategories() {
         run(() -> charadesRepository.getCategories()
                 .subscribeOn(schedulerFactory.io())
@@ -44,6 +56,7 @@ public class CategoriesListPresenter extends AbstractPresenter<CategoriesListCon
                 .subscribe());
     }
 
+    @Override
     public void onConfirmDeleteCategory(Category category) {
         run(() -> charadesRepository.deleteCategory(category)
                 .subscribeOn(schedulerFactory.io())

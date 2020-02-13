@@ -1,30 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".views.activities.CategoriesActivity"
-    >
+<layout>
 
-    <include layout="@layout/content_categories"/>
-
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_gravity="bottom"
-        android:gravity="center"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:context=".views.activities.CategoriesActivity"
         >
 
-        <com.dariuszdeoniziak.charades.views.widgets.FontAwesomeView
-            android:id="@+id/button_plus"
-            android:layout_width="@dimen/icon_button_size"
-            android:layout_height="@dimen/icon_button_size"
+        <include layout="@layout/content_categories"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="bottom"
             android:gravity="center"
-            android:text="@string/icon_plus"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/icon_text_size"
-            />
-    </LinearLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+            >
+
+            <com.dariuszdeoniziak.charades.views.widgets.FontAwesomeView
+                android:id="@+id/button_plus"
+                android:layout_width="@dimen/icon_button_size"
+                android:layout_height="@dimen/icon_button_size"
+                android:gravity="center"
+                android:text="@string/icon_plus"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/icon_text_size"
+                />
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

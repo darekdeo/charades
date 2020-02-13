@@ -1,6 +1,7 @@
 package com.dariuszdeoniziak.charades.views;
 
 import com.dariuszdeoniziak.charades.data.models.Category;
+import com.dariuszdeoniziak.charades.views.models.CategoriesListModel;
 
 import java.util.List;
 
@@ -8,6 +9,8 @@ import java.util.List;
 public interface CategoriesListContract {
 
     interface View {
+        void setup(CategoriesListModel model);
+
         void hideProgressIndicator();
 
         void showProgressIndicator();
@@ -28,6 +31,13 @@ public interface CategoriesListContract {
         void selectCategory(Long categoryId);
 
         void editCategory(Long categoryId);
+    }
+
+    interface Presenter {
+
+        void onLoadCategories();
+
+        void onConfirmDeleteCategory(Category category);
     }
 
     interface ListItemPresenter {
