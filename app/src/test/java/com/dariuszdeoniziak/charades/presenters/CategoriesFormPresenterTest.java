@@ -3,6 +3,7 @@ package com.dariuszdeoniziak.charades.presenters;
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.data.models.Charade;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
+import com.dariuszdeoniziak.charades.data.repositories.LabelsRepository;
 import com.dariuszdeoniziak.charades.schedulers.TestSchedulerFactory;
 import com.dariuszdeoniziak.charades.utils.Mapper;
 import com.dariuszdeoniziak.charades.utils.RxJavaTestRunner;
@@ -37,6 +38,7 @@ import static org.mockito.Mockito.when;
 public class CategoriesFormPresenterTest {
 
     @Mock CategoriesFormContract.View view;
+    @Mock LabelsRepository labelsRepository;
     @Mock CharadesRepository charadesRepository;
     @Mock Mapper<Charade, CharadeListItemModel> toCharadeListItemModelMapper;
     private TestSchedulerFactory testSchedulerFactory = new TestSchedulerFactory();
@@ -45,8 +47,6 @@ public class CategoriesFormPresenterTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        presenter = new CategoriesFormPresenter(charadesRepository, testSchedulerFactory, toCharadeListItemModelMapper);
-        presenter.onTakeView(view);
     }
 
     @After
@@ -58,6 +58,8 @@ public class CategoriesFormPresenterTest {
     @Test
     public void loadCategory() {
         // given
+        presenter = new CategoriesFormPresenter(labelsRepository, charadesRepository, testSchedulerFactory, toCharadeListItemModelMapper);
+        presenter.onTakeView(view);
         Long categoryId = 1L;
         Category category = new Category();
         category.id = categoryId;
@@ -84,6 +86,10 @@ public class CategoriesFormPresenterTest {
 
     @Test
     public void doNotLoadNullCategoryId() {
+        // given
+        presenter = new CategoriesFormPresenter(labelsRepository, charadesRepository, testSchedulerFactory, toCharadeListItemModelMapper);
+        presenter.onTakeView(view);
+
         // when
         presenter.onLoadCategory(0L);
 
@@ -96,19 +102,19 @@ public class CategoriesFormPresenterTest {
     @Test
     public void titleChangeShouldTriggerSaveCategoryTitleAfterTypingDelay() {
         // given
-        Long categoryId = 1L;
-        Category category = new Category();
-        presenter.category = category;
-        when(charadesRepository.saveCategory(category)).thenReturn(Single.just(categoryId));
-
         String testString = "test";
         int typingDelay = CategoriesFormPresenter.TYPING_DELAY;
         TestScheduler testScheduler = new TestScheduler();
         testSchedulerFactory.replaceComputationScheduler(testScheduler);
-        presenter = new CategoriesFormPresenter(charadesRepository, testSchedulerFactory, toCharadeListItemModelMapper);
+        Long categoryId = 1L;
+        Category category = new Category();
+        presenter = new CategoriesFormPresenter(labelsRepository, charadesRepository, testSchedulerFactory, toCharadeListItemModelMapper);
+        presenter.onTakeView(view);
+        presenter.category = category;
+        when(charadesRepository.saveCategory(category)).thenReturn(Single.just(categoryId));
 
         // when
-        presenter.onEditedCategoryTitle(testString);
+        presenter.title.set(testString);
 
         // then
         verify(charadesRepository, never()).saveCategory(any());
@@ -128,11 +134,11 @@ public class CategoriesFormPresenterTest {
         int typingDelay = CategoriesFormPresenter.TYPING_DELAY;
         TestScheduler testScheduler = new TestScheduler();
         testSchedulerFactory.replaceComputationScheduler(testScheduler);
-        presenter = new CategoriesFormPresenter(charadesRepository, testSchedulerFactory, toCharadeListItemModelMapper);
+        presenter = new CategoriesFormPresenter(labelsRepository, charadesRepository, testSchedulerFactory, toCharadeListItemModelMapper);
         presenter.category = category;
 
         // when
-        presenter.onEditedCategoryTitle(testString);
+        presenter.title.set(testString);
 
         // then
         verify(charadesRepository, never()).saveCategory(any());
@@ -143,6 +149,8 @@ public class CategoriesFormPresenterTest {
     @Test
     public void saveCategoryTitle() {
         // given
+        presenter = new CategoriesFormPresenter(labelsRepository, charadesRepository, testSchedulerFactory, toCharadeListItemModelMapper);
+        presenter.onTakeView(view);
         Long categoryId = 1L;
         Category category = new Category();
         presenter.category = category;
