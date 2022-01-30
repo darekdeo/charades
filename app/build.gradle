@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.mutualmobile.gradle.plugins.dexinfo'
 
 android {
     compileSdkVersion 29
@@ -85,8 +84,4 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$rxLibVersion"
 
     implementation 'org.codejargon.feather:feather:1.0'
-}
-
-dexinfo { // To display run "./gradlew dexinfoDebug"
-    maxDepth 2
 }
