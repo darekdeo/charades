@@ -5,8 +5,7 @@ import com.dariuszdeoniziak.charades.data.models.Charade;
 
 import java.util.List;
 
-import io.reactivex.Single;
-
+import io.reactivex.rxjava3.core.Single;
 
 public interface CharadesRepository {
 

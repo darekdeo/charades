@@ -21,8 +21,7 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.disposables.Disposables;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 
 public class CategoriesFormFragment extends BaseFragment implements CategoriesFormContract.View {
@@ -33,7 +32,7 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     private long categoryId = 0;
     private FragmentCategoriesFormBinding binding;
     private final static String KEY_CATEGORY_ID = "key_category_id";
-    private Disposable titleTextChangesDisposable = Disposables.empty();
+    private Disposable titleTextChangesDisposable = Disposable.empty();
 
     public static String TAG = CategoriesFormFragment.class.getSimpleName();
 

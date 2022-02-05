@@ -18,10 +18,10 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import androidx.databinding.Observable;
-import io.reactivex.Single;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.disposables.Disposables;
-import io.reactivex.subjects.PublishSubject;
+
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.subjects.PublishSubject;
 
 
 public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormContract.View>
@@ -38,8 +38,8 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormCon
 
     private PublishSubject<String> titleEditedSubject = PublishSubject.create();
     private final Disposable titleEditedDisposable;
-    private Disposable loadCategoryDisposable = Disposables.empty();
-    private Disposable saveCategoryDisposable = Disposables.empty();
+    private Disposable loadCategoryDisposable = Disposable.empty();
+    private Disposable saveCategoryDisposable = Disposable.empty();
 
     public Category category = new Category();
 

@@ -1,6 +1,7 @@
 package com.dariuszdeoniziak.charades.schedulers;
 
-import io.reactivex.Scheduler;
+
+import io.reactivex.rxjava3.core.Scheduler;
 
 public interface SchedulerFactory {
 

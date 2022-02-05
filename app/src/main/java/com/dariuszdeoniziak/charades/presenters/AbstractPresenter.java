@@ -3,8 +3,8 @@ package com.dariuszdeoniziak.charades.presenters;
 import com.dariuszdeoniziak.charades.utils.Optional;
 
 import androidx.annotation.CallSuper;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 
 public abstract class AbstractPresenter<V> implements Presenter<V> {

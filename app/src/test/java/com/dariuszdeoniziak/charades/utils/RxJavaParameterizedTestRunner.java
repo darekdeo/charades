@@ -2,8 +2,8 @@ package com.dariuszdeoniziak.charades.utils;
 
 import org.junit.runners.Parameterized;
 
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.android.plugins.RxAndroidPlugins;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class RxJavaParameterizedTestRunner extends Parameterized {
 

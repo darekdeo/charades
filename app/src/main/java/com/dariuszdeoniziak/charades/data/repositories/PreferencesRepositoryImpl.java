@@ -2,8 +2,8 @@ package com.dariuszdeoniziak.charades.data.repositories;
 
 import com.dariuszdeoniziak.charades.data.datasources.PreferencesDataSource;
 
-import io.reactivex.Completable;
-import io.reactivex.Single;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Single;
 
 public class PreferencesRepositoryImpl implements PreferencesRepository {
 

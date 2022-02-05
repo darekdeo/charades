@@ -18,11 +18,11 @@ import org.mockito.MockitoAnnotations;
 import java.util.Collections;
 import java.util.List;
 
-import io.reactivex.Single;
-
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import io.reactivex.rxjava3.core.Single;
 
 
 @RunWith(RxJavaTestRunner.class)

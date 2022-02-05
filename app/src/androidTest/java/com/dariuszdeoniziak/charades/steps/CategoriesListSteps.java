@@ -2,9 +2,9 @@ package com.dariuszdeoniziak.charades.steps;
 
 import com.dariuszdeoniziak.charades.test.CategoriesListRobot;
 
-import cucumber.api.java.After;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import io.cucumber.java.After;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class CategoriesListSteps {
 
