@@ -15,13 +15,15 @@ import com.dariuszdeoniziak.charades.data.repositories.LabelsRepository;
 import com.dariuszdeoniziak.charades.data.repositories.LabelsRepositoryImpl;
 import com.dariuszdeoniziak.charades.schedulers.DefaultSchedulerFactory;
 import com.dariuszdeoniziak.charades.schedulers.SchedulerFactory;
+import com.dariuszdeoniziak.charades.statemachines.categories.CategoriesListStateMachine;
+import com.dariuszdeoniziak.charades.statemachines.categories.CategoriesListStateMachineDispatcher;
+import com.dariuszdeoniziak.charades.utils.Logger;
 import com.dariuszdeoniziak.charades.views.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 
 import org.codejargon.feather.Provides;
 
 import java.lang.ref.WeakReference;
-import java.util.Objects;
 
 import javax.inject.Singleton;
 
@@ -38,10 +40,18 @@ public class FragmentModule {
 
     @Provides
     @Singleton
+    public CategoriesListStateMachine provideCategoriesListStateMachine() {
+        return new CategoriesListStateMachineDispatcher(
+                new Logger()
+        );
+    }
+
+    @Provides
+    @Singleton
     public CharadesDataSource provideCharadesDataSource() {
         return new CharadesRoomDataSource(Room
                 .databaseBuilder(
-                        Objects.requireNonNull(fragmentRef.get().getContext()).getApplicationContext(),
+                        fragmentRef.get().requireContext().getApplicationContext(),
                         CharadesRoomDatabase.class,
                         "charades.db")
                 .allowMainThreadQueries()
@@ -63,7 +73,7 @@ public class FragmentModule {
     @Provides
     @Singleton
     public LabelsDataSource provideResourcesLabelsDataSource() {
-        return new ResourcesLabelsDataSource(Objects.requireNonNull(fragmentRef.get().getContext()));
+        return new ResourcesLabelsDataSource(fragmentRef.get().requireContext());
     }
 
     @Provides

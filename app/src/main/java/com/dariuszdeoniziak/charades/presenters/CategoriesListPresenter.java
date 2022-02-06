@@ -1,17 +1,21 @@
 package com.dariuszdeoniziak.charades.presenters;
 
+import static com.dariuszdeoniziak.charades.views.CategoriesListContract.View;
+
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.data.models.Label;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.data.repositories.LabelsRepository;
 import com.dariuszdeoniziak.charades.schedulers.SchedulerFactory;
+import com.dariuszdeoniziak.charades.statemachines.categories.CategoriesListStateMachine;
+import com.dariuszdeoniziak.charades.utils.Logger;
 import com.dariuszdeoniziak.charades.views.CategoriesListContract;
-import com.dariuszdeoniziak.charades.views.models.CategoriesListModel;
+
+import java.util.Collections;
 
 import javax.inject.Inject;
 
-
-public class CategoriesListPresenter extends AbstractPresenter<CategoriesListContract.View>
+public class CategoriesListPresenter extends AbstractPresenter<View>
         implements
         CategoriesListContract.Presenter,
         CategoriesListContract.ListItemPresenter {
@@ -19,24 +23,67 @@ public class CategoriesListPresenter extends AbstractPresenter<CategoriesListCon
     private final CharadesRepository charadesRepository;
     private final LabelsRepository labelsRepository;
     private final SchedulerFactory schedulerFactory;
+    private final CategoriesListStateMachine stateMachine;
+    private final Logger logger;
 
     @Inject
     CategoriesListPresenter(
             CharadesRepository charadesRepository,
             LabelsRepository labelsRepository,
-            SchedulerFactory schedulerFactory
+            SchedulerFactory schedulerFactory,
+            CategoriesListStateMachine stateMachine,
+            Logger logger
     ) {
         this.charadesRepository = charadesRepository;
         this.labelsRepository = labelsRepository;
         this.schedulerFactory = schedulerFactory;
+        this.stateMachine = stateMachine;
+        this.logger = logger;
     }
 
     @Override
     public void onTakeView(CategoriesListContract.View view) {
         super.onTakeView(view);
-        CategoriesListModel model = new CategoriesListModel();
-        model.title = labelsRepository.getLabel(Label.categories_list_header);
-        view.setup(model);
+        sideEffects();
+    }
+
+    private void sideEffects() {
+        run(() -> stateMachine.state()
+                .observeOn(schedulerFactory.ui())
+                .subscribe(
+                        state -> view.ifPresent(action -> {
+                            switch (state) {
+                                case EMPTY_LIST:
+                                case LOADING_ERROR:
+                                    action.hideProgressIndicator();
+                                    action.setTitle(state.title);
+                                    action.showCategories(Collections.emptyList());
+                                    action.showEmptyList();
+                                    break;
+                                case LIST_WITH_ITEMS:
+                                    action.hideProgressIndicator();
+                                    action.setTitle(state.title);
+                                    action.showCategories(state.getCategories());
+                                    break;
+                                case DELETING_CATEGORY:
+                                    action.setTitle(state.title);
+                                    action.showConfirmDeleteCategory(
+                                            state.getDeletingCategory(),
+                                            labelsRepository.getLabel(Label.categories_list_dialog_confirm_delete_title),
+                                            labelsRepository.getLabel(Label.categories_list_dialog_confirm_delete_message, state.getDeletingCategory().name),
+                                            labelsRepository.getLabel(Label.yes),
+                                            labelsRepository.getLabel(Label.no)
+                                    );
+                                    break;
+                                case LOADING:
+                                    action.setTitle(state.title);
+                                    action.showProgressIndicator();
+                                    break;
+                            }
+                        }),
+                        error -> logger.error("State error", error)
+                )
+        );
     }
 
     @Override
@@ -44,16 +91,11 @@ public class CategoriesListPresenter extends AbstractPresenter<CategoriesListCon
         run(() -> charadesRepository.getCategories()
                 .subscribeOn(schedulerFactory.io())
                 .observeOn(schedulerFactory.ui())
-                .doOnSubscribe(disposable -> view.ifPresent(CategoriesListContract.View::showProgressIndicator))
-                .doOnSuccess(categories -> view.ifPresent(action -> {
-                    if (categories.isEmpty())
-                        action.showEmptyList();
-                    else
-                        action.showCategories(categories);
-                }))
-                .doOnError(throwable -> view.ifPresent(CategoriesListContract.View::showEmptyList))
-                .doFinally(() -> view.ifPresent(CategoriesListContract.View::hideProgressIndicator))
-                .subscribe());
+                .doOnSubscribe(disposable -> stateMachine.onLoadList())
+                .subscribe(
+                        stateMachine::onListLoaded,
+                        stateMachine::onLoadingError
+                ));
     }
 
     @Override
@@ -61,17 +103,17 @@ public class CategoriesListPresenter extends AbstractPresenter<CategoriesListCon
         run(() -> charadesRepository.deleteCategory(category)
                 .subscribeOn(schedulerFactory.io())
                 .observeOn(schedulerFactory.ui())
-                .doOnSubscribe(disposable -> view.ifPresent(CategoriesListContract.View::showProgressIndicator))
+                .doOnSubscribe(disposable -> stateMachine.onLoadList())
                 .flatMap(s -> charadesRepository.getCategories())
-                .doOnSuccess(categories -> view.ifPresent(action -> {
-                    if (categories.isEmpty())
-                        action.showEmptyList();
-                    else
-                        action.showCategories(categories);
-                }))
-                .doOnError(throwable -> view.ifPresent(CategoriesListContract.View::showEmptyList))
-                .doFinally(() -> view.ifPresent(CategoriesListContract.View::hideProgressIndicator))
-                .subscribe());
+                .subscribe(
+                        stateMachine::onListLoaded,
+                        stateMachine::onLoadingError
+                ));
+    }
+
+    @Override
+    public void onConfirmDeleteCategoryCancelled() {
+        stateMachine.onDeleteCategoryCancel();
     }
 
     @Override
@@ -86,12 +128,6 @@ public class CategoriesListPresenter extends AbstractPresenter<CategoriesListCon
 
     @Override
     public void onDelete(Category category) {
-        view.ifPresent((action) -> action.showConfirmDeleteCategory(
-                category,
-                labelsRepository.getLabel(Label.categories_list_dialog_confirm_delete_title),
-                labelsRepository.getLabel(Label.categories_list_dialog_confirm_delete_message, category.name),
-                labelsRepository.getLabel(Label.yes),
-                labelsRepository.getLabel(Label.no)
-        ));
+        stateMachine.onDeleteCategory(category);
     }
 }

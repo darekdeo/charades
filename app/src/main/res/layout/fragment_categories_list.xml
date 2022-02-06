@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="model"
-            type="com.dariuszdeoniziak.charades.views.models.CategoriesListModel" />
+            name="title"
+            type="String" />
     </data>
 
     <LinearLayout
@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/view_default_margin"
-            android:text="@{model.title}"
+            android:text="@{title}"
             tools:text="@string/categories_list_header" />
 
         <androidx.recyclerview.widget.RecyclerView

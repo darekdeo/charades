@@ -13,7 +13,6 @@ import com.dariuszdeoniziak.charades.utils.Optional;
 import com.dariuszdeoniziak.charades.views.CategoriesListContract;
 import com.dariuszdeoniziak.charades.views.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.adapters.CategoriesListAdapter;
-import com.dariuszdeoniziak.charades.views.models.CategoriesListModel;
 
 import java.util.List;
 
@@ -73,8 +72,8 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
     }
 
     @Override
-    public void setup(CategoriesListModel model) {
-        binding.setModel(model);
+    public void setTitle(String title) {
+        binding.setTitle(title);
         binding.invalidateAll();
     }
 
@@ -129,6 +128,11 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
             @Override
             public String negativeButtonText() {
                 return negativeButton;
+            }
+
+            @Override
+            public void negativeCallback() {
+                presenter.onConfirmDeleteCategoryCancelled();
             }
 
             @Override

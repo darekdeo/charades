@@ -5,6 +5,8 @@ import com.dariuszdeoniziak.charades.data.models.Label;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.data.repositories.LabelsRepository;
 import com.dariuszdeoniziak.charades.schedulers.TestSchedulerFactory;
+import com.dariuszdeoniziak.charades.statemachines.categories.CategoriesListStateMachineDispatcher;
+import com.dariuszdeoniziak.charades.utils.Logger;
 import com.dariuszdeoniziak.charades.utils.RxJavaTestRunner;
 import com.dariuszdeoniziak.charades.views.CategoriesListContract;
 
@@ -19,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -32,13 +35,20 @@ public class CategoriesListPresenterTest {
     @Mock CategoriesListContract.View view;
     @Mock CharadesRepository charadesRepository;
     @Mock LabelsRepository labelsRepository;
+    @Mock Logger logger;
     private TestSchedulerFactory testSchedulerFactory = new TestSchedulerFactory();
     private CategoriesListPresenter presenter;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        presenter = new CategoriesListPresenter(charadesRepository, labelsRepository, testSchedulerFactory);
+        presenter = new CategoriesListPresenter(
+                charadesRepository,
+                labelsRepository,
+                testSchedulerFactory,
+                new CategoriesListStateMachineDispatcher(logger),
+                logger
+        );
         presenter.onTakeView(view);
     }
 
@@ -61,7 +71,7 @@ public class CategoriesListPresenterTest {
         verify(charadesRepository).getCategories();
         verify(view).showProgressIndicator();
         verify(view).showCategories(categories);
-        verify(view).hideProgressIndicator();
+        verify(view, times(2)).hideProgressIndicator();
     }
 
     @Test
@@ -76,8 +86,8 @@ public class CategoriesListPresenterTest {
         // then
         verify(charadesRepository).getCategories();
         verify(view).showProgressIndicator();
-        verify(view).showEmptyList();
-        verify(view).hideProgressIndicator();
+        verify(view, times(2)).showEmptyList();
+        verify(view, times(2)).hideProgressIndicator();
     }
 
     @Test
@@ -145,6 +155,6 @@ public class CategoriesListPresenterTest {
         verify(charadesRepository).getCategories();
         verify(view).showProgressIndicator();
         verify(view).showCategories(categories);
-        verify(view).hideProgressIndicator();
+        verify(view, times(2)).hideProgressIndicator();
     }
 }

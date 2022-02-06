@@ -1,7 +1,6 @@
 package com.dariuszdeoniziak.charades.views;
 
 import com.dariuszdeoniziak.charades.data.models.Category;
-import com.dariuszdeoniziak.charades.views.models.CategoriesListModel;
 
 import java.util.List;
 
@@ -9,7 +8,7 @@ import java.util.List;
 public interface CategoriesListContract {
 
     interface View {
-        void setup(CategoriesListModel model);
+        void setTitle(String title);
 
         void hideProgressIndicator();
 
@@ -38,6 +37,8 @@ public interface CategoriesListContract {
         void onLoadCategories();
 
         void onConfirmDeleteCategory(Category category);
+
+        void onConfirmDeleteCategoryCancelled();
     }
 
     interface ListItemPresenter {
