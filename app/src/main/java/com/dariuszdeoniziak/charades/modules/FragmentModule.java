@@ -15,10 +15,9 @@ import com.dariuszdeoniziak.charades.data.repositories.LabelsRepository;
 import com.dariuszdeoniziak.charades.data.repositories.LabelsRepositoryImpl;
 import com.dariuszdeoniziak.charades.schedulers.DefaultSchedulerFactory;
 import com.dariuszdeoniziak.charades.schedulers.SchedulerFactory;
-import com.dariuszdeoniziak.charades.statemachines.categories.CategoriesListStateMachine;
-import com.dariuszdeoniziak.charades.statemachines.categories.CategoriesListStateMachineDispatcher;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.CategoriesListStateMachine;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.CategoriesListStateMachineDispatcher;
 import com.dariuszdeoniziak.charades.utils.Logger;
-import com.dariuszdeoniziak.charades.views.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 
 import org.codejargon.feather.Provides;
@@ -80,12 +79,6 @@ public class FragmentModule {
     @Singleton
     public LabelsRepository provideLabelsRepository() {
         return new LabelsRepositoryImpl(provideResourcesLabelsDataSource());
-    }
-
-    @Provides
-    @Singleton
-    public ComponentsFacade provideComponentsFacade() {
-        return new ComponentsFacade(fragmentRef.get().getContext());
     }
 
     @Provides

@@ -1,12 +1,12 @@
-package com.dariuszdeoniziak.charades.statemachines.categories;
+package com.dariuszdeoniziak.charades.statemachines.categories.list;
 
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.statemachines.Event;
-import com.dariuszdeoniziak.charades.statemachines.categories.events.DeleteCategoryCancel;
-import com.dariuszdeoniziak.charades.statemachines.categories.events.DeleteCategory;
-import com.dariuszdeoniziak.charades.statemachines.categories.events.ListLoaded;
-import com.dariuszdeoniziak.charades.statemachines.categories.events.LoadList;
-import com.dariuszdeoniziak.charades.statemachines.categories.events.LoadingError;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.events.DeleteCategoryCancel;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.events.DeleteCategory;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.events.ListLoaded;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.events.LoadList;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.events.LoadingError;
 import com.dariuszdeoniziak.charades.utils.Logger;
 
 import java.util.List;

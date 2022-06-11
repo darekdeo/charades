@@ -11,7 +11,6 @@ import com.dariuszdeoniziak.charades.databinding.FragmentCategoriesListBinding;
 import com.dariuszdeoniziak.charades.presenters.CategoriesListPresenter;
 import com.dariuszdeoniziak.charades.utils.Optional;
 import com.dariuszdeoniziak.charades.views.CategoriesListContract;
-import com.dariuszdeoniziak.charades.views.ComponentsFacade;
 import com.dariuszdeoniziak.charades.views.adapters.CategoriesListAdapter;
 
 import java.util.List;
@@ -109,36 +108,5 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
 
     @Override
     public void showConfirmDeleteCategory(Category category, String title, String message, String positiveButton, String negativeButton) {
-        componentsFacade.showDialog(new ComponentsFacade.DialogTemplate() {
-            @Override
-            public String title() {
-                return title;
-            }
-
-            @Override
-            public String message() {
-                return message;
-            }
-
-            @Override
-            public String positiveButtonText() {
-                return positiveButton;
-            }
-
-            @Override
-            public String negativeButtonText() {
-                return negativeButton;
-            }
-
-            @Override
-            public void negativeCallback() {
-                presenter.onConfirmDeleteCategoryCancelled();
-            }
-
-            @Override
-            public void positiveCallback() {
-                presenter.onConfirmDeleteCategory(category);
-            }
-        });
     }
 }

@@ -2,7 +2,6 @@ package com.dariuszdeoniziak.charades.presenters;
 
 import com.dariuszdeoniziak.charades.data.repositories.PreferencesRepository;
 import com.dariuszdeoniziak.charades.views.CategoriesView;
-import com.dariuszdeoniziak.charades.views.CategoryScreen;
 
 import org.junit.After;
 import org.junit.Before;

@@ -1,8 +1,8 @@
-package com.dariuszdeoniziak.charades.statemachines.categories.events;
+package com.dariuszdeoniziak.charades.statemachines.categories.list.events;
 
 import com.dariuszdeoniziak.charades.statemachines.Event;
-import com.dariuszdeoniziak.charades.statemachines.categories.CategoriesListState;
-import com.dariuszdeoniziak.charades.statemachines.categories.CategoriesListStateMachine;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.CategoriesListState;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.CategoriesListStateMachine;
 
 public final class LoadingError implements Event<CategoriesListStateMachine.Transition, CategoriesListState> {
     final Throwable error;

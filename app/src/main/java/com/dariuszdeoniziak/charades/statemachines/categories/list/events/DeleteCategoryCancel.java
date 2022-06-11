@@ -1,8 +1,8 @@
-package com.dariuszdeoniziak.charades.statemachines.categories.events;
+package com.dariuszdeoniziak.charades.statemachines.categories.list.events;
 
 import com.dariuszdeoniziak.charades.statemachines.Event;
-import com.dariuszdeoniziak.charades.statemachines.categories.CategoriesListStateMachine;
-import com.dariuszdeoniziak.charades.statemachines.categories.CategoriesListState;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.CategoriesListStateMachine;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.CategoriesListState;
 
 public final class DeleteCategoryCancel implements Event<CategoriesListStateMachine.Transition, CategoriesListState> {
 

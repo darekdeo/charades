@@ -7,7 +7,7 @@ import com.dariuszdeoniziak.charades.data.models.Label;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.data.repositories.LabelsRepository;
 import com.dariuszdeoniziak.charades.schedulers.SchedulerFactory;
-import com.dariuszdeoniziak.charades.statemachines.categories.CategoriesListStateMachine;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.CategoriesListStateMachine;
 import com.dariuszdeoniziak.charades.utils.Logger;
 import com.dariuszdeoniziak.charades.views.CategoriesListContract;
 
@@ -56,17 +56,14 @@ public class CategoriesListPresenter extends AbstractPresenter<View>
                                 case EMPTY_LIST:
                                 case LOADING_ERROR:
                                     action.hideProgressIndicator();
-                                    action.setTitle(state.title);
                                     action.showCategories(Collections.emptyList());
                                     action.showEmptyList();
                                     break;
                                 case LIST_WITH_ITEMS:
                                     action.hideProgressIndicator();
-                                    action.setTitle(state.title);
                                     action.showCategories(state.getCategories());
                                     break;
                                 case DELETING_CATEGORY:
-                                    action.setTitle(state.title);
                                     action.showConfirmDeleteCategory(
                                             state.getDeletingCategory(),
                                             labelsRepository.getLabel(Label.categories_list_dialog_confirm_delete_title),
@@ -76,7 +73,6 @@ public class CategoriesListPresenter extends AbstractPresenter<View>
                                     );
                                     break;
                                 case LOADING:
-                                    action.setTitle(state.title);
                                     action.showProgressIndicator();
                                     break;
                             }

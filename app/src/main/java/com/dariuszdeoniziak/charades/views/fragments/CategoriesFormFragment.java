@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.databinding.FragmentCategoriesFormBinding;
@@ -95,7 +94,6 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
 
     @Override
     public void showTextInfo(final String text) {
-        componentsFacade.showToast(text, Toast.LENGTH_SHORT);
     }
 
     @Override

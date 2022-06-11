@@ -5,7 +5,7 @@ import com.dariuszdeoniziak.charades.data.models.Label;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.data.repositories.LabelsRepository;
 import com.dariuszdeoniziak.charades.schedulers.TestSchedulerFactory;
-import com.dariuszdeoniziak.charades.statemachines.categories.CategoriesListStateMachineDispatcher;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.CategoriesListStateMachineDispatcher;
 import com.dariuszdeoniziak.charades.utils.Logger;
 import com.dariuszdeoniziak.charades.utils.RxJavaTestRunner;
 import com.dariuszdeoniziak.charades.views.CategoriesListContract;

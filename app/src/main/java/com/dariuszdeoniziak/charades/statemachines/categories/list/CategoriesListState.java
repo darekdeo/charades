@@ -1,22 +1,21 @@
-package com.dariuszdeoniziak.charades.statemachines.categories;
+package com.dariuszdeoniziak.charades.statemachines.categories.list;
 
-import static com.dariuszdeoniziak.charades.statemachines.categories.CategoriesListStateMachine.Transition;
+import static com.dariuszdeoniziak.charades.statemachines.categories.list.CategoriesListStateMachine.Transition;
 
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.statemachines.Event;
 import com.dariuszdeoniziak.charades.statemachines.State;
-import com.dariuszdeoniziak.charades.statemachines.categories.events.DeleteCategory;
-import com.dariuszdeoniziak.charades.statemachines.categories.events.DeleteCategoryCancel;
-import com.dariuszdeoniziak.charades.statemachines.categories.events.ListLoaded;
-import com.dariuszdeoniziak.charades.statemachines.categories.events.LoadList;
-import com.dariuszdeoniziak.charades.statemachines.categories.events.LoadingError;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.events.DeleteCategory;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.events.DeleteCategoryCancel;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.events.ListLoaded;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.events.LoadList;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.events.LoadingError;
 
 import java.util.List;
 
 public enum CategoriesListState implements State<Event<Transition, CategoriesListState>>, CategoriesListStateMachine.DataReader {
 
     LOADING(
-            "Loading",
             new Transition() {
 
                 @Override
@@ -52,7 +51,6 @@ public enum CategoriesListState implements State<Event<Transition, CategoriesLis
             }
     ),
     LOADING_ERROR(
-            "Loading error",
             new Transition() {
 
                 @Override
@@ -82,7 +80,6 @@ public enum CategoriesListState implements State<Event<Transition, CategoriesLis
             }
     ),
     EMPTY_LIST(
-            "Empty list",
             new Transition() {
 
                 @Override
@@ -112,7 +109,6 @@ public enum CategoriesListState implements State<Event<Transition, CategoriesLis
             }
     ),
     LIST_WITH_ITEMS(
-            "List with items",
             new Transition() {
                 @Override
                 public CategoriesListState onEvent(LoadList event) {
@@ -143,7 +139,6 @@ public enum CategoriesListState implements State<Event<Transition, CategoriesLis
             }
     ),
     DELETING_CATEGORY(
-            "Deleting category",
             new CategoriesListStateMachine.Transition() {
 
                 @Override
@@ -176,14 +171,10 @@ public enum CategoriesListState implements State<Event<Transition, CategoriesLis
     private final Transition transition;
 
     CategoriesListState(
-            String title,
             Transition transition
     ) {
-        this.title = title;
         this.transition = transition;
     }
-
-    public final String title;
 
     @Override
     public CategoriesListState transition(Event<Transition, CategoriesListState> event) {
