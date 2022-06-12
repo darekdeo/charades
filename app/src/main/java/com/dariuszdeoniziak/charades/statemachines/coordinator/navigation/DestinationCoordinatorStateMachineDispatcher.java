@@ -6,6 +6,8 @@ import com.dariuszdeoniziak.charades.statemachines.coordinator.navigation.events
 import com.dariuszdeoniziak.charades.statemachines.coordinator.navigation.events.NavigateToDestination;
 import com.dariuszdeoniziak.charades.utils.Logger;
 
+import javax.inject.Inject;
+
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
@@ -15,6 +17,7 @@ public class DestinationCoordinatorStateMachineDispatcher implements Destination
     private final Subject<Event<DestinationCoordinatorStateMachine.Transition, DestinationCoordinatorState>> eventStream;
     private final Observable<DestinationCoordinatorState> state;
 
+    @Inject
     public DestinationCoordinatorStateMachineDispatcher(
             Logger logger
     ) {

@@ -12,17 +12,20 @@ import androidx.lifecycle.LifecycleOwner;
 
 import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 
+import javax.inject.Inject;
+
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
 
-public class ScreenNavigator implements Navigator, ScreenNavigatorHost, ScreenNavigatorHost.Monitor, LifecycleEventObserver {
+public class ScreenNavigator implements Navigator.Screen, ScreenNavigatorHost, ScreenNavigatorHostMonitor, LifecycleEventObserver {
 
     private final BehaviorSubject<HostStatus> hostStatus = BehaviorSubject.createDefault(HostStatus.DETACHED);
     private final DestinationFactory<BaseFragment> fragmentDestinationFactory;
     private @IdRes int containerResId = -1;
     private AppCompatActivity activity = null;
 
+    @Inject
     public ScreenNavigator(
             DestinationFactory<BaseFragment> fragmentDestinationFactory
     ) {

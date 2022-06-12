@@ -4,10 +4,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.dariuszdeoniziak.charades.modules.ActivityModule;
-import com.dariuszdeoniziak.charades.modules.MappersModule;
-
-import org.codejargon.feather.Feather;
+import com.dariuszdeoniziak.charades.App;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -16,7 +13,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Feather feather = Feather.with(new ActivityModule(this), new MappersModule());
-        feather.injectFields(this);
+        App.getInstance().injectFields(this);
     }
 }

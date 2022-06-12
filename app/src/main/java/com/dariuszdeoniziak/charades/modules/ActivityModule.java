@@ -37,21 +37,5 @@ public class ActivityModule {
         return activityRef.get();
     }
 
-    @Provides
-    @Singleton
-    public PreferencesDataSource providePreferencesDataSource() {
-        return new SharedPreferencesDataSource(activityRef.get());
-    }
 
-    @Provides
-    @Singleton
-    public PreferencesRepository providePreferencesRepository() {
-        return new PreferencesRepositoryImpl(providePreferencesDataSource());
-    }
-
-    @Provides
-    @Singleton
-    public SchedulerFactory provideSchedulerProvider() {
-        return new DefaultSchedulerFactory();
-    }
 }

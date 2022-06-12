@@ -4,6 +4,8 @@ import com.dariuszdeoniziak.charades.statemachines.Event;
 import com.dariuszdeoniziak.charades.statemachines.coordinator.app.events.ScreenNavigatorAttached;
 import com.dariuszdeoniziak.charades.utils.Logger;
 
+import javax.inject.Inject;
+
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
@@ -13,7 +15,8 @@ public class AppCoordinatorStateDispatcher implements AppCoordinatorStateMachine
     private final Subject<Event<Transition, AppCoordinatorState>> eventStream;
     private final Observable<AppCoordinatorState> state;
 
-    AppCoordinatorStateDispatcher(
+    @Inject
+    public AppCoordinatorStateDispatcher(
             Logger logger
     ) {
         eventStream = PublishSubject.create();

@@ -6,4 +6,5 @@ public interface Navigator {
 
     Completable navigate(Destination destination);
 
+    interface Screen extends Navigator {}
 }
