@@ -13,6 +13,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        App.getInstance().injectFields(this);
+        App.getInstance().feather.injectFields(this);
     }
 }

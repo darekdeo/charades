@@ -39,7 +39,7 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        parentView = Optional.of((CategoriesListContract.ParentView) context);
+//        parentView = Optional.of((CategoriesListContract.ParentView) context);
     }
 
     @Nullable
@@ -98,12 +98,12 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
 
     @Override
     public void selectCategory(Long categoryId) {
-        parentView.ifPresent((action) -> action.selectCategory(categoryId));
+//        parentView.ifPresent((action) -> action.selectCategory(categoryId));
     }
 
     @Override
     public void editCategory(Long categoryId) {
-        parentView.ifPresent((action) -> action.editCategory(categoryId));
+//        parentView.ifPresent((action) -> action.editCategory(categoryId));
     }
 
     @Override

@@ -43,6 +43,8 @@ public class AppCoordinatorImpl implements AppCoordinator {
                         state -> {
                             switch (state) {
                                 case STARTING:
+                                    startScreenNavigatorHostMonitor();
+                                    break;
                                 case TERMINATED:
                                     coordinatorResult.onSuccess(AppResult.TERMINATED_APP);
                                     break;

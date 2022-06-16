@@ -50,12 +50,12 @@ public class CategoriesCoordinatorImpl implements CategoriesCoordinator {
     }
 
     private void navigateToInitialDestination() {
-        navigateToDestination(Optional.of(CategoriesDestinations.LIST));
+        navigateToDestination(Optional.of(CategoryDestination.LIST));
     }
 
     private void navigateToDestination(Optional<Destination> optionalDestination) {
         optionalDestination.ifPresent(destination -> screenNavigator
-                .navigate(CategoriesDestinations.LIST)
+                .navigate(CategoryDestination.LIST)
                 .subscribe(
                         () -> stateMachine.onDestinationDisplayed(destination),
                         error -> logger.error("Navigator error", error)

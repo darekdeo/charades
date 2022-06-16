@@ -26,11 +26,23 @@ public class Optional<T> {
         }
     }
 
+    public boolean equals(Equals<T> equals) {
+        if (value != null) {
+            return equals.apply(value);
+        } else {
+            return false;
+        }
+    }
+
     public T get() {
         return value;
     }
 
     public interface Action<T> {
         void apply(T value);
+    }
+
+    public interface Equals<T> {
+        boolean apply(T value);
     }
 }

@@ -21,7 +21,6 @@ import com.dariuszdeoniziak.charades.statemachines.coordinator.app.AppCoordinato
 import com.dariuszdeoniziak.charades.statemachines.coordinator.navigation.DestinationCoordinatorStateMachine;
 import com.dariuszdeoniziak.charades.statemachines.coordinator.navigation.DestinationCoordinatorStateMachineDispatcher;
 import com.dariuszdeoniziak.charades.utils.Logger;
-import com.dariuszdeoniziak.charades.views.fragments.BaseFragment;
 import com.dariuszdeoniziak.charades.views.fragments.FragmentDestinationFactory;
 
 import org.codejargon.feather.Provides;
@@ -60,7 +59,9 @@ public class AppModule {
     @Provides
     @Singleton
     public PreferencesRepository providePreferencesRepository() {
-        return new PreferencesRepositoryImpl(providePreferencesDataSource());
+        return new PreferencesRepositoryImpl(
+                appRef.get().feather.provider(PreferencesDataSource.class).get()
+        );
     }
 
     @Provides
@@ -81,26 +82,34 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public DestinationFactory<BaseFragment> provideFragmentDestinationFactory() {
-        return new FragmentDestinationFactory();
+    public DestinationFactory.Fragment provideFragmentDestinationFactory(FragmentDestinationFactory fragmentDestinationFactory) {
+        return fragmentDestinationFactory;
     }
 
     @Provides
     @Singleton
-    public Navigator.Screen provideScreenNavigator(ScreenNavigator screenNavigator) {
-        return screenNavigator;
+    public ScreenNavigator provideScreenNavigatorImpl() {
+        return new ScreenNavigator(
+                appRef.get().feather.provider(DestinationFactory.Fragment.class).get()
+        );
     }
 
     @Provides
     @Singleton
-    public ScreenNavigatorHost provideScreenNavigatorHost(ScreenNavigator screenNavigator) {
-        return screenNavigator;
+    public Navigator.Screen provideScreenNavigator() {
+        return appRef.get().feather.provider(ScreenNavigator.class).get();
     }
 
     @Provides
     @Singleton
-    public ScreenNavigatorHostMonitor provideScreenNavigatorHostMonitor(ScreenNavigator screenNavigator) {
-        return screenNavigator;
+    public ScreenNavigatorHost provideScreenNavigatorHost() {
+        return appRef.get().feather.provider(ScreenNavigator.class).get();
+    }
+
+    @Provides
+    @Singleton
+    public ScreenNavigatorHostMonitor provideScreenNavigatorHostMonitor() {
+        return appRef.get().feather.provider(ScreenNavigator.class).get();
     }
 
     @Provides

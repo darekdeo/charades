@@ -20,7 +20,7 @@ public class App extends Application {
 
     private static App instance = null;
 
-    private Feather feather;
+    public Feather feather;
 
     @Inject
     AppCoordinator appCoordinator;
@@ -60,7 +60,4 @@ public class App extends Application {
         instance = null;
     }
 
-    public void injectFields(Object object) {
-        feather.injectFields(object);
-    }
 }

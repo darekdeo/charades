@@ -2,14 +2,14 @@ package com.dariuszdeoniziak.charades.coordinators.categories;
 
 import com.dariuszdeoniziak.charades.navigators.Destination;
 
-public enum CategoriesDestinations implements Destination {
+public enum CategoryDestination implements Destination {
 
     LIST("CATEGORIES_LIST"),
     FORM("CATEGORIES_FORM");
 
     final String tag;
 
-    CategoriesDestinations(String tag) {
+    CategoryDestination(String tag) {
         this.tag = tag;
     }
 
