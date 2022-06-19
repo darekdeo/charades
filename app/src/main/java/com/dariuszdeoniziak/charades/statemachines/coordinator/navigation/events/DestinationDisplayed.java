@@ -6,9 +6,9 @@ import com.dariuszdeoniziak.charades.statemachines.coordinator.navigation.Destin
 import com.dariuszdeoniziak.charades.statemachines.coordinator.navigation.DestinationCoordinatorStateMachine;
 
 public final class DestinationDisplayed implements Event<DestinationCoordinatorStateMachine.Transition, DestinationCoordinatorState> {
-    public final Destination destination;
+    public final Destination<?> destination;
 
-    public DestinationDisplayed(Destination destination) {
+    public DestinationDisplayed(Destination<?> destination) {
         this.destination = destination;
     }
 

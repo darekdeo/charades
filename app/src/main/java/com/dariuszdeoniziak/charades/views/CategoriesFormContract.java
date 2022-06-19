@@ -11,7 +11,7 @@ import androidx.databinding.ObservableField;
 
 public interface CategoriesFormContract {
 
-    interface View {
+    interface View extends com.dariuszdeoniziak.charades.views.View {
         void setup(CategoriesFormModel model);
 
         void showTextInfo(String text);
@@ -21,7 +21,7 @@ public interface CategoriesFormContract {
         void showCharades(List<CharadeListItemModel> charades);
     }
 
-    interface Presenter {
+    interface Presenter extends com.dariuszdeoniziak.charades.presenters.Presenter<View> {
         ObservableField<String> title = new ObservableField<>();
 
         void onLoadCategory(Long categoryId);

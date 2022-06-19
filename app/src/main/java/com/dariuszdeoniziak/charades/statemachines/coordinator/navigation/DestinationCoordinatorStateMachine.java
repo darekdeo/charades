@@ -12,12 +12,12 @@ public interface DestinationCoordinatorStateMachine {
     // STATE
     Observable<DestinationCoordinatorState> state();
     interface DataReader {
-        Optional<Destination> getDestination();
+        Optional<Destination<?>> getDestination();
     }
 
     // EVENTS
-    void onNavigateToDestination(Destination destination);
-    void onDestinationDisplayed(Destination destination);
+    void onNavigateToDestination(Destination<?> destination);
+    void onDestinationDisplayed(Destination<?> destination);
 
     // TRANSITION
     interface Transition {

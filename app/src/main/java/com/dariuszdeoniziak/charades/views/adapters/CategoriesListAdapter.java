@@ -11,9 +11,14 @@ import com.dariuszdeoniziak.charades.views.adapters.holders.CategoryViewHolder;
 
 import androidx.annotation.NonNull;
 
+import javax.inject.Inject;
+
 public class CategoriesListAdapter extends BaseAdapter<Category, CategoryViewHolder> {
 
     private CategoriesListContract.ListItemPresenter presenter;
+
+    @Inject
+    CategoriesListAdapter() {}
 
     @NonNull
     @Override

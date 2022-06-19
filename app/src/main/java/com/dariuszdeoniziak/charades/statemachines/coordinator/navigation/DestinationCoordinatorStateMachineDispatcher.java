@@ -14,7 +14,7 @@ import io.reactivex.rxjava3.subjects.Subject;
 
 public class DestinationCoordinatorStateMachineDispatcher implements DestinationCoordinatorStateMachine {
 
-    private final Subject<Event<DestinationCoordinatorStateMachine.Transition, DestinationCoordinatorState>> eventStream;
+    private final Subject<Event<Transition, DestinationCoordinatorState>> eventStream;
     private final Observable<DestinationCoordinatorState> state;
 
     @Inject
@@ -35,12 +35,12 @@ public class DestinationCoordinatorStateMachineDispatcher implements Destination
     }
 
     @Override
-    public void onNavigateToDestination(Destination destination) {
+    public void onNavigateToDestination(Destination<?> destination) {
         eventStream.onNext(new NavigateToDestination(destination));
     }
 
     @Override
-    public void onDestinationDisplayed(Destination destination) {
+    public void onDestinationDisplayed(Destination<?> destination) {
         eventStream.onNext(new DestinationDisplayed(destination));
     }
 }

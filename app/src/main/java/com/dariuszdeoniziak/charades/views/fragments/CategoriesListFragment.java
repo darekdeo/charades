@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.databinding.FragmentCategoriesListBinding;
 import com.dariuszdeoniziak.charades.presenters.CategoriesListPresenter;
+import com.dariuszdeoniziak.charades.presenters.Presenter;
 import com.dariuszdeoniziak.charades.utils.Optional;
 import com.dariuszdeoniziak.charades.views.CategoriesListContract;
 import com.dariuszdeoniziak.charades.views.adapters.CategoriesListAdapter;
@@ -24,22 +25,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 public class CategoriesListFragment extends BaseFragment implements CategoriesListContract.View {
 
-    @Inject CategoriesListPresenter presenter;
-    @Inject CategoriesListAdapter categoriesListAdapter;
+    private final CategoriesListContract.Presenter presenter;
+    private final CategoriesListAdapter categoriesListAdapter;
 
     private FragmentCategoriesListBinding binding;
-    private Optional<CategoriesListContract.ParentView> parentView = Optional.empty();
 
     public static String TAG = CategoriesListFragment.class.getSimpleName();
 
-    public static CategoriesListFragment newInstance() {
-        return new CategoriesListFragment();
+    @Inject
+    CategoriesListFragment(CategoriesListContract.Presenter presenter, CategoriesListAdapter categoriesListAdapter) {
+        this.presenter = presenter;
+        this.categoriesListAdapter = categoriesListAdapter;
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-//        parentView = Optional.of((CategoriesListContract.ParentView) context);
     }
 
     @Nullable
@@ -54,7 +55,7 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
         super.onViewCreated(view, savedInstanceState);
         binding.categoriesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.categoriesRecycler.setAdapter(categoriesListAdapter);
-        categoriesListAdapter.setPresenter(presenter);
+//        categoriesListAdapter.setPresenter(presenter);
     }
 
     @Override
@@ -94,16 +95,6 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
     @Override
     public void showEmptyList() {
         // TODO show no list items info
-    }
-
-    @Override
-    public void selectCategory(Long categoryId) {
-//        parentView.ifPresent((action) -> action.selectCategory(categoryId));
-    }
-
-    @Override
-    public void editCategory(Long categoryId) {
-//        parentView.ifPresent((action) -> action.editCategory(categoryId));
     }
 
     @Override

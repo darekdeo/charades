@@ -114,16 +114,16 @@ public class CategoriesListPresenter extends AbstractPresenter<View>
 
     @Override
     public void onSelect(Category category) {
-        view.ifPresent((action) -> action.selectCategory(category.id));
+//        view.ifPresent((action) -> action.selectCategory(category.id));
     }
 
     @Override
     public void onEdit(Category category) {
-        view.ifPresent((action) -> action.editCategory(category.id));
+//        view.ifPresent((action) -> action.editCategory(category.id));
     }
 
     @Override
     public void onDelete(Category category) {
-        stateMachine.onDeleteCategory(category);
+//        stateMachine.onDeleteCategory(category);
     }
 }

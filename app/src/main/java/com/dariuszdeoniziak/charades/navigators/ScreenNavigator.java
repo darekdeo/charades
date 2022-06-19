@@ -60,7 +60,7 @@ public class ScreenNavigator implements Navigator.Screen, ScreenNavigatorHost, S
     public Completable navigate(Destination destination) {
         return Single
                 .fromCallable(() -> Optional.of(getCurrentFragment(containerResId)))
-                .filter(currentFragmentOptional -> !currentFragmentOptional.equals(value -> destination.getTag().equals(value.getTag())))
+                .filter(currentFragmentOptional -> !currentFragmentOptional.predicate(value -> destination.getTag().equals(value.getTag())))
                 .flatMapSingle((Function<Optional<BaseFragment>, SingleSource<BaseFragment>>) baseFragmentOptional -> fragmentDestinationFactory.create(destination))
                 .flatMapCompletable(newFragment -> Completable.fromAction(() -> {
                     FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();

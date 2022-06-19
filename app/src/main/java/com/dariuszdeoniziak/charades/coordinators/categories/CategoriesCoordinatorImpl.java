@@ -1,10 +1,11 @@
 package com.dariuszdeoniziak.charades.coordinators.categories;
 
+import com.dariuszdeoniziak.charades.coordinators.categories.destinations.ListDestination;
 import com.dariuszdeoniziak.charades.navigators.Destination;
 import com.dariuszdeoniziak.charades.navigators.Navigator;
+import com.dariuszdeoniziak.charades.schedulers.SchedulerFactory;
 import com.dariuszdeoniziak.charades.statemachines.coordinator.navigation.DestinationCoordinatorStateMachine;
 import com.dariuszdeoniziak.charades.utils.Logger;
-import com.dariuszdeoniziak.charades.utils.Optional;
 
 import javax.inject.Inject;
 
@@ -16,28 +17,38 @@ public class CategoriesCoordinatorImpl implements CategoriesCoordinator {
     private final SingleSubject<CategoriesResult> coordinatorResult = SingleSubject.create();
     private final Logger logger;
     private final DestinationCoordinatorStateMachine stateMachine;
+    private final SchedulerFactory schedulerFactory;
     private final Navigator.Screen screenNavigator;
+    private final ListDestination listDestination;
+//    private final FormDestination formDestination;
 
     @Inject
     public CategoriesCoordinatorImpl(
             Logger logger,
             DestinationCoordinatorStateMachine stateMachine,
-            Navigator.Screen screenNavigator
+            SchedulerFactory schedulerFactory,
+            Navigator.Screen screenNavigator,
+            ListDestination listDestination
+//            FormDestination formDestination
     ) {
         this.logger = logger;
         this.stateMachine = stateMachine;
+        this.schedulerFactory = schedulerFactory;
         this.screenNavigator = screenNavigator;
+        this.listDestination = listDestination;
+//        this.formDestination = formDestination;
     }
 
     @Override
     public Single<CategoriesResult> coordinate() {
         stateMachine
                 .state()
+                .observeOn(schedulerFactory.ui())
                 .subscribe(
                         state -> {
                             switch (state) {
                                 case NO_DESTINATION:
-                                    navigateToInitialDestination();
+                                    navigateToDestination(listDestination);
                                 case DISPLAYING_DESTINATION:
                                 case NAVIGATING_TO_DESTINATION:
                                     break;
@@ -49,17 +60,25 @@ public class CategoriesCoordinatorImpl implements CategoriesCoordinator {
         return coordinatorResult;
     }
 
-    private void navigateToInitialDestination() {
-        navigateToDestination(Optional.of(CategoryDestination.LIST));
+    @Override
+    public void selectCategory(Long categoryId) {
+
     }
 
-    private void navigateToDestination(Optional<Destination> optionalDestination) {
-        optionalDestination.ifPresent(destination -> screenNavigator
-                .navigate(CategoryDestination.LIST)
+    @Override
+    public void editCategory(Long categoryId) {
+//        formDestination.getPresenter().onLoadCategory(categoryId);
+//        navigateToDestination(formDestination);
+    }
+
+    private void navigateToDestination(Destination destination) {
+        screenNavigator
+                .navigate(destination)
+                .doOnSubscribe(disposable -> stateMachine.onNavigateToDestination(destination))
                 .subscribe(
                         () -> stateMachine.onDestinationDisplayed(destination),
                         error -> logger.error("Navigator error", error)
-                ));
+                );
     }
 
 }

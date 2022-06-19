@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.dariuszdeoniziak.charades.coordinators.app.AppCoordinator;
 import com.dariuszdeoniziak.charades.modules.AppModule;
+import com.dariuszdeoniziak.charades.modules.CategoriesModule;
 import com.dariuszdeoniziak.charades.modules.MappersModule;
 import com.dariuszdeoniziak.charades.utils.Optional;
 
@@ -37,7 +38,11 @@ public class App extends Application {
 
         instance = this;
 
-        feather = Feather.with(new AppModule(this), new MappersModule());
+        feather = Feather.with(
+                new AppModule(this),
+                new MappersModule(),
+                new CategoriesModule()
+        );
         feather.injectFields(this);
 
         appCoordinatorDisposable = Optional.of(

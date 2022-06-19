@@ -15,7 +15,7 @@ public class MappersModule {
     @Provides
     @Named("to_charade_list_item_model_mapper")
     @Singleton
-    public Mapper<Charade, CharadeListItemModel> provideToCharadeListItemMapper() {
-        return new ToCharadeListItemMapper();
+    public Mapper<Charade, CharadeListItemModel> provideToCharadeListItemMapper(ToCharadeListItemMapper mapper) {
+        return mapper;
     }
 }

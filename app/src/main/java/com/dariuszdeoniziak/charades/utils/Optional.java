@@ -26,9 +26,9 @@ public class Optional<T> {
         }
     }
 
-    public boolean equals(Equals<T> equals) {
+    public boolean predicate(Predicate<T> predicate) {
         if (value != null) {
-            return equals.apply(value);
+            return predicate.apply(value);
         } else {
             return false;
         }
@@ -42,7 +42,7 @@ public class Optional<T> {
         void apply(T value);
     }
 
-    public interface Equals<T> {
+    public interface Predicate<T> {
         boolean apply(T value);
     }
 }

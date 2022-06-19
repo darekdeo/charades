@@ -9,6 +9,8 @@ import com.dariuszdeoniziak.charades.utils.Mapper;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 
@@ -21,6 +23,7 @@ public class CharadesRepositoryImpl implements CharadesRepository {
     private final Mapper<Charade, CharadeRoomModel> toCharadeRoomModelMapper;
     private final Mapper<CharadeRoomModel, Charade> fromCharadeRoomModelMapper;
 
+    @Inject
     public CharadesRepositoryImpl(
             CharadesDataSource charadesLocalDataSource,
             Mapper<Category, CategoryRoomModel> toCategoryRoomModelMapper,

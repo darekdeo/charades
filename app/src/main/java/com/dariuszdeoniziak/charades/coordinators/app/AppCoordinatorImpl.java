@@ -49,7 +49,7 @@ public class AppCoordinatorImpl implements AppCoordinator {
                                     coordinatorResult.onSuccess(AppResult.TERMINATED_APP);
                                     break;
                                 case STARTED:
-                                    coordinateToFirstScreen();
+                                    coordinateToCategories();
                                     break;
                             }
                         },
@@ -77,7 +77,7 @@ public class AppCoordinatorImpl implements AppCoordinator {
                 );
     }
 
-    private void coordinateToFirstScreen() {
+    private void coordinateToCategories() {
         categoriesCoordinator.coordinate()
                 .subscribe(
                         categoriesResult -> {

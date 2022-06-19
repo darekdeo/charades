@@ -28,33 +28,11 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     @Inject CategoriesFormPresenter presenter;
     @Inject CharadesListAdapter charadesListAdapter;
 
-    private long categoryId = 0;
     private FragmentCategoriesFormBinding binding;
     private final static String KEY_CATEGORY_ID = "key_category_id";
     private Disposable titleTextChangesDisposable = Disposable.empty();
 
     public static String TAG = CategoriesFormFragment.class.getSimpleName();
-
-    public static CategoriesFormFragment newInstance() {
-        return newInstance(0L);
-    }
-
-    public static CategoriesFormFragment newInstance(Long categoryId) {
-        Bundle bundle = new Bundle();
-        bundle.putLong(KEY_CATEGORY_ID, categoryId);
-
-        CategoriesFormFragment fragment = new CategoriesFormFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            categoryId = getArguments().getLong(KEY_CATEGORY_ID, 0);
-        }
-    }
 
     @Nullable
     @Override
@@ -75,7 +53,6 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     public void onStart() {
         super.onStart();
         presenter.onTakeView(this);
-        presenter.onLoadCategory(categoryId);
     }
 
     @Override

@@ -22,7 +22,7 @@ public enum DestinationCoordinatorState implements State<Event<Transition, Desti
 
                 @Override
                 public DestinationCoordinatorState onEvent(DestinationDisplayed event) {
-                    return null;
+                    throw new IllegalStateException();
                 }
             }
     ),
@@ -30,7 +30,7 @@ public enum DestinationCoordinatorState implements State<Event<Transition, Desti
             new Transition() {
                 @Override
                 public DestinationCoordinatorState onEvent(NavigateToDestination event) {
-                    return null;
+                    throw new IllegalStateException();
                 }
 
                 @Override
@@ -52,7 +52,7 @@ public enum DestinationCoordinatorState implements State<Event<Transition, Desti
 
                 @Override
                 public DestinationCoordinatorState onEvent(DestinationDisplayed event) {
-                    return null;
+                    throw new IllegalStateException();
                 }
             }
     );
@@ -65,7 +65,7 @@ public enum DestinationCoordinatorState implements State<Event<Transition, Desti
         this.transition = transition;
     }
 
-    private Optional<Destination> destination = Optional.empty();
+    private Optional<Destination<?>> destination = Optional.empty();
 
     @Override
     public DestinationCoordinatorState transition(Event<Transition, DestinationCoordinatorState> event) {
@@ -73,7 +73,7 @@ public enum DestinationCoordinatorState implements State<Event<Transition, Desti
     }
 
     @Override
-    public Optional<Destination> getDestination() {
+    public Optional<Destination<?>> getDestination() {
         return destination;
     }
 }
