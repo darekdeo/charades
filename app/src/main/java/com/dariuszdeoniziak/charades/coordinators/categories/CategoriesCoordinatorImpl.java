@@ -8,6 +8,7 @@ import com.dariuszdeoniziak.charades.navigators.DestinationFactory;
 import com.dariuszdeoniziak.charades.navigators.Navigator;
 import com.dariuszdeoniziak.charades.schedulers.SchedulerFactory;
 import com.dariuszdeoniziak.charades.statemachines.coordinator.navigation.DestinationCoordinatorStateMachine;
+import com.dariuszdeoniziak.charades.utils.Action;
 import com.dariuszdeoniziak.charades.utils.Logger;
 
 import javax.inject.Inject;
@@ -71,8 +72,7 @@ public class CategoriesCoordinatorImpl implements CategoriesCoordinator {
 
     @Override
     public void editCategory(Long categoryId) {
-        formDestination.getPresenter().onLoadCategory(categoryId);
-        navigateToDestination(formDestination);
+        navigateToDestination(formDestination, () -> formDestination.getPresenter().onLoadCategory(categoryId));
     }
 
     @Override
@@ -92,8 +92,12 @@ public class CategoriesCoordinatorImpl implements CategoriesCoordinator {
     }
 
     private void navigateToDestination(Destination<?> destination) {
+        navigateToDestination(destination, Action.NONE);
+    }
+    private void navigateToDestination(Destination<?> destination, Action finishedAction) {
         screenNavigator
                 .navigate(destination)
+                .doOnComplete(finishedAction::invoke)
                 .doOnSubscribe(disposable -> stateMachine.onNavigateToDestination(destination))
                 .subscribe(
                         () -> stateMachine.onDestinationDisplayed(destination),
