@@ -6,7 +6,7 @@ import com.dariuszdeoniziak.charades.views.CategoriesFormContract.Presenter;
 
 import javax.inject.Inject;
 
-public class FormDestination implements Destination {
+public class FormDestination implements Destination<Presenter> {
 
     private final View view;
     private final Presenter presenter;

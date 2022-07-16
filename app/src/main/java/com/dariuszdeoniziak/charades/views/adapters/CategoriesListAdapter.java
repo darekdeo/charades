@@ -18,7 +18,11 @@ public class CategoriesListAdapter extends BaseAdapter<Category, CategoryViewHol
     private CategoriesListContract.ListItemPresenter presenter;
 
     @Inject
-    CategoriesListAdapter() {}
+    CategoriesListAdapter(
+            CategoriesListContract.ListItemPresenter presenter
+    ) {
+        this.presenter = presenter;
+    }
 
     @NonNull
     @Override
@@ -29,7 +33,4 @@ public class CategoriesListAdapter extends BaseAdapter<Category, CategoryViewHol
         return holder;
     }
 
-    public void setPresenter(CategoriesListContract.ListItemPresenter presenter) {
-        this.presenter = presenter;
-    }
 }

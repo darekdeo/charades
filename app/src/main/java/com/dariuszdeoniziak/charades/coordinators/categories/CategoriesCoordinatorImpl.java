@@ -1,7 +1,9 @@
 package com.dariuszdeoniziak.charades.coordinators.categories;
 
+import com.dariuszdeoniziak.charades.coordinators.categories.destinations.FormDestination;
 import com.dariuszdeoniziak.charades.coordinators.categories.destinations.ListDestination;
 import com.dariuszdeoniziak.charades.navigators.Destination;
+import com.dariuszdeoniziak.charades.navigators.DestinationFactory;
 import com.dariuszdeoniziak.charades.navigators.Navigator;
 import com.dariuszdeoniziak.charades.schedulers.SchedulerFactory;
 import com.dariuszdeoniziak.charades.statemachines.coordinator.navigation.DestinationCoordinatorStateMachine;
@@ -20,7 +22,7 @@ public class CategoriesCoordinatorImpl implements CategoriesCoordinator {
     private final SchedulerFactory schedulerFactory;
     private final Navigator.Screen screenNavigator;
     private final ListDestination listDestination;
-//    private final FormDestination formDestination;
+    private final FormDestination formDestination;
 
     @Inject
     public CategoriesCoordinatorImpl(
@@ -28,15 +30,14 @@ public class CategoriesCoordinatorImpl implements CategoriesCoordinator {
             DestinationCoordinatorStateMachine stateMachine,
             SchedulerFactory schedulerFactory,
             Navigator.Screen screenNavigator,
-            ListDestination listDestination
-//            FormDestination formDestination
+            DestinationFactory destinationFactory
     ) {
         this.logger = logger;
         this.stateMachine = stateMachine;
         this.schedulerFactory = schedulerFactory;
         this.screenNavigator = screenNavigator;
-        this.listDestination = listDestination;
-//        this.formDestination = formDestination;
+        listDestination = destinationFactory.create(ListDestination.class);
+        formDestination = destinationFactory.create(FormDestination.class);
     }
 
     @Override
@@ -48,6 +49,7 @@ public class CategoriesCoordinatorImpl implements CategoriesCoordinator {
                         state -> {
                             switch (state) {
                                 case NO_DESTINATION:
+                                    listDestination.getPresenter().onTakeCoordination(this);
                                     navigateToDestination(listDestination);
                                 case DISPLAYING_DESTINATION:
                                 case NAVIGATING_TO_DESTINATION:
@@ -67,11 +69,11 @@ public class CategoriesCoordinatorImpl implements CategoriesCoordinator {
 
     @Override
     public void editCategory(Long categoryId) {
-//        formDestination.getPresenter().onLoadCategory(categoryId);
-//        navigateToDestination(formDestination);
+        formDestination.getPresenter().onLoadCategory(categoryId);
+        navigateToDestination(formDestination);
     }
 
-    private void navigateToDestination(Destination destination) {
+    private void navigateToDestination(Destination<?> destination) {
         screenNavigator
                 .navigate(destination)
                 .doOnSubscribe(disposable -> stateMachine.onNavigateToDestination(destination))

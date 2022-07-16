@@ -9,6 +9,7 @@ import com.dariuszdeoniziak.charades.data.repositories.LabelsRepository;
 import com.dariuszdeoniziak.charades.schedulers.SchedulerFactory;
 import com.dariuszdeoniziak.charades.statemachines.categories.list.CategoriesListStateMachine;
 import com.dariuszdeoniziak.charades.utils.Logger;
+import com.dariuszdeoniziak.charades.utils.Optional;
 import com.dariuszdeoniziak.charades.views.CategoriesListContract;
 
 import java.util.Collections;
@@ -25,6 +26,8 @@ public class CategoriesListPresenter extends AbstractPresenter<View>
     private final SchedulerFactory schedulerFactory;
     private final CategoriesListStateMachine stateMachine;
     private final Logger logger;
+
+    private Optional<CategoriesListContract.Coordination> coordination = Optional.empty();
 
     @Inject
     CategoriesListPresenter(
@@ -83,6 +86,11 @@ public class CategoriesListPresenter extends AbstractPresenter<View>
     }
 
     @Override
+    public void onTakeCoordination(CategoriesListContract.Coordination coordination) {
+        this.coordination = Optional.of(coordination);
+    }
+
+    @Override
     public void onLoadCategories() {
         run(() -> charadesRepository.getCategories()
                 .subscribeOn(schedulerFactory.io())
@@ -114,16 +122,16 @@ public class CategoriesListPresenter extends AbstractPresenter<View>
 
     @Override
     public void onSelect(Category category) {
-//        view.ifPresent((action) -> action.selectCategory(category.id));
+        coordination.ifPresent((action) -> action.selectCategory(category.id));
     }
 
     @Override
     public void onEdit(Category category) {
-//        view.ifPresent((action) -> action.editCategory(category.id));
+        coordination.ifPresent((action) -> action.editCategory(category.id));
     }
 
     @Override
     public void onDelete(Category category) {
-//        stateMachine.onDeleteCategory(category);
+        stateMachine.onDeleteCategory(category);
     }
 }

@@ -28,7 +28,9 @@ public interface CategoriesListContract {
         void editCategory(Long categoryId);
     }
 
-    interface Presenter extends com.dariuszdeoniziak.charades.presenters.Presenter<View> {
+    interface Presenter extends com.dariuszdeoniziak.charades.presenters.Presenter<View>, ListItemPresenter {
+        void onTakeCoordination(Coordination coordination);
+
         void onLoadCategories();
 
         void onConfirmDeleteCategory(Category category);

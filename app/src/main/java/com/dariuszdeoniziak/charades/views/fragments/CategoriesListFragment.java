@@ -1,26 +1,22 @@
 package com.dariuszdeoniziak.charades.views.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.databinding.FragmentCategoriesListBinding;
-import com.dariuszdeoniziak.charades.presenters.CategoriesListPresenter;
-import com.dariuszdeoniziak.charades.presenters.Presenter;
-import com.dariuszdeoniziak.charades.utils.Optional;
 import com.dariuszdeoniziak.charades.views.CategoriesListContract;
 import com.dariuszdeoniziak.charades.views.adapters.CategoriesListAdapter;
 
 import java.util.List;
 
 import javax.inject.Inject;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 
 public class CategoriesListFragment extends BaseFragment implements CategoriesListContract.View {
@@ -38,11 +34,6 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
         this.categoriesListAdapter = categoriesListAdapter;
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,7 +46,6 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
         super.onViewCreated(view, savedInstanceState);
         binding.categoriesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.categoriesRecycler.setAdapter(categoriesListAdapter);
-//        categoriesListAdapter.setPresenter(presenter);
     }
 
     @Override
@@ -99,5 +89,6 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
 
     @Override
     public void showConfirmDeleteCategory(Category category, String title, String message, String positiveButton, String negativeButton) {
+        // TODO show delete confirmation dialog
     }
 }

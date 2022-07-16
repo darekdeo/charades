@@ -25,6 +25,8 @@ import com.dariuszdeoniziak.charades.data.repositories.LabelsRepositoryImpl;
 import com.dariuszdeoniziak.charades.data.repositories.PreferencesRepository;
 import com.dariuszdeoniziak.charades.data.repositories.PreferencesRepositoryImpl;
 import com.dariuszdeoniziak.charades.navigators.DestinationFactory;
+import com.dariuszdeoniziak.charades.navigators.DestinationFactoryImpl;
+import com.dariuszdeoniziak.charades.navigators.DestinationParser;
 import com.dariuszdeoniziak.charades.navigators.Navigator;
 import com.dariuszdeoniziak.charades.navigators.ScreenNavigator;
 import com.dariuszdeoniziak.charades.navigators.ScreenNavigatorHost;
@@ -42,8 +44,9 @@ import com.dariuszdeoniziak.charades.statemachines.coordinator.navigation.Destin
 import com.dariuszdeoniziak.charades.utils.Logger;
 import com.dariuszdeoniziak.charades.views.CategoriesFormContract;
 import com.dariuszdeoniziak.charades.views.CategoriesListContract;
+import com.dariuszdeoniziak.charades.views.fragments.CategoriesFormFragment;
 import com.dariuszdeoniziak.charades.views.fragments.CategoriesListFragment;
-import com.dariuszdeoniziak.charades.views.fragments.FragmentDestinationFactory;
+import com.dariuszdeoniziak.charades.views.fragments.FragmentDestinationParser;
 
 import org.codejargon.feather.Provides;
 
@@ -104,15 +107,21 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public DestinationFactory.Fragment provideFragmentDestinationFactory(FragmentDestinationFactory fragmentDestinationFactory) {
-        return fragmentDestinationFactory;
+    public DestinationFactory provideDestinationFactory(DestinationFactoryImpl factory) {
+        return factory;
+    }
+
+    @Provides
+    @Singleton
+    public DestinationParser.Fragment provideFragmentDestinationParser(FragmentDestinationParser parser) {
+        return parser;
     }
 
     @Provides
     @Singleton
     public ScreenNavigator provideScreenNavigatorImpl() {
         return new ScreenNavigator(
-                appRef.get().feather.provider(DestinationFactory.Fragment.class).get()
+                appRef.get().feather.provider(DestinationParser.Fragment.class).get()
         );
     }
 
@@ -158,11 +167,17 @@ public class AppModule {
         return presenter;
     }
 
-//    @Provides
-//    @Singleton
-//    CategoriesFormContract.View provideCategoriesFormView(CategoriesFormFragment fragment) {
-//        return fragment;
-//    }
+    @Provides
+    @Singleton
+    CategoriesListContract.ListItemPresenter provideCategoriesListItemPresenter() {
+        return appRef.get().feather.provider(CategoriesListContract.Presenter.class).get();
+    }
+
+    @Provides
+    @Singleton
+    CategoriesFormContract.View provideCategoriesFormView(CategoriesFormFragment fragment) {
+        return fragment;
+    }
 
     @Provides
     @Singleton
@@ -214,9 +229,4 @@ public class AppModule {
         return new LabelsRepositoryImpl(provideResourcesLabelsDataSource());
     }
 
-//    @Provides
-//    @Singleton
-//    public SchedulerFactory provideSchedulerProvider() {
-//        return new DefaultSchedulerFactory();
-//    }
 }

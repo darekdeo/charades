@@ -24,15 +24,15 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject;
 public class ScreenNavigator implements Navigator.Screen, ScreenNavigatorHost, ScreenNavigatorHostMonitor, LifecycleEventObserver {
 
     private final BehaviorSubject<HostStatus> hostStatus = BehaviorSubject.createDefault(HostStatus.DETACHED);
-    private final DestinationFactory.Fragment fragmentDestinationFactory;
+    private final DestinationParser.Fragment fragmentDestinationParser;
     private @IdRes int containerResId = -1;
     private AppCompatActivity activity = null;
 
     @Inject
     public ScreenNavigator(
-            DestinationFactory.Fragment fragmentDestinationFactory
+            DestinationParser.Fragment fragmentDestinationParser
     ) {
-        this.fragmentDestinationFactory = fragmentDestinationFactory;
+        this.fragmentDestinationParser = fragmentDestinationParser;
     }
 
     @Override
@@ -57,11 +57,11 @@ public class ScreenNavigator implements Navigator.Screen, ScreenNavigatorHost, S
     }
 
     @Override
-    public Completable navigate(Destination destination) {
+    public Completable navigate(Destination<?> destination) {
         return Single
                 .fromCallable(() -> Optional.of(getCurrentFragment(containerResId)))
                 .filter(currentFragmentOptional -> !currentFragmentOptional.predicate(value -> destination.getTag().equals(value.getTag())))
-                .flatMapSingle((Function<Optional<BaseFragment>, SingleSource<BaseFragment>>) baseFragmentOptional -> fragmentDestinationFactory.create(destination))
+                .flatMapSingle((Function<Optional<BaseFragment>, SingleSource<BaseFragment>>) baseFragmentOptional -> fragmentDestinationParser.parse(destination))
                 .flatMapCompletable(newFragment -> Completable.fromAction(() -> {
                     FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
                     transaction.replace(containerResId, newFragment, destination.getTag());

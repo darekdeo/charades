@@ -46,7 +46,6 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
         super.onViewCreated(view, savedInstanceState);
         binding.formCharadesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.formCharadesRecycler.setAdapter(charadesListAdapter);
-        charadesListAdapter.setPresenter(presenter);
     }
 
     @Override
