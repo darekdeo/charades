@@ -26,7 +26,7 @@ import javax.inject.Inject;
 
 public class CategoriesFormFragment extends BaseFragment implements CategoriesFormContract.View {
 
-    private final CategoriesFormPresenter presenter;
+    private final CategoriesFormContract.Presenter presenter;
     private final CharadesListAdapter charadesListAdapter;
 
     private FragmentCategoriesFormBinding binding;
@@ -36,7 +36,7 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
 
     @Inject
     CategoriesFormFragment(
-            CategoriesFormPresenter presenter,
+            CategoriesFormContract.Presenter presenter,
             CharadesListAdapter charadesListAdapter
     ) {
         this.presenter = presenter;
