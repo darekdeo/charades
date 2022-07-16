@@ -231,8 +231,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public LabelsRepository provideLabelsRepository() {
-        return new LabelsRepositoryImpl(provideResourcesLabelsDataSource());
+    public LabelsRepository provideLabelsRepository(LabelsRepositoryImpl repository) {
+        return repository;
     }
 
 }
