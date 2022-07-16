@@ -1,5 +1,6 @@
 package com.dariuszdeoniziak.charades.views.fragments;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,8 +89,4 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
         // TODO show no list items info
     }
 
-    @Override
-    public void showConfirmDeleteCategory(Category category, String title, String message, String positiveButton, String negativeButton) {
-        // TODO show delete confirmation dialog
-    }
 }

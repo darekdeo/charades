@@ -2,6 +2,7 @@ package com.dariuszdeoniziak.charades.coordinators.categories;
 
 import com.dariuszdeoniziak.charades.coordinators.categories.destinations.FormDestination;
 import com.dariuszdeoniziak.charades.coordinators.categories.destinations.ListDestination;
+import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.navigators.Destination;
 import com.dariuszdeoniziak.charades.navigators.DestinationFactory;
 import com.dariuszdeoniziak.charades.navigators.Navigator;
@@ -77,6 +78,12 @@ public class CategoriesCoordinatorImpl implements CategoriesCoordinator {
     @Override
     public void addNewCategory() {
         navigateToDestination(formDestination);
+    }
+
+    @Override
+    public void showConfirmDeleteCategory(Category category) {
+        // TODO show confirmation screen/dialog before deleting
+        listDestination.getPresenter().onDeleteCategory(category);
     }
 
     @Override

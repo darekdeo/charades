@@ -3,7 +3,6 @@ package com.dariuszdeoniziak.charades.presenters;
 import static com.dariuszdeoniziak.charades.views.CategoriesListContract.View;
 
 import com.dariuszdeoniziak.charades.data.models.Category;
-import com.dariuszdeoniziak.charades.data.models.Label;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.data.repositories.LabelsRepository;
 import com.dariuszdeoniziak.charades.schedulers.SchedulerFactory;
@@ -66,15 +65,6 @@ public class CategoriesListPresenter extends AbstractPresenter<View>
                                     action.hideProgressIndicator();
                                     action.showCategories(state.getCategories());
                                     break;
-                                case DELETING_CATEGORY:
-                                    action.showConfirmDeleteCategory(
-                                            state.getDeletingCategory(),
-                                            labelsRepository.getLabel(Label.categories_list_dialog_confirm_delete_title),
-                                            labelsRepository.getLabel(Label.categories_list_dialog_confirm_delete_message, state.getDeletingCategory().name),
-                                            labelsRepository.getLabel(Label.yes),
-                                            labelsRepository.getLabel(Label.no)
-                                    );
-                                    break;
                                 case LOADING:
                                     action.showProgressIndicator();
                                     break;
@@ -103,7 +93,7 @@ public class CategoriesListPresenter extends AbstractPresenter<View>
     }
 
     @Override
-    public void onConfirmDeleteCategory(Category category) {
+    public void onDeleteCategory(Category category) {
         run(() -> charadesRepository.deleteCategory(category)
                 .subscribeOn(schedulerFactory.io())
                 .observeOn(schedulerFactory.ui())
@@ -113,11 +103,6 @@ public class CategoriesListPresenter extends AbstractPresenter<View>
                         stateMachine::onListLoaded,
                         stateMachine::onLoadingError
                 ));
-    }
-
-    @Override
-    public void onConfirmDeleteCategoryCancelled() {
-        stateMachine.onDeleteCategoryCancel();
     }
 
     @Override
@@ -137,6 +122,6 @@ public class CategoriesListPresenter extends AbstractPresenter<View>
 
     @Override
     public void onDelete(Category category) {
-        stateMachine.onDeleteCategory(category);
+        coordination.ifPresent((action) -> action.showConfirmDeleteCategory(category));
     }
 }

@@ -5,8 +5,6 @@ import static com.dariuszdeoniziak.charades.statemachines.categories.list.Catego
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.statemachines.Event;
 import com.dariuszdeoniziak.charades.statemachines.State;
-import com.dariuszdeoniziak.charades.statemachines.categories.list.events.DeleteCategory;
-import com.dariuszdeoniziak.charades.statemachines.categories.list.events.DeleteCategoryCancel;
 import com.dariuszdeoniziak.charades.statemachines.categories.list.events.ListLoaded;
 import com.dariuszdeoniziak.charades.statemachines.categories.list.events.LoadList;
 import com.dariuszdeoniziak.charades.statemachines.categories.list.events.LoadingError;
@@ -39,15 +37,6 @@ public enum CategoriesListState implements State<Event<Transition, CategoriesLis
                     return CategoriesListState.LOADING_ERROR;
                 }
 
-                @Override
-                public CategoriesListState onEvent(DeleteCategory event) {
-                    return null;
-                }
-
-                @Override
-                public CategoriesListState onEvent(DeleteCategoryCancel event) {
-                    return null;
-                }
             }
     ),
     LOADING_ERROR(
@@ -65,16 +54,6 @@ public enum CategoriesListState implements State<Event<Transition, CategoriesLis
 
                 @Override
                 public CategoriesListState onEvent(LoadingError event) {
-                    return null;
-                }
-
-                @Override
-                public CategoriesListState onEvent(DeleteCategory event) {
-                    return null;
-                }
-
-                @Override
-                public CategoriesListState onEvent(DeleteCategoryCancel event) {
                     return null;
                 }
             }
@@ -96,16 +75,6 @@ public enum CategoriesListState implements State<Event<Transition, CategoriesLis
                 public CategoriesListState onEvent(LoadingError event) {
                     return null;
                 }
-
-                @Override
-                public CategoriesListState onEvent(DeleteCategory event) {
-                    return null;
-                }
-
-                @Override
-                public CategoriesListState onEvent(DeleteCategoryCancel event) {
-                    return null;
-                }
             }
     ),
     LIST_WITH_ITEMS(
@@ -123,47 +92,6 @@ public enum CategoriesListState implements State<Event<Transition, CategoriesLis
                 @Override
                 public CategoriesListState onEvent(LoadingError event) {
                     return null;
-                }
-
-                @Override
-                public CategoriesListState onEvent(DeleteCategory event) {
-                    CategoriesListState state = CategoriesListState.DELETING_CATEGORY;
-                    state.deletingCategory = event.category;
-                    return state;
-                }
-
-                @Override
-                public CategoriesListState onEvent(DeleteCategoryCancel event) {
-                    return null;
-                }
-            }
-    ),
-    DELETING_CATEGORY(
-            new CategoriesListStateMachine.Transition() {
-
-                @Override
-                public CategoriesListState onEvent(LoadList event) {
-                    return LOADING; // Reload list after deleting category.
-                }
-
-                @Override
-                public CategoriesListState onEvent(ListLoaded event) {
-                    return null;
-                }
-
-                @Override
-                public CategoriesListState onEvent(LoadingError event) {
-                    return null;
-                }
-
-                @Override
-                public CategoriesListState onEvent(DeleteCategory event) {
-                    return null;
-                }
-
-                @Override
-                public CategoriesListState onEvent(DeleteCategoryCancel event) {
-                    return LIST_WITH_ITEMS;
                 }
             }
     );
@@ -187,10 +115,5 @@ public enum CategoriesListState implements State<Event<Transition, CategoriesLis
     @Override
     public List<Category> getCategories() {
         return categories;
-    }
-
-    @Override
-    public Category getDeletingCategory() {
-        return deletingCategory;
     }
 }

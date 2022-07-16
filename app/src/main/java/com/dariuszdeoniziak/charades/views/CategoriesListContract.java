@@ -18,8 +18,6 @@ public interface CategoriesListContract {
         void showCategories(List<Category> categories);
 
         void showEmptyList();
-
-        void showConfirmDeleteCategory(Category category, String title, String message, String positiveText, String negativeText);
     }
 
     interface Coordination {
@@ -28,6 +26,8 @@ public interface CategoriesListContract {
         void editCategory(Long categoryId);
 
         void addNewCategory();
+
+        void showConfirmDeleteCategory(Category category);
     }
 
     interface Presenter extends com.dariuszdeoniziak.charades.presenters.Presenter<View>, ListItemPresenter {
@@ -35,9 +35,7 @@ public interface CategoriesListContract {
 
         void onLoadCategories();
 
-        void onConfirmDeleteCategory(Category category);
-
-        void onConfirmDeleteCategoryCancelled();
+        void onDeleteCategory(Category category);
 
         void onAddNew();
     }
