@@ -26,6 +26,8 @@ public interface CategoriesListContract {
         void selectCategory(Long categoryId);
 
         void editCategory(Long categoryId);
+
+        void addNewCategory();
     }
 
     interface Presenter extends com.dariuszdeoniziak.charades.presenters.Presenter<View>, ListItemPresenter {
@@ -36,6 +38,8 @@ public interface CategoriesListContract {
         void onConfirmDeleteCategory(Category category);
 
         void onConfirmDeleteCategoryCancelled();
+
+        void onAddNew();
     }
 
     interface ListItemPresenter {

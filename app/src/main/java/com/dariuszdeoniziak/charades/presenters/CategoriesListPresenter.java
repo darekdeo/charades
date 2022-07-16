@@ -121,6 +121,11 @@ public class CategoriesListPresenter extends AbstractPresenter<View>
     }
 
     @Override
+    public void onAddNew() {
+        coordination.ifPresent(CategoriesListContract.Coordination::addNewCategory);
+    }
+
+    @Override
     public void onSelect(Category category) {
         coordination.ifPresent((action) -> action.selectCategory(category.id));
     }

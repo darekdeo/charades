@@ -6,8 +6,6 @@ import com.dariuszdeoniziak.charades.views.models.CharadeListItemModel;
 
 import java.util.List;
 
-import androidx.databinding.ObservableField;
-
 
 public interface CategoriesFormContract {
 
@@ -22,11 +20,13 @@ public interface CategoriesFormContract {
     }
 
     interface Presenter extends com.dariuszdeoniziak.charades.presenters.Presenter<View>, CharadeListItemPresenter {
-        ObservableField<String> title = new ObservableField<>();
+        void onTakeCoordination(Coordination coordination);
 
         void onLoadCategory(Long categoryId);
 
         void onSaveCategoryTitle(String title);
+
+        void onClose();
     }
 
     interface CharadeListItemPresenter {
@@ -36,5 +36,9 @@ public interface CategoriesFormContract {
         void onDelete(CharadeListItemModel charade);
 
         void onNew();
+    }
+
+    interface Coordination {
+        void closeCategoryForm();
     }
 }

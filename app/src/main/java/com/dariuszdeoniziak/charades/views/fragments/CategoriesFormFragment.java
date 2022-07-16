@@ -1,6 +1,8 @@
 package com.dariuszdeoniziak.charades.views.fragments;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +23,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.rxjava3.disposables.Disposable;
-
 
 public class CategoriesFormFragment extends BaseFragment implements CategoriesFormContract.View {
 
@@ -31,7 +31,6 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
 
     private FragmentCategoriesFormBinding binding;
     private final static String KEY_CATEGORY_ID = "key_category_id";
-    private Disposable titleTextChangesDisposable = Disposable.empty();
 
     public static String TAG = CategoriesFormFragment.class.getSimpleName();
 
@@ -56,6 +55,23 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
         super.onViewCreated(view, savedInstanceState);
         binding.formCharadesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.formCharadesRecycler.setAdapter(charadesListAdapter);
+        binding.formCategoryTitle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                presenter.onSaveCategoryTitle(s.toString());
+            }
+        });
+        binding.formCharadesCloseButton.setOnClickListener(v -> presenter.onClose());
     }
 
     @Override
@@ -67,7 +83,6 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     @Override
     public void onStop() {
         super.onStop();
-        titleTextChangesDisposable.dispose();
         presenter.onDropView();
     }
 

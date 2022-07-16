@@ -46,6 +46,7 @@ public class CategoriesListFragment extends BaseFragment implements CategoriesLi
         super.onViewCreated(view, savedInstanceState);
         binding.categoriesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.categoriesRecycler.setAdapter(categoriesListAdapter);
+        binding.categoriesAddNewButton.setOnClickListener(v -> presenter.onAddNew());
     }
 
     @Override

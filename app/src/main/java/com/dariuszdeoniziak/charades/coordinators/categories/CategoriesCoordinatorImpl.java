@@ -37,7 +37,9 @@ public class CategoriesCoordinatorImpl implements CategoriesCoordinator {
         this.schedulerFactory = schedulerFactory;
         this.screenNavigator = screenNavigator;
         listDestination = destinationFactory.create(ListDestination.class);
+        listDestination.getPresenter().onTakeCoordination(this);
         formDestination = destinationFactory.create(FormDestination.class);
+        formDestination.getPresenter().onTakeCoordination(this);
     }
 
     @Override
@@ -49,7 +51,6 @@ public class CategoriesCoordinatorImpl implements CategoriesCoordinator {
                         state -> {
                             switch (state) {
                                 case NO_DESTINATION:
-                                    listDestination.getPresenter().onTakeCoordination(this);
                                     navigateToDestination(listDestination);
                                 case DISPLAYING_DESTINATION:
                                 case NAVIGATING_TO_DESTINATION:
@@ -71,6 +72,16 @@ public class CategoriesCoordinatorImpl implements CategoriesCoordinator {
     public void editCategory(Long categoryId) {
         formDestination.getPresenter().onLoadCategory(categoryId);
         navigateToDestination(formDestination);
+    }
+
+    @Override
+    public void addNewCategory() {
+        navigateToDestination(formDestination);
+    }
+
+    @Override
+    public void closeCategoryForm() {
+        navigateToDestination(listDestination);
     }
 
     private void navigateToDestination(Destination<?> destination) {

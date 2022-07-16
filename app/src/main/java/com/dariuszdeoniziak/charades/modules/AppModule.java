@@ -187,7 +187,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    CategoriesFormContract.CharadeListItemPresenter provideCategoriesFormPresenter() {
+    CategoriesFormContract.CharadeListItemPresenter provideCharadeListItemPresenter() {
         return appRef.get().feather.provider(CategoriesFormContract.Presenter.class).get();
     }
 
