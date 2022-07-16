@@ -5,6 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.databinding.FragmentCategoriesFormBinding;
 import com.dariuszdeoniziak.charades.presenters.CategoriesFormPresenter;
@@ -17,22 +21,28 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import io.reactivex.rxjava3.disposables.Disposable;
 
 
 public class CategoriesFormFragment extends BaseFragment implements CategoriesFormContract.View {
 
-    @Inject CategoriesFormPresenter presenter;
-    @Inject CharadesListAdapter charadesListAdapter;
+    private final CategoriesFormPresenter presenter;
+    private final CharadesListAdapter charadesListAdapter;
 
     private FragmentCategoriesFormBinding binding;
     private final static String KEY_CATEGORY_ID = "key_category_id";
     private Disposable titleTextChangesDisposable = Disposable.empty();
 
     public static String TAG = CategoriesFormFragment.class.getSimpleName();
+
+    @Inject
+    CategoriesFormFragment(
+            CategoriesFormPresenter presenter,
+            CharadesListAdapter charadesListAdapter
+    ) {
+        this.presenter = presenter;
+        this.charadesListAdapter = charadesListAdapter;
+    }
 
     @Nullable
     @Override

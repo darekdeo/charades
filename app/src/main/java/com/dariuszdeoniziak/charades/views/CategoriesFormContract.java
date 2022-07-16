@@ -21,7 +21,7 @@ public interface CategoriesFormContract {
         void showCharades(List<CharadeListItemModel> charades);
     }
 
-    interface Presenter extends com.dariuszdeoniziak.charades.presenters.Presenter<View> {
+    interface Presenter extends com.dariuszdeoniziak.charades.presenters.Presenter<View>, CharadeListItemPresenter {
         ObservableField<String> title = new ObservableField<>();
 
         void onLoadCategory(Long categoryId);
