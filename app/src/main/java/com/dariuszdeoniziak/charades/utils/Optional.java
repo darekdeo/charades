@@ -26,11 +26,23 @@ public class Optional<T> {
         }
     }
 
+    public boolean predicate(Predicate<T> predicate) {
+        if (value != null) {
+            return predicate.apply(value);
+        } else {
+            return false;
+        }
+    }
+
     public T get() {
         return value;
     }
 
     public interface Action<T> {
         void apply(T value);
+    }
+
+    public interface Predicate<T> {
+        boolean apply(T value);
     }
 }

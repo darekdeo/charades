@@ -1,7 +1,7 @@
 package com.dariuszdeoniziak.charades.test;
 
 import com.dariuszdeoniziak.charades.R;
-import com.dariuszdeoniziak.charades.views.activities.CategoriesActivity;
+import com.dariuszdeoniziak.charades.views.activities.MainNavigationActivity;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.Espresso;
@@ -12,10 +12,10 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 public class CategoriesListRobot {
 
-    private ActivityScenario<CategoriesActivity> scenario;
+    private ActivityScenario<MainNavigationActivity> scenario;
 
     public void launchCategoriesActivity() {
-        scenario = ActivityScenario.launch(CategoriesActivity.class);
+        scenario = ActivityScenario.launch(MainNavigationActivity.class);
     }
 
     public void verifyHeaderTextIs(String text) {

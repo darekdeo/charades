@@ -1,7 +1,7 @@
 package com.dariuszdeoniziak.charades.presenters;
 
 
-interface Presenter<V> {
+public interface Presenter<V> {
 
     void onSave(); // called during on saveInstanceState
 

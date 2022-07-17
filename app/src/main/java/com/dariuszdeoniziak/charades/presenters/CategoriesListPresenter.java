@@ -3,12 +3,12 @@ package com.dariuszdeoniziak.charades.presenters;
 import static com.dariuszdeoniziak.charades.views.CategoriesListContract.View;
 
 import com.dariuszdeoniziak.charades.data.models.Category;
-import com.dariuszdeoniziak.charades.data.models.Label;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.data.repositories.LabelsRepository;
 import com.dariuszdeoniziak.charades.schedulers.SchedulerFactory;
-import com.dariuszdeoniziak.charades.statemachines.categories.CategoriesListStateMachine;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.CategoriesListStateMachine;
 import com.dariuszdeoniziak.charades.utils.Logger;
+import com.dariuszdeoniziak.charades.utils.Optional;
 import com.dariuszdeoniziak.charades.views.CategoriesListContract;
 
 import java.util.Collections;
@@ -25,6 +25,8 @@ public class CategoriesListPresenter extends AbstractPresenter<View>
     private final SchedulerFactory schedulerFactory;
     private final CategoriesListStateMachine stateMachine;
     private final Logger logger;
+
+    private Optional<CategoriesListContract.Coordination> coordination = Optional.empty();
 
     @Inject
     CategoriesListPresenter(
@@ -56,27 +58,14 @@ public class CategoriesListPresenter extends AbstractPresenter<View>
                                 case EMPTY_LIST:
                                 case LOADING_ERROR:
                                     action.hideProgressIndicator();
-                                    action.setTitle(state.title);
                                     action.showCategories(Collections.emptyList());
                                     action.showEmptyList();
                                     break;
                                 case LIST_WITH_ITEMS:
                                     action.hideProgressIndicator();
-                                    action.setTitle(state.title);
                                     action.showCategories(state.getCategories());
                                     break;
-                                case DELETING_CATEGORY:
-                                    action.setTitle(state.title);
-                                    action.showConfirmDeleteCategory(
-                                            state.getDeletingCategory(),
-                                            labelsRepository.getLabel(Label.categories_list_dialog_confirm_delete_title),
-                                            labelsRepository.getLabel(Label.categories_list_dialog_confirm_delete_message, state.getDeletingCategory().name),
-                                            labelsRepository.getLabel(Label.yes),
-                                            labelsRepository.getLabel(Label.no)
-                                    );
-                                    break;
                                 case LOADING:
-                                    action.setTitle(state.title);
                                     action.showProgressIndicator();
                                     break;
                             }
@@ -84,6 +73,11 @@ public class CategoriesListPresenter extends AbstractPresenter<View>
                         error -> logger.error("State error", error)
                 )
         );
+    }
+
+    @Override
+    public void onTakeCoordination(CategoriesListContract.Coordination coordination) {
+        this.coordination = Optional.of(coordination);
     }
 
     @Override
@@ -99,7 +93,7 @@ public class CategoriesListPresenter extends AbstractPresenter<View>
     }
 
     @Override
-    public void onConfirmDeleteCategory(Category category) {
+    public void onDeleteCategory(Category category) {
         run(() -> charadesRepository.deleteCategory(category)
                 .subscribeOn(schedulerFactory.io())
                 .observeOn(schedulerFactory.ui())
@@ -112,22 +106,22 @@ public class CategoriesListPresenter extends AbstractPresenter<View>
     }
 
     @Override
-    public void onConfirmDeleteCategoryCancelled() {
-        stateMachine.onDeleteCategoryCancel();
+    public void onAddNew() {
+        coordination.ifPresent(CategoriesListContract.Coordination::addNewCategory);
     }
 
     @Override
     public void onSelect(Category category) {
-        view.ifPresent((action) -> action.selectCategory(category.id));
+        coordination.ifPresent((action) -> action.selectCategory(category.id));
     }
 
     @Override
     public void onEdit(Category category) {
-        view.ifPresent((action) -> action.editCategory(category.id));
+        coordination.ifPresent((action) -> action.editCategory(category.id));
     }
 
     @Override
     public void onDelete(Category category) {
-        stateMachine.onDeleteCategory(category);
+        coordination.ifPresent((action) -> action.showConfirmDeleteCategory(category));
     }
 }

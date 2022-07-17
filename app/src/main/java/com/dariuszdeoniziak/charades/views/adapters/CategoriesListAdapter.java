@@ -11,9 +11,18 @@ import com.dariuszdeoniziak.charades.views.adapters.holders.CategoryViewHolder;
 
 import androidx.annotation.NonNull;
 
+import javax.inject.Inject;
+
 public class CategoriesListAdapter extends BaseAdapter<Category, CategoryViewHolder> {
 
     private CategoriesListContract.ListItemPresenter presenter;
+
+    @Inject
+    CategoriesListAdapter(
+            CategoriesListContract.ListItemPresenter presenter
+    ) {
+        this.presenter = presenter;
+    }
 
     @NonNull
     @Override
@@ -24,7 +33,4 @@ public class CategoriesListAdapter extends BaseAdapter<Category, CategoryViewHol
         return holder;
     }
 
-    public void setPresenter(CategoriesListContract.ListItemPresenter presenter) {
-        this.presenter = presenter;
-    }
 }

@@ -7,21 +7,20 @@ import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.data.repositories.LabelsRepository;
 import com.dariuszdeoniziak.charades.schedulers.SchedulerFactory;
 import com.dariuszdeoniziak.charades.utils.Mapper;
+import com.dariuszdeoniziak.charades.utils.Optional;
 import com.dariuszdeoniziak.charades.utils.Pair;
 import com.dariuszdeoniziak.charades.views.CategoriesFormContract;
 import com.dariuszdeoniziak.charades.views.models.CategoriesFormModel;
 import com.dariuszdeoniziak.charades.views.models.CharadeListItemModel;
 
-import java.util.concurrent.TimeUnit;
+import java.util.Collections;
+import java.util.Random;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import androidx.databinding.Observable;
-
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.subjects.PublishSubject;
 
 
 public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormContract.View>
@@ -29,17 +28,15 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormCon
         CategoriesFormContract.Presenter,
         CategoriesFormContract.CharadeListItemPresenter {
 
-    static final int TYPING_DELAY = 1;
-
     private final LabelsRepository labelsRepository;
     private final CharadesRepository charadesRepository;
     private final SchedulerFactory schedulerFactory;
     private final Mapper<Charade, CharadeListItemModel> toCharadeListItemModelMapper;
 
-    private PublishSubject<String> titleEditedSubject = PublishSubject.create();
-    private final Disposable titleEditedDisposable;
     private Disposable loadCategoryDisposable = Disposable.empty();
     private Disposable saveCategoryDisposable = Disposable.empty();
+
+    private Optional<CategoriesFormContract.Coordination> coordination = Optional.empty();
 
     public Category category = new Category();
 
@@ -54,24 +51,6 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormCon
         this.charadesRepository = charadesRepository;
         this.schedulerFactory = schedulerFactory;
         this.toCharadeListItemModelMapper = toCharadeListItemModelMapper;
-
-        titleEditedDisposable = titleEditedSubject
-                .debounce(TYPING_DELAY, TimeUnit.SECONDS, schedulerFactory.computation())
-                .filter(charSequence -> charSequence.length() > 0)
-                .filter(charSequence -> !charSequence.equals(category.name))
-                .map(CharSequence::toString)
-                .observeOn(schedulerFactory.ui())
-                .subscribe(this::onSaveCategoryTitle);
-
-        title.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
-            @Override
-            public void onPropertyChanged(Observable sender, int propertyId) {
-                String value = title.get();
-                if (value != null) {
-                    titleEditedSubject.onNext(value);
-                }
-            }
-        });
     }
 
     @Override
@@ -84,10 +63,28 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormCon
 
     @Override
     public void onDropView() {
-        titleEditedDisposable.dispose();
         loadCategoryDisposable.dispose();
         saveCategoryDisposable.dispose();
         super.onDropView();
+    }
+
+    @Override
+    public void onTakeCoordination(CategoriesFormContract.Coordination coordination) {
+        this.coordination = Optional.of(coordination);
+    }
+
+    @Override
+    public void onNewCategory() {
+        loadCategoryDisposable.dispose();
+        saveCategoryDisposable.dispose();
+        category = new Category();
+        category.id = Integer.valueOf(new Random().nextInt(Integer.MAX_VALUE)).longValue();
+        category.name = "";
+        category.description = "";
+        view.ifPresent((action) -> {
+            action.showCategory(category);
+            action.showCharades(Collections.emptyList());
+        });
     }
 
     @Override
@@ -121,11 +118,15 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormCon
                     return category;
                 })
                 .flatMap(charadesRepository::saveCategory)
-                .doOnSuccess((categoryId) -> category.id = categoryId)
                 .observeOn(schedulerFactory.ui())
                 .subscribeOn(schedulerFactory.io())
                 .subscribe(categoryId -> view.ifPresent(action -> action.showTextInfo(
                         "Title edited for category: " + categoryId)));
+    }
+
+    @Override
+    public void onClose() {
+        coordination.ifPresent(CategoriesFormContract.Coordination::closeCategoryForm);
     }
 
     @Override
@@ -142,4 +143,5 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormCon
     public void onNew() {
 
     }
+
 }

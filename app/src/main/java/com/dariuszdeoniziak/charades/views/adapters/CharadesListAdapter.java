@@ -13,9 +13,18 @@ import com.dariuszdeoniziak.charades.views.models.CharadeListItemModel;
 
 import androidx.annotation.NonNull;
 
+import javax.inject.Inject;
+
 public class CharadesListAdapter extends BaseAdapter<CharadeListItemModel, CharadeBaseViewHolder<CharadeListItemModel>> {
 
     private CategoriesFormContract.CharadeListItemPresenter presenter;
+
+    @Inject
+    CharadesListAdapter(
+            CategoriesFormContract.CharadeListItemPresenter presenter
+    ) {
+        this.presenter = presenter;
+    }
 
     @NonNull
     @Override
@@ -43,7 +52,4 @@ public class CharadesListAdapter extends BaseAdapter<CharadeListItemModel, Chara
         return getItem(position).type.ordinal();
     }
 
-    public void setPresenter(CategoriesFormContract.CharadeListItemPresenter presenter) {
-        this.presenter = presenter;
-    }
 }

@@ -1,10 +1,15 @@
 package com.dariuszdeoniziak.charades.views.fragments;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.databinding.FragmentCategoriesFormBinding;
@@ -18,43 +23,23 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import io.reactivex.rxjava3.disposables.Disposable;
-
 
 public class CategoriesFormFragment extends BaseFragment implements CategoriesFormContract.View {
 
-    @Inject CategoriesFormPresenter presenter;
-    @Inject CharadesListAdapter charadesListAdapter;
+    private final CategoriesFormContract.Presenter presenter;
+    private final CharadesListAdapter charadesListAdapter;
 
-    private long categoryId = 0;
     private FragmentCategoriesFormBinding binding;
-    private final static String KEY_CATEGORY_ID = "key_category_id";
-    private Disposable titleTextChangesDisposable = Disposable.empty();
 
     public static String TAG = CategoriesFormFragment.class.getSimpleName();
 
-    public static CategoriesFormFragment newInstance() {
-        return newInstance(0L);
-    }
-
-    public static CategoriesFormFragment newInstance(Long categoryId) {
-        Bundle bundle = new Bundle();
-        bundle.putLong(KEY_CATEGORY_ID, categoryId);
-
-        CategoriesFormFragment fragment = new CategoriesFormFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            categoryId = getArguments().getLong(KEY_CATEGORY_ID, 0);
-        }
+    @Inject
+    CategoriesFormFragment(
+            CategoriesFormContract.Presenter presenter,
+            CharadesListAdapter charadesListAdapter
+    ) {
+        this.presenter = presenter;
+        this.charadesListAdapter = charadesListAdapter;
     }
 
     @Nullable
@@ -65,24 +50,14 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     }
 
     @Override
-    public void onViewCreated(@NonNull android.view.View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        binding.formCharadesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.formCharadesRecycler.setAdapter(charadesListAdapter);
-        charadesListAdapter.setPresenter(presenter);
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         presenter.onTakeView(this);
-        presenter.onLoadCategory(categoryId);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        titleTextChangesDisposable.dispose();
         presenter.onDropView();
     }
 
@@ -91,11 +66,29 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
         binding.setModel(model);
         binding.setPresenter(presenter);
         binding.invalidateAll();
+        binding.formCharadesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.formCharadesRecycler.setAdapter(charadesListAdapter);
+        binding.formCategoryTitle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                presenter.onSaveCategoryTitle(s.toString());
+            }
+        });
+        binding.formCharadesCloseButton.setOnClickListener(v -> presenter.onClose());
     }
 
     @Override
     public void showTextInfo(final String text) {
-        componentsFacade.showToast(text, Toast.LENGTH_SHORT);
     }
 
     @Override
