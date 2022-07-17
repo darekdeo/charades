@@ -30,7 +30,6 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     private final CharadesListAdapter charadesListAdapter;
 
     private FragmentCategoriesFormBinding binding;
-    private final static String KEY_CATEGORY_ID = "key_category_id";
 
     public static String TAG = CategoriesFormFragment.class.getSimpleName();
 
@@ -51,8 +50,22 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
     }
 
     @Override
-    public void onViewCreated(@NonNull android.view.View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onStart() {
+        super.onStart();
+        presenter.onTakeView(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        presenter.onDropView();
+    }
+
+    @Override
+    public void setup(CategoriesFormModel model) {
+        binding.setModel(model);
+        binding.setPresenter(presenter);
+        binding.invalidateAll();
         binding.formCharadesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.formCharadesRecycler.setAdapter(charadesListAdapter);
         binding.formCategoryTitle.addTextChangedListener(new TextWatcher() {
@@ -72,25 +85,6 @@ public class CategoriesFormFragment extends BaseFragment implements CategoriesFo
             }
         });
         binding.formCharadesCloseButton.setOnClickListener(v -> presenter.onClose());
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        presenter.onTakeView(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        presenter.onDropView();
-    }
-
-    @Override
-    public void setup(CategoriesFormModel model) {
-        binding.setModel(model);
-        binding.setPresenter(presenter);
-        binding.invalidateAll();
     }
 
     @Override

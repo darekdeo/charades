@@ -13,6 +13,9 @@ import com.dariuszdeoniziak.charades.views.CategoriesFormContract;
 import com.dariuszdeoniziak.charades.views.models.CategoriesFormModel;
 import com.dariuszdeoniziak.charades.views.models.CharadeListItemModel;
 
+import java.util.Collections;
+import java.util.Random;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -71,6 +74,20 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormCon
     }
 
     @Override
+    public void onNewCategory() {
+        loadCategoryDisposable.dispose();
+        saveCategoryDisposable.dispose();
+        category = new Category();
+        category.id = Integer.valueOf(new Random().nextInt(Integer.MAX_VALUE)).longValue();
+        category.name = "";
+        category.description = "";
+        view.ifPresent((action) -> {
+            action.showCategory(category);
+            action.showCharades(Collections.emptyList());
+        });
+    }
+
+    @Override
     public void onLoadCategory(Long categoryId) {
         if (categoryId > 0L) {
             loadCategoryDisposable.dispose();
@@ -101,7 +118,6 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormCon
                     return category;
                 })
                 .flatMap(charadesRepository::saveCategory)
-                .doOnSuccess((categoryId) -> category.id = categoryId)
                 .observeOn(schedulerFactory.ui())
                 .subscribeOn(schedulerFactory.io())
                 .subscribe(categoryId -> view.ifPresent(action -> action.showTextInfo(

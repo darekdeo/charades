@@ -77,7 +77,7 @@ public class CategoriesCoordinatorImpl implements CategoriesCoordinator {
 
     @Override
     public void addNewCategory() {
-        navigateToDestination(formDestination);
+        navigateToDestination(formDestination, () -> formDestination.getPresenter().onNewCategory());
     }
 
     @Override

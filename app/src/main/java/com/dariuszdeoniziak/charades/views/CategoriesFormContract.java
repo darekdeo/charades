@@ -22,6 +22,8 @@ public interface CategoriesFormContract {
     interface Presenter extends com.dariuszdeoniziak.charades.presenters.Presenter<View>, CharadeListItemPresenter {
         void onTakeCoordination(Coordination coordination);
 
+        void onNewCategory();
+
         void onLoadCategory(Long categoryId);
 
         void onSaveCategoryTitle(String title);
