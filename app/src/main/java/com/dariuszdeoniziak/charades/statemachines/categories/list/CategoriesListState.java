@@ -110,7 +110,6 @@ public enum CategoriesListState implements State<Event<Transition, CategoriesLis
     }
 
     private List<Category> categories;
-    private Category deletingCategory;
 
     @Override
     public List<Category> getCategories() {

@@ -16,4 +16,3 @@ public final class LoadList implements Event<CategoriesListStateMachine.Transiti
         return transition.onEvent(this);
     }
 }
-

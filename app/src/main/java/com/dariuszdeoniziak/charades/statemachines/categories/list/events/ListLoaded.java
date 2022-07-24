@@ -19,4 +19,3 @@ public final class ListLoaded implements Event<CategoriesListStateMachine.Transi
         return transition.onEvent(this);
     }
 }
-

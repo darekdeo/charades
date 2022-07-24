@@ -35,6 +35,8 @@ import com.dariuszdeoniziak.charades.presenters.CategoriesFormPresenter;
 import com.dariuszdeoniziak.charades.presenters.CategoriesListPresenter;
 import com.dariuszdeoniziak.charades.schedulers.DefaultSchedulerFactory;
 import com.dariuszdeoniziak.charades.schedulers.SchedulerFactory;
+import com.dariuszdeoniziak.charades.statemachines.categories.form.CategoriesFormStateMachine;
+import com.dariuszdeoniziak.charades.statemachines.categories.form.CategoriesFormStateMachineDispatcher;
 import com.dariuszdeoniziak.charades.statemachines.categories.list.CategoriesListStateMachine;
 import com.dariuszdeoniziak.charades.statemachines.categories.list.CategoriesListStateMachineDispatcher;
 import com.dariuszdeoniziak.charades.statemachines.coordinator.app.AppCoordinatorStateDispatcher;
@@ -195,6 +197,14 @@ public class AppModule {
     @Singleton
     public CategoriesListStateMachine provideCategoriesListStateMachine() {
         return new CategoriesListStateMachineDispatcher(
+                new Logger()
+        );
+    }
+
+    @Provides
+    @Singleton
+    public CategoriesFormStateMachine provideCategoriesFormStateMachine() {
+        return new CategoriesFormStateMachineDispatcher(
                 new Logger()
         );
     }

@@ -6,6 +6,8 @@ import com.dariuszdeoniziak.charades.data.models.Label;
 import com.dariuszdeoniziak.charades.data.repositories.CharadesRepository;
 import com.dariuszdeoniziak.charades.data.repositories.LabelsRepository;
 import com.dariuszdeoniziak.charades.schedulers.SchedulerFactory;
+import com.dariuszdeoniziak.charades.statemachines.categories.form.CategoriesFormStateMachine;
+import com.dariuszdeoniziak.charades.utils.Logger;
 import com.dariuszdeoniziak.charades.utils.Mapper;
 import com.dariuszdeoniziak.charades.utils.Optional;
 import com.dariuszdeoniziak.charades.utils.Pair;
@@ -28,6 +30,8 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormCon
         CategoriesFormContract.Presenter,
         CategoriesFormContract.CharadeListItemPresenter {
 
+    private final CategoriesFormStateMachine stateMachine;
+    private final Logger logger;
     private final LabelsRepository labelsRepository;
     private final CharadesRepository charadesRepository;
     private final SchedulerFactory schedulerFactory;
@@ -42,11 +46,15 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormCon
 
     @Inject
     CategoriesFormPresenter(
+            CategoriesFormStateMachine stateMachine,
+            Logger logger,
             LabelsRepository labelsRepository,
             CharadesRepository charadesRepository,
             SchedulerFactory schedulerFactory,
             @Named("to_charade_list_item_model_mapper") Mapper<Charade, CharadeListItemModel> toCharadeListItemModelMapper
     ) {
+        this.stateMachine = stateMachine;
+        this.logger = logger;
         this.labelsRepository = labelsRepository;
         this.charadesRepository = charadesRepository;
         this.schedulerFactory = schedulerFactory;
@@ -59,6 +67,26 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormCon
         CategoriesFormModel model = new CategoriesFormModel();
         model.title = labelsRepository.getLabel(Label.category_form_header);
         view.setup(model);
+        sideEffects();
+    }
+
+    private void sideEffects() {
+        run(() -> stateMachine.state()
+                .observeOn(schedulerFactory.ui())
+                .subscribe(
+                        state -> view.ifPresent(action -> {
+                            switch (state) {
+                                case LOADING:
+                                    break;
+                                case LOADING_ERROR:
+                                    break;
+                                case EDITING_FORM:
+                                    break;
+                            }
+                        }),
+                        error -> logger.error("State error", error)
+                )
+        );
     }
 
     @Override

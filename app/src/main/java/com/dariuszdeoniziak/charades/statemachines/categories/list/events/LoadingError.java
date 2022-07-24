@@ -16,4 +16,3 @@ public final class LoadingError implements Event<CategoriesListStateMachine.Tran
         return transition.onEvent(this);
     }
 }
-
