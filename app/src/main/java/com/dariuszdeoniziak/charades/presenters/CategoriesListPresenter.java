@@ -53,23 +53,46 @@ public class CategoriesListPresenter extends AbstractPresenter<View>
         run(() -> stateMachine.state()
                 .observeOn(schedulerFactory.ui())
                 .subscribe(
-                        state -> view.ifPresent(action -> {
+                        state -> {
                             switch (state) {
                                 case EMPTY_LIST:
-                                case LOADING_ERROR:
-                                    action.hideProgressIndicator();
-                                    action.showCategories(Collections.emptyList());
-                                    action.showEmptyList();
+                                case ERROR:
+                                    view.ifPresent(action -> {
+                                        action.hideProgressIndicator();
+                                        action.showCategories(Collections.emptyList());
+                                        action.showEmptyList();
+                                    });
                                     break;
                                 case LIST_WITH_ITEMS:
-                                    action.hideProgressIndicator();
-                                    action.showCategories(state.getCategories());
+                                    view.ifPresent(action -> {
+                                        action.hideProgressIndicator();
+                                        action.showCategories(state.getCategories());
+                                    });
+                                    break;
+                                case DELETING:
+                                    view.ifPresent(View::showProgressIndicator);
+
+                                    run(() -> charadesRepository.deleteCategory(state.getDeletingCategory())
+                                            .subscribeOn(schedulerFactory.io())
+                                            .observeOn(schedulerFactory.ui())
+                                            .subscribe(
+                                                    (id) -> stateMachine.onLoadList(),
+                                                    stateMachine::onError
+                                            ));
                                     break;
                                 case LOADING:
-                                    action.showProgressIndicator();
+                                    view.ifPresent(View::showProgressIndicator);
+
+                                    run(() -> charadesRepository.getCategories()
+                                            .subscribeOn(schedulerFactory.io())
+                                            .observeOn(schedulerFactory.ui())
+                                            .subscribe(
+                                                    stateMachine::onListLoaded,
+                                                    stateMachine::onError
+                                            ));
                                     break;
                             }
-                        }),
+                        },
                         error -> logger.error("State error", error)
                 )
         );
@@ -82,27 +105,12 @@ public class CategoriesListPresenter extends AbstractPresenter<View>
 
     @Override
     public void onLoadCategories() {
-        run(() -> charadesRepository.getCategories()
-                .subscribeOn(schedulerFactory.io())
-                .observeOn(schedulerFactory.ui())
-                .doOnSubscribe(disposable -> stateMachine.onLoadList())
-                .subscribe(
-                        stateMachine::onListLoaded,
-                        stateMachine::onLoadingError
-                ));
+        stateMachine.onLoadList();
     }
 
     @Override
     public void onDeleteCategory(Category category) {
-        run(() -> charadesRepository.deleteCategory(category)
-                .subscribeOn(schedulerFactory.io())
-                .observeOn(schedulerFactory.ui())
-                .doOnSubscribe(disposable -> stateMachine.onLoadList())
-                .flatMap(s -> charadesRepository.getCategories())
-                .subscribe(
-                        stateMachine::onListLoaded,
-                        stateMachine::onLoadingError
-                ));
+        stateMachine.onDelete(category);
     }
 
     @Override

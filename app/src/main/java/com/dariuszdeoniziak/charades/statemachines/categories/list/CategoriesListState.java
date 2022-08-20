@@ -5,9 +5,10 @@ import static com.dariuszdeoniziak.charades.statemachines.categories.list.Catego
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.statemachines.Event;
 import com.dariuszdeoniziak.charades.statemachines.State;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.events.DeleteCategory;
 import com.dariuszdeoniziak.charades.statemachines.categories.list.events.ListLoaded;
 import com.dariuszdeoniziak.charades.statemachines.categories.list.events.LoadList;
-import com.dariuszdeoniziak.charades.statemachines.categories.list.events.LoadingError;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.events.Error;
 
 import java.util.List;
 
@@ -33,18 +34,22 @@ public enum CategoriesListState implements State<Event<Transition, CategoriesLis
                 }
 
                 @Override
-                public CategoriesListState onEvent(LoadingError event) {
-                    return CategoriesListState.LOADING_ERROR;
+                public CategoriesListState onEvent(DeleteCategory event) {
+                    return null;
+                }
+
+                @Override
+                public CategoriesListState onEvent(Error event) {
+                    return ERROR;
                 }
 
             }
     ),
-    LOADING_ERROR(
+    DELETING(
             new Transition() {
-
                 @Override
                 public CategoriesListState onEvent(LoadList event) {
-                    return CategoriesListState.LOADING;
+                    return LOADING;
                 }
 
                 @Override
@@ -53,7 +58,36 @@ public enum CategoriesListState implements State<Event<Transition, CategoriesLis
                 }
 
                 @Override
-                public CategoriesListState onEvent(LoadingError event) {
+                public CategoriesListState onEvent(DeleteCategory event) {
+                    return null;
+                }
+
+                @Override
+                public CategoriesListState onEvent(Error event) {
+                    return ERROR;
+                }
+            }
+    ),
+    ERROR(
+            new Transition() {
+
+                @Override
+                public CategoriesListState onEvent(LoadList event) {
+                    return LOADING;
+                }
+
+                @Override
+                public CategoriesListState onEvent(ListLoaded event) {
+                    return null;
+                }
+
+                @Override
+                public CategoriesListState onEvent(DeleteCategory event) {
+                    return null;
+                }
+
+                @Override
+                public CategoriesListState onEvent(Error event) {
                     return null;
                 }
             }
@@ -72,7 +106,12 @@ public enum CategoriesListState implements State<Event<Transition, CategoriesLis
                 }
 
                 @Override
-                public CategoriesListState onEvent(LoadingError event) {
+                public CategoriesListState onEvent(DeleteCategory event) {
+                    return null;
+                }
+
+                @Override
+                public CategoriesListState onEvent(Error event) {
                     return null;
                 }
             }
@@ -90,7 +129,13 @@ public enum CategoriesListState implements State<Event<Transition, CategoriesLis
                 }
 
                 @Override
-                public CategoriesListState onEvent(LoadingError event) {
+                public CategoriesListState onEvent(DeleteCategory event) {
+                    DELETING.deletingCategory = event.category;
+                    return DELETING;
+                }
+
+                @Override
+                public CategoriesListState onEvent(Error event) {
                     return null;
                 }
             }
@@ -110,9 +155,15 @@ public enum CategoriesListState implements State<Event<Transition, CategoriesLis
     }
 
     private List<Category> categories;
+    private Category deletingCategory;
 
     @Override
     public List<Category> getCategories() {
         return categories;
+    }
+
+    @Override
+    public Category getDeletingCategory() {
+        return deletingCategory;
     }
 }

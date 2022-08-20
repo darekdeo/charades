@@ -2,9 +2,10 @@ package com.dariuszdeoniziak.charades.statemachines.categories.list;
 
 import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.statemachines.Event;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.events.DeleteCategory;
 import com.dariuszdeoniziak.charades.statemachines.categories.list.events.ListLoaded;
 import com.dariuszdeoniziak.charades.statemachines.categories.list.events.LoadList;
-import com.dariuszdeoniziak.charades.statemachines.categories.list.events.LoadingError;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.events.Error;
 import com.dariuszdeoniziak.charades.utils.Logger;
 
 import java.util.List;
@@ -45,7 +46,12 @@ public class CategoriesListStateMachineDispatcher implements CategoriesListState
     }
 
     @Override
-    public void onLoadingError(Throwable throwable) {
-        eventStream.onNext(new LoadingError(throwable));
+    public void onDelete(Category category) {
+        eventStream.onNext(new DeleteCategory(category));
+    }
+
+    @Override
+    public void onError(Throwable throwable) {
+        eventStream.onNext(new Error(throwable));
     }
 }
