@@ -2,6 +2,7 @@ package com.dariuszdeoniziak.charades.statemachines.coordinator.navigation;
 
 import com.dariuszdeoniziak.charades.navigators.Destination;
 import com.dariuszdeoniziak.charades.statemachines.coordinator.navigation.events.DestinationDisplayed;
+import com.dariuszdeoniziak.charades.statemachines.coordinator.navigation.events.Error;
 import com.dariuszdeoniziak.charades.statemachines.coordinator.navigation.events.NavigateToDestination;
 import com.dariuszdeoniziak.charades.utils.Logger;
 
@@ -41,5 +42,10 @@ public class DestinationCoordinatorStateMachineDispatcher implements Destination
     @Override
     public void onDestinationDisplayed(Destination<?> destination) {
         eventStream.onNext(new DestinationDisplayed(destination));
+    }
+
+    @Override
+    public void onError(Throwable error) {
+        eventStream.onNext(new Error(error));
     }
 }

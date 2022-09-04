@@ -25,11 +25,6 @@ public enum DestinationCoordinatorState implements DestinationCoordinatorStateMa
     NAVIGATING_TO_DESTINATION(
             new Transition() {
                 @Override
-                public DestinationCoordinatorStateMachine.ResultState onEvent(NavigateToDestination event) {
-                    return invalid();
-                }
-
-                @Override
                 public DestinationCoordinatorStateMachine.ResultState onEvent(DestinationDisplayed event) {
                     return valid(DestinationCoordinatorState.DISPLAYING_DESTINATION, Optional.of(event.destination));
                 }
@@ -41,11 +36,6 @@ public enum DestinationCoordinatorState implements DestinationCoordinatorStateMa
                 public DestinationCoordinatorStateMachine.ResultState onEvent(NavigateToDestination event) {
                     return valid(DestinationCoordinatorState.NAVIGATING_TO_DESTINATION, Optional.of(event.destination));
                 }
-
-                @Override
-                public DestinationCoordinatorStateMachine.ResultState onEvent(DestinationDisplayed event) {
-                    return invalid();
-                }
             }
     ),
     ERROR(
@@ -53,11 +43,6 @@ public enum DestinationCoordinatorState implements DestinationCoordinatorStateMa
                 @Override
                 public DestinationCoordinatorStateMachine.ResultState onEvent(NavigateToDestination event) {
                     return valid(DestinationCoordinatorState.NAVIGATING_TO_DESTINATION, Optional.of(event.destination));
-                }
-
-                @Override
-                public DestinationCoordinatorStateMachine.ResultState onEvent(DestinationDisplayed event) {
-                    return invalid();
                 }
             }
     );

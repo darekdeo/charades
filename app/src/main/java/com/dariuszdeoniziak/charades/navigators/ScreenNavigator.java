@@ -65,7 +65,7 @@ public class ScreenNavigator implements Navigator.Screen, ScreenNavigatorHost, S
                 .flatMapCompletable(newFragment -> Completable.fromAction(() -> {
                     FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
                     transaction.replace(containerResId, newFragment, destination.getTag());
-                    transaction.commitNow();
+                    transaction.commitAllowingStateLoss();
                 }));
     }
 

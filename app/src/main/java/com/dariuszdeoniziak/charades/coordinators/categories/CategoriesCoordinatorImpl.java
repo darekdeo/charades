@@ -8,7 +8,6 @@ import com.dariuszdeoniziak.charades.navigators.DestinationFactory;
 import com.dariuszdeoniziak.charades.navigators.Navigator;
 import com.dariuszdeoniziak.charades.schedulers.SchedulerFactory;
 import com.dariuszdeoniziak.charades.statemachines.coordinator.navigation.DestinationCoordinatorStateMachine;
-import com.dariuszdeoniziak.charades.utils.Action;
 import com.dariuszdeoniziak.charades.utils.Logger;
 
 import javax.inject.Inject;
@@ -56,6 +55,8 @@ public class CategoriesCoordinatorImpl implements CategoriesCoordinator {
                                     navigateToDestination(listDestination);
                                 case DISPLAYING_DESTINATION:
                                 case NAVIGATING_TO_DESTINATION:
+                                    state.getDestination().ifPresent(this::navigateToDestination);
+                                case ERROR:
                                     break;
                             }
                         },
@@ -72,12 +73,14 @@ public class CategoriesCoordinatorImpl implements CategoriesCoordinator {
 
     @Override
     public void editCategory(Long categoryId) {
-        navigateToDestination(formDestination, () -> formDestination.getPresenter().onLoadCategory(categoryId));
+        formDestination.getPresenter().onLoadCategory(categoryId);
+        stateMachine.onNavigateToDestination(formDestination);
     }
 
     @Override
     public void addNewCategory() {
-        navigateToDestination(formDestination, () -> formDestination.getPresenter().onNewCategory());
+        formDestination.getPresenter().onNewCategory();
+        stateMachine.onNavigateToDestination(formDestination);
     }
 
     @Override
@@ -88,20 +91,18 @@ public class CategoriesCoordinatorImpl implements CategoriesCoordinator {
 
     @Override
     public void closeCategoryForm() {
-        navigateToDestination(listDestination);
+        stateMachine.onNavigateToDestination(listDestination);
     }
 
     private void navigateToDestination(Destination<?> destination) {
-        navigateToDestination(destination, Action.NONE);
-    }
-    private void navigateToDestination(Destination<?> destination, Action finishedAction) {
         screenNavigator
                 .navigate(destination)
-                .doOnComplete(finishedAction::invoke)
-                .doOnSubscribe(disposable -> stateMachine.onNavigateToDestination(destination))
                 .subscribe(
                         () -> stateMachine.onDestinationDisplayed(destination),
-                        error -> logger.error("Navigator error", error)
+                        error -> {
+                            logger.error("Navigator error", error);
+                            stateMachine.onError(new Error(error));
+                        }
                 );
     }
 
