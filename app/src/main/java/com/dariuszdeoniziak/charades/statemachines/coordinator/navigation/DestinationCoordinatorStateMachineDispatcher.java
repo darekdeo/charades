@@ -1,7 +1,6 @@
 package com.dariuszdeoniziak.charades.statemachines.coordinator.navigation;
 
 import com.dariuszdeoniziak.charades.navigators.Destination;
-import com.dariuszdeoniziak.charades.statemachines.Event;
 import com.dariuszdeoniziak.charades.statemachines.coordinator.navigation.events.DestinationDisplayed;
 import com.dariuszdeoniziak.charades.statemachines.coordinator.navigation.events.NavigateToDestination;
 import com.dariuszdeoniziak.charades.utils.Logger;
@@ -14,8 +13,8 @@ import io.reactivex.rxjava3.subjects.Subject;
 
 public class DestinationCoordinatorStateMachineDispatcher implements DestinationCoordinatorStateMachine {
 
-    private final Subject<Event<Transition, DestinationCoordinatorState>> eventStream;
-    private final Observable<DestinationCoordinatorState> state;
+    private final Subject<Event> eventStream;
+    private final Observable<ResultState> state;
 
     @Inject
     public DestinationCoordinatorStateMachineDispatcher(
@@ -23,14 +22,14 @@ public class DestinationCoordinatorStateMachineDispatcher implements Destination
     ) {
         eventStream = PublishSubject.create();
         state = eventStream
-                .scan(DestinationCoordinatorState.NO_DESTINATION, (currentState, event) -> {
+                .scan(DestinationCoordinatorState.initial(), (currentState, event) -> {
                     logger.info("State: " + currentState + ", received Event: " + event);
-                    return currentState.transition(event);
+                    return currentState.state().transition(event);
                 });
     }
 
     @Override
-    public Observable<DestinationCoordinatorState> state() {
+    public Observable<ResultState> state() {
         return state;
     }
 

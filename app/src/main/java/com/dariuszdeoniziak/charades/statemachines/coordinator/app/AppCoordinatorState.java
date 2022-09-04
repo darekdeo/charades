@@ -1,11 +1,10 @@
 package com.dariuszdeoniziak.charades.statemachines.coordinator.app;
 
-import com.dariuszdeoniziak.charades.statemachines.Event;
-import com.dariuszdeoniziak.charades.statemachines.State;
+import com.dariuszdeoniziak.charades.statemachines.coordinator.app.AppCoordinatorStateMachine.State;
 import com.dariuszdeoniziak.charades.statemachines.coordinator.app.events.ScreenNavigatorAttached;
 import com.dariuszdeoniziak.charades.statemachines.coordinator.app.events.TerminateApp;
 
-public enum AppCoordinatorState implements State<Event<AppCoordinatorStateMachine.Transition, AppCoordinatorState>>{
+public enum AppCoordinatorState implements State {
 
     STARTING(
             new AppCoordinatorStateMachine.Transition() {
@@ -56,8 +55,7 @@ public enum AppCoordinatorState implements State<Event<AppCoordinatorStateMachin
     }
 
     @Override
-    public AppCoordinatorState transition(Event<AppCoordinatorStateMachine.Transition, AppCoordinatorState> event) {
+    public AppCoordinatorState transition(AppCoordinatorStateMachine.Event event) {
         return event.dispatch(transition);
     }
-
 }

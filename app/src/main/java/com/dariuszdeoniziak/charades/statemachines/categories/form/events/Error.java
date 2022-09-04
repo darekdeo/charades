@@ -1,13 +1,12 @@
 package com.dariuszdeoniziak.charades.statemachines.categories.form.events;
 
-import com.dariuszdeoniziak.charades.data.models.Category;
 import com.dariuszdeoniziak.charades.statemachines.categories.form.CategoriesFormStateMachine;
 
-public final class FormLoaded implements CategoriesFormStateMachine.Event {
-    final public Category category;
+public final class Error implements CategoriesFormStateMachine.Event {
+    final Throwable error;
 
-    public FormLoaded(Category category) {
-        this.category = category;
+    public Error(Throwable error) {
+        this.error = error;
     }
 
     @Override

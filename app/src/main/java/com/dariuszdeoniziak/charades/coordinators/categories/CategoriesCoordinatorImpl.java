@@ -51,7 +51,7 @@ public class CategoriesCoordinatorImpl implements CategoriesCoordinator {
                 .observeOn(schedulerFactory.ui())
                 .subscribe(
                         state -> {
-                            switch (state) {
+                            switch (state.state()) {
                                 case NO_DESTINATION:
                                     navigateToDestination(listDestination);
                                 case DISPLAYING_DESTINATION:

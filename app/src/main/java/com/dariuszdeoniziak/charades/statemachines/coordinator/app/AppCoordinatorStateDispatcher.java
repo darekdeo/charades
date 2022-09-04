@@ -1,6 +1,5 @@
 package com.dariuszdeoniziak.charades.statemachines.coordinator.app;
 
-import com.dariuszdeoniziak.charades.statemachines.Event;
 import com.dariuszdeoniziak.charades.statemachines.coordinator.app.events.ScreenNavigatorAttached;
 import com.dariuszdeoniziak.charades.utils.Logger;
 
@@ -12,7 +11,7 @@ import io.reactivex.rxjava3.subjects.Subject;
 
 public class AppCoordinatorStateDispatcher implements AppCoordinatorStateMachine {
 
-    private final Subject<Event<Transition, AppCoordinatorState>> eventStream;
+    private final Subject<Event> eventStream;
     private final Observable<AppCoordinatorState> state;
 
     @Inject

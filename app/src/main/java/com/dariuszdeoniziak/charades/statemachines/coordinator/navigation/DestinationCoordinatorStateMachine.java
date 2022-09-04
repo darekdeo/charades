@@ -10,18 +10,21 @@ import io.reactivex.rxjava3.core.Observable;
 public interface DestinationCoordinatorStateMachine {
 
     // STATE
-    Observable<DestinationCoordinatorState> state();
-    interface DataReader {
+    Observable<ResultState> state();
+    interface State extends com.dariuszdeoniziak.charades.statemachines.State<DestinationCoordinatorStateMachine.Event, DestinationCoordinatorStateMachine.ResultState> {}
+    interface ResultState {
+        DestinationCoordinatorState state();
         Optional<Destination<?>> getDestination();
     }
 
     // EVENTS
+    interface Event extends com.dariuszdeoniziak.charades.statemachines.Event<DestinationCoordinatorStateMachine.Transition, DestinationCoordinatorStateMachine.ResultState> {}
     void onNavigateToDestination(Destination<?> destination);
     void onDestinationDisplayed(Destination<?> destination);
 
     // TRANSITION
     interface Transition {
-        DestinationCoordinatorState onEvent(NavigateToDestination event);
-        DestinationCoordinatorState onEvent(DestinationDisplayed event);
+        ResultState onEvent(NavigateToDestination event);
+        ResultState onEvent(DestinationDisplayed event);
     }
 }

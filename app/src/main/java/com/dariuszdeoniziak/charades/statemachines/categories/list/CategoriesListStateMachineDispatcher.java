@@ -1,11 +1,10 @@
 package com.dariuszdeoniziak.charades.statemachines.categories.list;
 
 import com.dariuszdeoniziak.charades.data.models.Category;
-import com.dariuszdeoniziak.charades.statemachines.Event;
 import com.dariuszdeoniziak.charades.statemachines.categories.list.events.DeleteCategory;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.events.Error;
 import com.dariuszdeoniziak.charades.statemachines.categories.list.events.ListLoaded;
 import com.dariuszdeoniziak.charades.statemachines.categories.list.events.LoadList;
-import com.dariuszdeoniziak.charades.statemachines.categories.list.events.Error;
 import com.dariuszdeoniziak.charades.utils.Logger;
 
 import java.util.List;
@@ -16,22 +15,22 @@ import io.reactivex.rxjava3.subjects.Subject;
 
 public class CategoriesListStateMachineDispatcher implements CategoriesListStateMachine {
 
-    private final Subject<Event<Transition, CategoriesListState>> eventStream;
-    private final Observable<CategoriesListState> state;
+    private final Subject<CategoriesListStateMachine.Event> eventStream;
+    private final Observable<CategoriesListStateMachine.ResultState> state;
 
     public CategoriesListStateMachineDispatcher(
             Logger logger
     ) {
         eventStream = PublishSubject.create();
         state = eventStream
-                .scan(CategoriesListState.EMPTY_LIST, (currentState, event) -> {
+                .scan(CategoriesListState.defaultResultState(), (currentState, event) -> {
                     logger.info("State: " + currentState + ", received Event: " + event);
-                    return currentState.transition(event);
+                    return currentState.state().transition(event);
                 });
     }
 
     @Override
-    public Observable<CategoriesListState> state() {
+    public Observable<CategoriesListStateMachine.ResultState> state() {
         return state;
     }
 

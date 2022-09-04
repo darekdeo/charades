@@ -54,7 +54,7 @@ public class CategoriesListPresenter extends AbstractPresenter<View>
                 .observeOn(schedulerFactory.ui())
                 .subscribe(
                         state -> {
-                            switch (state) {
+                            switch (state.state()) {
                                 case EMPTY_LIST:
                                 case ERROR:
                                     view.ifPresent(action -> {
@@ -66,13 +66,13 @@ public class CategoriesListPresenter extends AbstractPresenter<View>
                                 case LIST_WITH_ITEMS:
                                     view.ifPresent(action -> {
                                         action.hideProgressIndicator();
-                                        action.showCategories(state.getCategories());
+                                        action.showCategories(state.getCategories().get());
                                     });
                                     break;
                                 case DELETING:
                                     view.ifPresent(View::showProgressIndicator);
 
-                                    run(() -> charadesRepository.deleteCategory(state.getDeletingCategory())
+                                    run(() -> charadesRepository.deleteCategory(state.getDeletingCategory().get())
                                             .subscribeOn(schedulerFactory.io())
                                             .observeOn(schedulerFactory.ui())
                                             .subscribe(

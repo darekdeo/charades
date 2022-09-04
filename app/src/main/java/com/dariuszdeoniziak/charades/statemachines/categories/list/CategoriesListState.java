@@ -1,46 +1,35 @@
 package com.dariuszdeoniziak.charades.statemachines.categories.list;
 
+import static com.dariuszdeoniziak.charades.statemachines.categories.list.CategoriesListStateMachine.ResultState;
+import static com.dariuszdeoniziak.charades.statemachines.categories.list.CategoriesListStateMachine.State;
 import static com.dariuszdeoniziak.charades.statemachines.categories.list.CategoriesListStateMachine.Transition;
 
 import com.dariuszdeoniziak.charades.data.models.Category;
-import com.dariuszdeoniziak.charades.statemachines.Event;
-import com.dariuszdeoniziak.charades.statemachines.State;
 import com.dariuszdeoniziak.charades.statemachines.categories.list.events.DeleteCategory;
+import com.dariuszdeoniziak.charades.statemachines.categories.list.events.Error;
 import com.dariuszdeoniziak.charades.statemachines.categories.list.events.ListLoaded;
 import com.dariuszdeoniziak.charades.statemachines.categories.list.events.LoadList;
-import com.dariuszdeoniziak.charades.statemachines.categories.list.events.Error;
+import com.dariuszdeoniziak.charades.utils.Optional;
 
 import java.util.List;
 
-public enum CategoriesListState implements State<Event<Transition, CategoriesListState>>, CategoriesListStateMachine.DataReader {
+public enum CategoriesListState implements State {
 
     LOADING(
             new Transition() {
 
                 @Override
-                public CategoriesListState onEvent(LoadList event) {
-                    return null;
-                }
-
-                @Override
-                public CategoriesListState onEvent(ListLoaded event) {
+                public ResultState onEvent(ListLoaded event) {
                     if (event.categories.isEmpty()) {
-                        return CategoriesListState.EMPTY_LIST;
+                        return valid(EMPTY_LIST, Optional.empty(), Optional.empty());
                     } else {
-                        CategoriesListState state = CategoriesListState.LIST_WITH_ITEMS;
-                        state.categories = event.categories;
-                        return state;
+                        return valid(LIST_WITH_ITEMS, Optional.of(event.categories), Optional.empty());
                     }
                 }
 
                 @Override
-                public CategoriesListState onEvent(DeleteCategory event) {
-                    return null;
-                }
-
-                @Override
-                public CategoriesListState onEvent(Error event) {
-                    return ERROR;
+                public ResultState onEvent(Error event) {
+                    return valid(ERROR, Optional.empty(), Optional.empty());
                 }
 
             }
@@ -48,23 +37,13 @@ public enum CategoriesListState implements State<Event<Transition, CategoriesLis
     DELETING(
             new Transition() {
                 @Override
-                public CategoriesListState onEvent(LoadList event) {
-                    return LOADING;
+                public ResultState onEvent(LoadList event) {
+                    return valid(LOADING, Optional.empty(), Optional.empty());
                 }
 
                 @Override
-                public CategoriesListState onEvent(ListLoaded event) {
-                    return null;
-                }
-
-                @Override
-                public CategoriesListState onEvent(DeleteCategory event) {
-                    return null;
-                }
-
-                @Override
-                public CategoriesListState onEvent(Error event) {
-                    return ERROR;
+                public ResultState onEvent(Error event) {
+                    return valid(ERROR, Optional.empty(), Optional.empty());
                 }
             }
     ),
@@ -72,23 +51,8 @@ public enum CategoriesListState implements State<Event<Transition, CategoriesLis
             new Transition() {
 
                 @Override
-                public CategoriesListState onEvent(LoadList event) {
-                    return LOADING;
-                }
-
-                @Override
-                public CategoriesListState onEvent(ListLoaded event) {
-                    return null;
-                }
-
-                @Override
-                public CategoriesListState onEvent(DeleteCategory event) {
-                    return null;
-                }
-
-                @Override
-                public CategoriesListState onEvent(Error event) {
-                    return null;
+                public ResultState onEvent(LoadList event) {
+                    return valid(LOADING, Optional.empty(), Optional.empty());
                 }
             }
     ),
@@ -96,52 +60,84 @@ public enum CategoriesListState implements State<Event<Transition, CategoriesLis
             new Transition() {
 
                 @Override
-                public CategoriesListState onEvent(LoadList event) {
-                    return LOADING;
-                }
-
-                @Override
-                public CategoriesListState onEvent(ListLoaded event) {
-                    return null;
-                }
-
-                @Override
-                public CategoriesListState onEvent(DeleteCategory event) {
-                    return null;
-                }
-
-                @Override
-                public CategoriesListState onEvent(Error event) {
-                    return null;
+                public ResultState onEvent(LoadList event) {
+                    return valid(LOADING, Optional.empty(), Optional.empty());
                 }
             }
     ),
     LIST_WITH_ITEMS(
             new Transition() {
                 @Override
-                public CategoriesListState onEvent(LoadList event) {
-                    return LOADING;
+                public ResultState onEvent(LoadList event) {
+                    return valid(LOADING, Optional.empty(), Optional.empty());
                 }
 
                 @Override
-                public CategoriesListState onEvent(ListLoaded event) {
-                    return null;
-                }
-
-                @Override
-                public CategoriesListState onEvent(DeleteCategory event) {
-                    DELETING.deletingCategory = event.category;
-                    return DELETING;
-                }
-
-                @Override
-                public CategoriesListState onEvent(Error event) {
-                    return null;
+                public ResultState onEvent(DeleteCategory event) {
+                    return valid(DELETING, Optional.empty(), Optional.of(event.category));
                 }
             }
     );
 
     private final Transition transition;
+
+    static ResultState valid(CategoriesListState state, Optional<List<Category>> categoryList, Optional<Category> deleteCategory) {
+        return new ResultState() {
+            @Override
+            public CategoriesListState state() {
+                return state;
+            }
+
+            @Override
+            public Optional<List<Category>> getCategories() {
+                return categoryList;
+            }
+
+            @Override
+            public Optional<Category> getDeletingCategory() {
+                return deleteCategory;
+            }
+        };
+    }
+
+    static ResultState invalid() {
+        return new ResultState() {
+            @Override
+            public CategoriesListState state() {
+                return ERROR;
+            }
+
+            @Override
+            public Optional<List<Category>> getCategories() {
+                return Optional.empty();
+            }
+
+            @Override
+            public Optional<Category> getDeletingCategory() {
+                return Optional.empty();
+            }
+        };
+    }
+
+    static ResultState defaultResultState() {
+        return new ResultState() {
+
+            @Override
+            public CategoriesListState state() {
+                return EMPTY_LIST;
+            }
+
+            @Override
+            public Optional<List<Category>> getCategories() {
+                return Optional.empty();
+            }
+
+            @Override
+            public Optional<Category> getDeletingCategory() {
+                return Optional.empty();
+            }
+        };
+    }
 
     CategoriesListState(
             Transition transition
@@ -150,20 +146,7 @@ public enum CategoriesListState implements State<Event<Transition, CategoriesLis
     }
 
     @Override
-    public CategoriesListState transition(Event<Transition, CategoriesListState> event) {
+    public ResultState transition(CategoriesListStateMachine.Event event) {
         return event.dispatch(transition);
-    }
-
-    private List<Category> categories;
-    private Category deletingCategory;
-
-    @Override
-    public List<Category> getCategories() {
-        return categories;
-    }
-
-    @Override
-    public Category getDeletingCategory() {
-        return deletingCategory;
     }
 }

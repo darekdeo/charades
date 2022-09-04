@@ -75,10 +75,10 @@ public class CategoriesFormPresenter extends AbstractPresenter<CategoriesFormCon
                 .observeOn(schedulerFactory.ui())
                 .subscribe(
                         state -> view.ifPresent(action -> {
-                            switch (state) {
+                            switch (state.state()) {
                                 case LOADING:
                                     break;
-                                case LOADING_ERROR:
+                                case ERROR:
                                     break;
                                 case EDITING_FORM:
                                     break;
