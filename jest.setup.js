@@ -1,7 +1,7 @@
 // Mock Expo modules
 jest.mock('expo-screen-orientation', () => ({
-  lockAsync: jest.fn(),
-  unlockAsync: jest.fn(),
+  lockAsync: jest.fn(() => Promise.resolve()),
+  unlockAsync: jest.fn(() => Promise.resolve()),
   OrientationLock: {
     LANDSCAPE: 'LANDSCAPE',
   },
