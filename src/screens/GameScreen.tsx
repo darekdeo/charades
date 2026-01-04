@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Dimensions, Platform } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { Accelerometer } from 'expo-sensors';
@@ -30,9 +30,21 @@ export const GameScreen = () => {
   const [cooldown, setCooldown] = useState(false);
 
   useEffect(() => {
-    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
+    const lockScreen = async () => {
+      if (Platform.OS !== 'web') {
+        try {
+          await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
+        } catch (e) {
+          console.warn("Screen orientation lock failed:", e);
+        }
+      }
+    };
+    lockScreen();
+
     return () => {
-      ScreenOrientation.unlockAsync();
+      if (Platform.OS !== 'web') {
+        ScreenOrientation.unlockAsync().catch(e => console.warn("Screen orientation unlock failed:", e));
+      }
       if (sound) sound.unloadAsync();
     };
   }, [sound]);
@@ -49,13 +61,6 @@ export const GameScreen = () => {
       // console.log('Sound file not found', e);
     }
   };
-
-  useEffect(() => {
-    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
-    return () => {
-      ScreenOrientation.unlockAsync();
-    };
-  }, []);
 
   useEffect(() => {
     loadCharades();
@@ -87,13 +92,15 @@ export const GameScreen = () => {
 
   const finishGame = () => {
     setGameState('finished');
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+    if (Platform.OS !== 'web') {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning).catch(() => {});
+    }
     navigation.replace('Results', { score: results.filter(r => r.correct).length, results });
   };
 
   // Sensor Logic
   useEffect(() => {
-    if (gameState !== 'playing') return;
+    if (gameState !== 'playing' || Platform.OS === 'web') return;
 
     const _subscribe = () => {
       setSubscription(
