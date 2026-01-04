@@ -8,7 +8,9 @@ export const getDBConnection = async () => {
 };
 
 export const initDatabase = async () => {
+  console.log("[DB] Opening database...");
   const db = await getDBConnection();
+  console.log("[DB] Database opened. Creating tables...");
   await db.execAsync(`
     CREATE TABLE IF NOT EXISTS categories (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -22,9 +24,11 @@ export const initDatabase = async () => {
       FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE CASCADE
     );
   `);
+  console.log("[DB] Tables created. Seeding...");
   
   try {
     await seedDatabase(db);
+    console.log("[DB] Seeding complete.");
   } catch (error) {
     console.warn("Error seeding database:", error);
   }

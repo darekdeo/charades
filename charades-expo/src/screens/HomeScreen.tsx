@@ -18,37 +18,43 @@ export const HomeScreen = () => {
   const [db, setDb] = useState<SQLiteDatabase | null>(null);
   const isInit = React.useRef(false);
 
-  useEffect(() => {
+  const initialize = React.useCallback(async () => {
     if (isInit.current) return;
     isInit.current = true;
+    setLoading(true);
+    setError(null);
 
-    const setup = async () => {
-      try {
-        const timeoutPromise = new Promise<never>((_, reject) => 
-          setTimeout(() => reject(new Error("Database initialization timed out")), 5000)
-        );
-        const database = await Promise.race([initDatabase(), timeoutPromise]);
-        setDb(database);
-        loadCategories(database);
-      } catch (err) {
-        console.error("DB Init Error:", err);
-        setError("Failed to initialize database. " + (err instanceof Error ? err.message : String(err)));
-        setLoading(false);
-      }
-    };
-    setup();
+    try {
+      console.log("Starting DB init...");
+      const timeoutPromise = new Promise<never>((_, reject) => 
+        setTimeout(() => reject(new Error("Database initialization timed out")), 5000)
+      );
+      const database = await Promise.race([initDatabase(), timeoutPromise]);
+      console.log("DB init success");
+      setDb(database);
+      await loadCategories(database);
+    } catch (err) {
+      console.error("DB Init Error:", err);
+      setError("Failed to initialize database. " + (err instanceof Error ? err.message : String(err)));
+      // Allow retry
+      isInit.current = false; 
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    initialize();
+  }, [initialize]);
 
   const loadCategories = async (database: SQLiteDatabase) => {
     try {
-      setLoading(true);
+      // setLoading(true); // Don't double set loading if called from init
       const data = await getCategories(database);
       setCategories(data);
     } catch (err) {
       console.error("Load Categories Error:", err);
       setError("Failed to load categories.");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -68,7 +74,7 @@ export const HomeScreen = () => {
       <View style={styles.center}>
         <List.Icon icon="alert-circle" color="red" />
         <List.Subheader style={{ color: 'red' }}>{error}</List.Subheader>
-        <FAB icon="refresh" onPress={() => { isInit.current = false; setError(null); setLoading(true); }} label="Retry" />
+        <FAB icon="refresh" onPress={() => { isInit.current = false; initialize(); }} label="Retry" />
       </View>
     );
   }
