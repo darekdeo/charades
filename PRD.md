@@ -92,14 +92,31 @@ The existing Android codebase contains:
 -   **Offline:** App must work 100% offline.
 -   **Permissions:** Request Motion Sensors permission on iOS (if required by OS version).
 
-## 6. UI/UX Guidelines
+## 6. Quality Assurance & CI/CD
+**Goal:** Ensure code stability and prevent regressions.
+
+-   **Testing Strategy:**
+    -   **Unit Tests:** Use `Jest` for business logic and utility functions.
+    -   **Component Tests:** Use `react-test-renderer` or `@testing-library/react-native` for UI components.
+    -   **Integration Tests:** Ensure Database and Navigation flows work as expected.
+-   **CI/CD Pipeline:**
+    -   Configure GitHub Actions to automatically run tests (`npm test`) on every Push and Pull Request.
+    -   Ensure the build passes before merging changes.
+
+## 7. Workflow Constraints
+-   **Human-in-the-Loop:** The AI Agent is **strictly prohibited** from automatically committing code changes to the repository.
+-   **Review Process:** All code generation, modification, or deletion must be presented to the user for review.
+-   **Commit Policy:** Commits can only be executed after explicit user approval/confirmation of the changes.
+
+## 8. UI/UX Guidelines
 -   **Style:** Modern, vibrant, high contrast.
 -   **Typography:** Large, legible fonts for the Game Screen (must be readable from 3-5 feet away).
 -   **Feedback:** Haptic feedback (vibration) on Correct/Pass events.
 
-## 7. Migration Plan (Step-by-Step)
+## 9. Migration Plan (Step-by-Step)
 1.  **Initialize Expo Project:** Setup TypeScript, Navigation, SQLite.
 2.  **Database Layer:** Create DB service, tables, and seeding logic.
 3.  **Screens - CRUD:** Implement Home and Edit screens.
 4.  **Game Logic:** Implement Game Setup and Sensor logic.
-5.  **Polishing:** Add assets (sounds, icons), transition animations, and testing.
+5.  **Quality Assurance:** Set up Jest, write tests, and configure CI/CD.
+6.  **Polishing:** Add assets (sounds, icons), transition animations, and final review.

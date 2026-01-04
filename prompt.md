@@ -47,6 +47,18 @@ Created `PRD.md` with the following scope:
 #### 5. Verification
 - Ran `npx tsc` to ensure 100% type safety and fix initial prop-type mismatches in Navigation and UI components.
 
+#### 6. Quality Assurance & Fixes
+- **Testing Infrastructure:**
+    - Installed `jest`, `jest-expo`, and `@testing-library/react-native`.
+    - Configured `jest.config.js` and `babel.config.js` to support Expo environment.
+    - Created `jest.setup.js` to mock native modules (`expo-sqlite`, `expo-sensors`, etc.).
+    - Implemented Unit/Component tests for `App.tsx` and `HomeScreen.tsx`.
+    - Added GitHub Actions workflow (`.github/workflows/ci.yml`) to run tests on Push/PR.
+- **Bug Fixes:**
+    - **Web Support:** Fixed `expo-sqlite` initialization on web by adding `metro.config.js` with specific HTTP headers for `SharedArrayBuffer`.
+    - **Platform Safety:** Added platform checks in `GameScreen.tsx` to prevent crashes on Web due to unsupported Sensor and Screen Orientation APIs.
+    - **Theme Visibility:** Updated `App.tsx` with a custom `react-native-paper` theme to fix low contrast issues on Web.
+
 ---
 
 ### Final Result
