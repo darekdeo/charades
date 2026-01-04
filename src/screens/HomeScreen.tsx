@@ -27,7 +27,7 @@ export const HomeScreen = () => {
     try {
       console.log("Starting DB init...");
       const timeoutPromise = new Promise<never>((_, reject) => 
-        setTimeout(() => reject(new Error("Database initialization timed out")), 5000)
+        setTimeout(() => reject(new Error("Database initialization timed out")), 15000)
       );
       const database = await Promise.race([initDatabase(), timeoutPromise]);
       console.log("DB init success");

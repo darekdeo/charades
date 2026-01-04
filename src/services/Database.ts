@@ -4,7 +4,12 @@ import { Category, Charade } from '../models';
 const DB_NAME = 'charades.db';
 
 export const getDBConnection = async () => {
-  return await SQLite.openDatabaseAsync(DB_NAME);
+  try {
+    return await SQLite.openDatabaseAsync(DB_NAME);
+  } catch (e) {
+    console.error("Error opening database:", e);
+    throw e;
+  }
 };
 
 export const initDatabase = async () => {
