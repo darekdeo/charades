@@ -23,7 +23,11 @@ export const initDatabase = async () => {
     );
   `);
   
-  await seedDatabase(db);
+  try {
+    await seedDatabase(db);
+  } catch (error) {
+    console.warn("Error seeding database:", error);
+  }
   return db;
 };
 

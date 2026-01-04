@@ -14,22 +14,42 @@ export const HomeScreen = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [db, setDb] = useState<SQLiteDatabase | null>(null);
+  const isInit = React.useRef(false);
 
   useEffect(() => {
+    if (isInit.current) return;
+    isInit.current = true;
+
     const setup = async () => {
-      const database = await initDatabase();
-      setDb(database);
-      loadCategories(database);
+      try {
+        const timeoutPromise = new Promise<never>((_, reject) => 
+          setTimeout(() => reject(new Error("Database initialization timed out")), 5000)
+        );
+        const database = await Promise.race([initDatabase(), timeoutPromise]);
+        setDb(database);
+        loadCategories(database);
+      } catch (err) {
+        console.error("DB Init Error:", err);
+        setError("Failed to initialize database. " + (err instanceof Error ? err.message : String(err)));
+        setLoading(false);
+      }
     };
     setup();
   }, []);
 
   const loadCategories = async (database: SQLiteDatabase) => {
-    setLoading(true);
-    const data = await getCategories(database);
-    setCategories(data);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const data = await getCategories(database);
+      setCategories(data);
+    } catch (err) {
+      console.error("Load Categories Error:", err);
+      setError("Failed to load categories.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -41,6 +61,16 @@ export const HomeScreen = () => {
 
   if (loading && !db) {
     return <View style={styles.center}><ActivityIndicator size="large" /></View>;
+  }
+
+  if (error) {
+    return (
+      <View style={styles.center}>
+        <List.Icon icon="alert-circle" color="red" />
+        <List.Subheader style={{ color: 'red' }}>{error}</List.Subheader>
+        <FAB icon="refresh" onPress={() => { isInit.current = false; setError(null); setLoading(true); }} label="Retry" />
+      </View>
+    );
   }
 
   return (
