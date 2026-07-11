@@ -54,7 +54,7 @@ export const HomeScreen = () => {
       setCategories(data);
     } catch (err) {
       console.error("Load Categories Error:", err);
-      setError("Failed to load categories.");
+      setError("Failed to load categories."); // TODO translations/i18n
     }
   };
 

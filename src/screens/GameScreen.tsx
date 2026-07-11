@@ -9,11 +9,13 @@ import { Audio } from 'expo-av';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { getDBConnection, getCharadesByCategory } from '../services/Database';
 import { Charade } from '../models';
+import { StackNavigationProp } from '@react-navigation/stack';
 
+type GameScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Game'>;
 type GameScreenRouteProp = RouteProp<RootStackParamList, 'Game'>;
 
 export const GameScreen = () => {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<GameScreenNavigationProp>();
   const route = useRoute<GameScreenRouteProp>();
   const { category, duration } = route.params;
 
@@ -51,7 +53,7 @@ export const GameScreen = () => {
 
   const playSound = async (type: 'success' | 'fail') => {
     try {
-      // Placeholder: User needs to add sound files to assets/
+      // TODO Add sound files to assets/ and use Audio.Sound.createAsync()
       // const { sound } = await Audio.Sound.createAsync(
       //   type === 'success' ? require('../../assets/success.mp3') : require('../../assets/fail.mp3')
       // );

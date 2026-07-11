@@ -3,11 +3,13 @@ import { View, StyleSheet } from 'react-native';
 import { Button, Text, SegmentedButtons } from 'react-native-paper';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/AppNavigator';
+import { StackNavigationProp } from '@react-navigation/stack';
 
+type GameNavigationProp = StackNavigationProp<RootStackParamList, 'GameSetup'>;
 type GameSetupRouteProp = RouteProp<RootStackParamList, 'GameSetup'>;
 
 export const GameSetupScreen = () => {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<GameNavigationProp>();
   const route = useRoute<GameSetupRouteProp>();
   const { category } = route.params;
 

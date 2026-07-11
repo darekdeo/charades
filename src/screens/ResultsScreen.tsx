@@ -3,11 +3,13 @@ import { View, StyleSheet, FlatList } from 'react-native';
 import { Text, Button, List, Divider } from 'react-native-paper';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/AppNavigator';
+import { StackNavigationProp } from '@react-navigation/stack';
 
+type ResultsNavigationProp = StackNavigationProp<RootStackParamList, 'Results'>;
 type ResultsRouteProp = RouteProp<RootStackParamList, 'Results'>;
 
 export const ResultsScreen = () => {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<ResultsNavigationProp>();
   const route = useRoute<ResultsRouteProp>();
   const { score, results } = route.params;
 
